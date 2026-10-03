@@ -6,6 +6,10 @@ import seamm_mbe
 
 from .helpers import Pilot, water_system
 
+# tests/data holds the fixture and the script that made it (provenance only;
+# it needs the prototype's tools), not tests
+collect_ignore = ["data"]
+
 
 @pytest.fixture(scope="session")
 def pilot():
