@@ -1,0 +1,85 @@
+seamm\_mbe package
+==================
+
+Submodules
+----------
+
+seamm\_mbe.algebra module
+-------------------------
+
+.. automodule:: seamm_mbe.algebra
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.assemble module
+--------------------------
+
+.. automodule:: seamm_mbe.assemble
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.catalog module
+-------------------------
+
+.. automodule:: seamm_mbe.catalog
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.elements module
+--------------------------
+
+.. automodule:: seamm_mbe.elements
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.fragments module
+---------------------------
+
+.. automodule:: seamm_mbe.fragments
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.levels module
+------------------------
+
+.. automodule:: seamm_mbe.levels
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.selection module
+---------------------------
+
+.. automodule:: seamm_mbe.selection
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.system module
+------------------------
+
+.. automodule:: seamm_mbe.system
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+seamm\_mbe.units module
+-----------------------
+
+.. automodule:: seamm_mbe.units
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: seamm_mbe
+   :members:
+   :show-inheritance:
+   :undoc-members:

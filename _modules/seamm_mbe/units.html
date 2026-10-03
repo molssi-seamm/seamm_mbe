@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seamm_mbe.units &#8212; SEAMM MBE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/seamm_mbe/units';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM MBE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">seamm_mbe.units</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for seamm_mbe.units</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Units and sign conventions.</span>
+
+<span class="sd">The library works throughout in</span>
+
+<span class="sd">* energy: **eV**</span>
+<span class="sd">* length: **Å**</span>
+<span class="sd">* forces: **eV/Å** (forces, not gradients: F = -dE/dr)</span>
+<span class="sd">* virial: **eV**, the tensor W = sum_a r_a (x) f_a, so that for a</span>
+<span class="sd">  configurational (no kinetic) pressure tensor P = W / V</span>
+<span class="sd">* pressure tensor P: **eV/Å³**, positive = the system pushes outward</span>
+<span class="sd">* stress sigma: **eV/Å³** in the ASE/xnn convention sigma = (1/V) dE/d(strain)</span>
+<span class="sd">  = -P</span>
+
+<span class="sd">SEAMM's Model Chemistry batch contract (``analyze_task``) and the step's</span>
+<span class="sd">``store_results`` use kJ/mol, kJ/mol/Å *gradients* and GPa; the functions here</span>
+<span class="sd">convert both ways. The conversion layer is where unit bugs live, so every</span>
+<span class="sd">function states its units and the tests check them against pint.</span>
+
+<span class="sd">Codes disagree on the sign of the "stress" they print, so nothing here guesses:</span>
+<span class="sd">every stress or pressure from outside comes with an explicit ``convention``,</span>
+<span class="sd">either ``"pressure"`` (positive = pushes outward: VASP's ``in kB`` line, MDI's</span>
+<span class="sd">``&lt;STRESS``) or ``"stress"`` (sigma = -P: ASE, xnn).</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1">#: 1 eV in kJ/mol (CODATA 2018: e * N_A / 1000, exact)</span>
+<span class="n">EV_TO_KJ_PER_MOL</span> <span class="o">=</span> <span class="mf">1.602176634e-19</span> <span class="o">*</span> <span class="mf">6.02214076e23</span> <span class="o">/</span> <span class="mf">1000.0</span>
+<span class="c1">#: 1 eV/Å³ in GPa (exact: 1.602176634e-19 J / 1e-30 m³ = 1.602176634e11 Pa)</span>
+<span class="n">EV_PER_A3_TO_GPA</span> <span class="o">=</span> <span class="mf">160.2176634</span>
+<span class="c1">#: 1 eV/Å³ in atm (1 atm = 101325 Pa)</span>
+<span class="n">EV_PER_A3_TO_ATM</span> <span class="o">=</span> <span class="mf">1.602176634e11</span> <span class="o">/</span> <span class="mf">101325.0</span>
+<span class="c1">#: 1 kbar (VASP's "kB") in eV/Å³</span>
+<span class="n">KBAR_TO_EV_PER_A3</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">/</span> <span class="n">EV_PER_A3_TO_GPA</span>
+
+<span class="n">CONVENTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"pressure"</span><span class="p">,</span> <span class="s2">"stress"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sign</span><span class="p">(</span><span class="n">convention</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""+1 for a pressure (positive outward), -1 for a stress (sigma = -P)."""</span>
+    <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s2">"pressure"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s2">"stress"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Unknown stress convention </span><span class="si">{</span><span class="n">convention</span><span class="si">!r}</span><span class="s2">: it must be one of </span><span class="si">{</span><span class="n">CONVENTIONS</span><span class="si">}</span><span class="s2">"</span>
+        <span class="s2">" -- 'pressure' if positive means pushing outward (VASP, MDI), 'stress' "</span>
+        <span class="s2">"if sigma = -P (ASE, xnn)."</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="as_tensor">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.as_tensor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_tensor</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A (3, 3) array from a (3, 3) array, 9 values (row-major) or Voigt 6</span>
+<span class="sd">    values in the order xx yy zz yz xz xy. Units are unchanged."""</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">xz</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">xx</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">xz</span><span class="p">],</span> <span class="p">[</span><span class="n">xy</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">yz</span><span class="p">],</span> <span class="p">[</span><span class="n">xz</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">zz</span><span class="p">]])</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"A tensor needs 9 or 6 values, not shape </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="kj_per_mol_to_ev">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.kj_per_mol_to_ev">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kj_per_mol_to_ev</span><span class="p">(</span><span class="n">energy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Energy in kJ/mol -&gt; eV."""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">EV_TO_KJ_PER_MOL</span></div>
+
+
+
+<div class="viewcode-block" id="ev_to_kj_per_mol">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.ev_to_kj_per_mol">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ev_to_kj_per_mol</span><span class="p">(</span><span class="n">energy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Energy in eV -&gt; kJ/mol."""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">EV_TO_KJ_PER_MOL</span></div>
+
+
+
+<div class="viewcode-block" id="gradients_to_forces">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.gradients_to_forces">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gradients_to_forces</span><span class="p">(</span><span class="n">gradients</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Gradients in kJ/mol/Å -&gt; forces in eV/Å (note the sign: F = -dE/dr)."""</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gradients</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">EV_TO_KJ_PER_MOL</span></div>
+
+
+
+<div class="viewcode-block" id="forces_to_gradients">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.forces_to_gradients">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">forces_to_gradients</span><span class="p">(</span><span class="n">forces</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Forces in eV/Å -&gt; gradients in kJ/mol/Å (note the sign: g = -F)."""</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">forces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">EV_TO_KJ_PER_MOL</span></div>
+
+
+
+<div class="viewcode-block" id="virial_from_tensor">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.virial_from_tensor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">virial_from_tensor</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">convention</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"GPa"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The virial W (eV) from a stress or pressure tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : array-like</span>
+<span class="sd">        (3, 3), 9 or Voigt 6 values (xx yy zz yz xz xy).</span>
+<span class="sd">    volume : float</span>
+<span class="sd">        The cell volume in Å³.</span>
+<span class="sd">    convention : str</span>
+<span class="sd">        "pressure" (positive = pushes outward; VASP, MDI) or "stress"</span>
+<span class="sd">        (sigma = -P; ASE, xnn). Required: there is no default.</span>
+<span class="sd">    units : str</span>
+<span class="sd">        "GPa", "kbar" (VASP's kB), "eV/Å^3" or "atm".</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        (3, 3) virial in eV, W = V * P.</span>
+<span class="sd">    """</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"GPa"</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">EV_PER_A3_TO_GPA</span><span class="p">,</span>
+        <span class="s2">"kbar"</span><span class="p">:</span> <span class="n">KBAR_TO_EV_PER_A3</span><span class="p">,</span>
+        <span class="s2">"kB"</span><span class="p">:</span> <span class="n">KBAR_TO_EV_PER_A3</span><span class="p">,</span>
+        <span class="s2">"eV/Å^3"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s2">"eV/A^3"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s2">"atm"</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">EV_PER_A3_TO_ATM</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">factor</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown pressure units </span><span class="si">{</span><span class="n">units</span><span class="si">!r}</span><span class="s2">: one of </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_sign</span><span class="p">(</span><span class="n">convention</span><span class="p">)</span> <span class="o">*</span> <span class="n">as_tensor</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span><span class="p">[</span><span class="n">units</span><span class="p">]</span> <span class="o">*</span> <span class="n">volume</span></div>
+
+
+
+<div class="viewcode-block" id="tensor_from_virial">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.tensor_from_virial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tensor_from_virial</span><span class="p">(</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">convention</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"GPa"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A stress or pressure tensor from the virial W (eV): the inverse of</span>
+<span class="sd">    :func:`virial_from_tensor`, with the same arguments. Returns (3, 3) in</span>
+<span class="sd">    ``units``."""</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">virial_from_tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s2">"pressure"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_sign</span><span class="p">(</span><span class="n">convention</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">virial</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">unit</span></div>
+
+
+
+<div class="viewcode-block" id="vasp_stress_to_virial">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.vasp_stress_to_virial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vasp_stress_to_virial</span><span class="p">(</span><span class="n">stress_kB</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The virial (eV) from VASP's ``in kB`` line: XX YY ZZ XY YZ ZX in kbar,</span>
+<span class="sd">    positive = pushing outward (a pressure). Note VASP's order differs from</span>
+<span class="sd">    Voigt's."""</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">zx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">stress_kB</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">xx</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">zx</span><span class="p">],</span> <span class="p">[</span><span class="n">xy</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">yz</span><span class="p">],</span> <span class="p">[</span><span class="n">zx</span><span class="p">,</span> <span class="n">yz</span><span class="p">,</span> <span class="n">zz</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">virial_from_tensor</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s2">"pressure"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"kbar"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="dftd4_virial_to_virial">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.dftd4_virial_to_virial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dftd4_virial_to_virial</span><span class="p">(</span><span class="n">dE_dstrain</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The virial (eV) from the dftd4 library's "virial", which is</span>
+<span class="sd">    dE/d(strain) (convert it from hartree to eV first): W = -dE/d(strain)."""</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dE_dstrain</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="pressure">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.pressure">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pressure</span><span class="p">(</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"atm"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The scalar pressure, tr(P)/3, from the virial (eV) and volume (Å³), in</span>
+<span class="sd">    ``units`` ("atm", "GPa", "kbar" or "eV/Å^3")."""</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor_from_virial</span><span class="p">(</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s2">"pressure"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="from_analyze_task">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.from_analyze_task">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_analyze_task</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stress_convention</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Convert a Model Chemistry ``analyze_task`` result to the library's units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    result : dict</span>
+<span class="sd">        {"energy": kJ/mol, "gradients": (n, 3) kJ/mol/Å, and optionally</span>
+<span class="sd">        "stress": GPa as the program gives it}.</span>
+<span class="sd">    volume : float</span>
+<span class="sd">        The cell volume in Å³; needed only with a stress.</span>
+<span class="sd">    stress_convention : str</span>
+<span class="sd">        "pressure" or "stress" (see :func:`virial_from_tensor`); needed only</span>
+<span class="sd">        with a stress, because the contract does not fix the sign.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        {"energy": eV, "forces": (n, 3) eV/Å, and "virial": (3, 3) eV if the</span>
+<span class="sd">        result had a stress}.</span>
+<span class="sd">    """</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"energy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">kj_per_mol_to_ev</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">])),</span>
+        <span class="s2">"forces"</span><span class="p">:</span> <span class="n">gradients_to_forces</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"gradients"</span><span class="p">]),</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stress"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">volume</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">stress_convention</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"A result with a stress needs the cell volume and the program's "</span>
+                <span class="s2">"stress_convention ('pressure' or 'stress') to convert it."</span>
+            <span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"virial"</span><span class="p">]</span> <span class="o">=</span> <span class="n">virial_from_tensor</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">],</span> <span class="n">volume</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="n">stress_convention</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"GPa"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="to_seamm">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.units.to_seamm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_seamm</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">virial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The library's numbers in SEAMM's ``store_results`` conventions.</span>
+
+<span class="sd">    energy (eV) -&gt; kJ/mol; forces (eV/Å) -&gt; gradients (kJ/mol/Å); virial (eV)</span>
+<span class="sd">    with the volume (Å³) -&gt; stress in GPa, **sigma = -P** (the ASE/xnn stress,</span>
+<span class="sd">    the training-label convention). Returns a dict with the keys given.</span>
+<span class="sd">    """</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ev_to_kj_per_mol</span><span class="p">(</span><span class="n">energy</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">forces</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"gradients"</span><span class="p">]</span> <span class="o">=</span> <span class="n">forces_to_gradients</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">virial</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"stress"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor_from_virial</span><span class="p">(</span>
+            <span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s2">"stress"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"GPa"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.11.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

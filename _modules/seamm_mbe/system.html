@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seamm_mbe.system &#8212; SEAMM MBE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/seamm_mbe/system';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM MBE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">seamm_mbe.system</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for seamm_mbe.system</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The system: atoms, cell, whole molecules and their types.</span>
+
+<span class="sd">A :class:`System` is built from arrays (symbols, Cartesian coordinates in Å,</span>
+<span class="sd">the cell, the bonds) or from a molsystem configuration</span>
+<span class="sd">(:meth:`System.from_configuration`). It finds the molecules as the connected</span>
+<span class="sd">components of the bond graph, makes each molecule whole, types the molecules</span>
+<span class="sd">by formula and topology, and settles each type's charge and multiplicity.</span>
+
+<span class="sd">Molecules are numbered in the order of their first atom, and each molecule's</span>
+<span class="sd">atoms are in ascending atom order. A molecule's *home* coordinates keep its</span>
+<span class="sd">first atom where it is and place the others by following the bonds with the</span>
+<span class="sd">minimum image, so a molecule that is already whole keeps exactly the</span>
+<span class="sd">coordinates it was given.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">CATALOG</span><span class="p">,</span> <span class="n">MoleculeType</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">wl_labels</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">MONATOMIC</span><span class="p">,</span> <span class="n">atomic_number</span><span class="p">,</span> <span class="n">hill_formula</span><span class="p">,</span> <span class="n">mass</span>
+
+
+<div class="viewcode-block" id="StructureError">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.StructureError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StructureError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The structure cannot be used as given (bad charges, missing bonds, ...)."""</span></div>
+
+
+
+<div class="viewcode-block" id="Molecule">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.Molecule">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Molecule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One whole molecule.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    index : int</span>
+<span class="sd">        0-based molecule number.</span>
+<span class="sd">    atoms : numpy.ndarray of int</span>
+<span class="sd">        The atoms (0-based indices in the system), ascending.</span>
+<span class="sd">    type : str</span>
+<span class="sd">        The name of its :class:`~seamm_mbe.catalog.MoleculeType`.</span>
+<span class="sd">    coordinates : numpy.ndarray</span>
+<span class="sd">        (n, 3) home coordinates in Å, whole.</span>
+<span class="sd">    designated : int</span>
+<span class="sd">        Index into ``atoms`` of the designated atom.</span>
+<span class="sd">    """</span>
+
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">atoms</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">designated</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+
+<div class="viewcode-block" id="System">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">System</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Atoms, an optional cell, and the molecules.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    symbols : [str]</span>
+<span class="sd">        Element symbols.</span>
+<span class="sd">    coordinates : array-like</span>
+<span class="sd">        (n, 3) Cartesian coordinates in Å.</span>
+<span class="sd">    cell : array-like or None</span>
+<span class="sd">        (3, 3) lattice vectors in Å, one per **row**; None for a cluster.</span>
+<span class="sd">    bonds : [(int, int)]</span>
+<span class="sd">        Bonds as 0-based atom index pairs. They define the molecules; atoms</span>
+<span class="sd">        with no bonds are one-atom molecules (ions).</span>
+<span class="sd">    formal_charges : [int] or None</span>
+<span class="sd">        Per-atom formal charges, e.g. from an SDF file's ``M  CHG`` lines. When</span>
+<span class="sd">        given and not all zero they define each molecule's charge, and a</span>
+<span class="sd">        catalog type whose charge disagrees is an error. When absent or all</span>
+<span class="sd">        zero (bare xyz input) the catalog's charges are used.</span>
+<span class="sd">    catalog : {str: MoleculeType} or None</span>
+<span class="sd">        Known types keyed by signature; default :data:`seamm_mbe.CATALOG`.</span>
+<span class="sd">    charges : {str: int} or None</span>
+<span class="sd">        Charges by type name, overriding both the formal charges and the</span>
+<span class="sd">        catalog.</span>
+<span class="sd">    multiplicities : {str: int} or None</span>
+<span class="sd">        Multiplicities by type name, overriding the catalog (default 1).</span>
+<span class="sd">    masses : [float] or None</span>
+<span class="sd">        Atomic masses (g/mol); default the standard atomic weights.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">symbols</span><span class="p">,</span>
+        <span class="n">coordinates</span><span class="p">,</span>
+        <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">bonds</span><span class="o">=</span><span class="p">(),</span>
+        <span class="n">formal_charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">catalog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">multiplicities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">masses</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span><span class="si">}</span><span class="s2"> symbols but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span><span class="si">}</span><span class="s2"> coordinates"</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                    <span class="s2">"The cell must be 3 lattice vectors (3x3, one per row)"</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                    <span class="s2">"The cell is singular: its lattice vectors span no volume"</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atomic_number</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">masses</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catalog</span> <span class="o">=</span> <span class="n">CATALOG</span> <span class="k">if</span> <span class="n">catalog</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">catalog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_find_molecules</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type_molecules</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_charges</span><span class="p">(</span><span class="n">formal_charges</span><span class="p">,</span> <span class="n">charges</span> <span class="ow">or</span> <span class="p">{},</span> <span class="n">multiplicities</span> <span class="ow">or</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Atomic masses (g/mol), looked up when first needed."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mass</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span>
+
+    <span class="c1"># ----------------------------------------------------------------- geometry</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">periodic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Whether the system is a periodic cell (False for a cluster)."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The cell volume in Å³ (None for a cluster)."""</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">widths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The three perpendicular widths of the cell (Å): the spacing of the</span>
+<span class="sd">        planes spanned by each pair of lattice vectors. The smallest is</span>
+<span class="sd">        L_min, the bound on any cutoff. None for a cluster."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">volume</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)),</span>
+                <span class="n">volume</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)),</span>
+                <span class="n">volume</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="System.shift">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.shift">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The Cartesian translation (Å) of an integer image (n_a, n_b, n_c)."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span></div>
+
+
+<div class="viewcode-block" id="System.minimum_image">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.minimum_image">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimum_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The integer image n making ``vector + n @ cell`` shortest, and that</span>
+<span class="sd">        shortest vector. Searches the 27 images around the fractional rounding,</span>
+<span class="sd">        which is exact for any vector shorter than half the cell's smallest</span>
+<span class="sd">        width (bonds, and everything within a valid cutoff) and for longer</span>
+<span class="sd">        vectors in reasonably shaped cells; a strongly skewed (non-reduced)</span>
+<span class="sd">        cell can miss the shortest image of a long vector. For a cluster,</span>
+<span class="sd">        n = (0, 0, 0)."""</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">vector</span>
+        <span class="n">fractional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">fractional</span><span class="p">)</span>
+        <span class="n">shifts</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">_NEIGHBORS</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">vector</span> <span class="o">+</span> <span class="n">shifts</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ij,ij-&gt;i"</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">candidates</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></div>
+
+
+    <span class="c1"># ---------------------------------------------------------------- molecules</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">neighbors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">neighbors</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_neighbors</span> <span class="o">=</span> <span class="n">neighbors</span>
+        <span class="k">for</span> <span class="n">first</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">seen</span><span class="p">[</span><span class="n">first</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Follow the bonds from the first atom, placing each atom at the</span>
+            <span class="c1"># minimum image of its bond to the atom it was reached from.</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">first</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">first</span><span class="p">]}</span>
+            <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">first</span><span class="p">])</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">first</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">_</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">:</span>
+                        <span class="c1"># A ring must close on itself, not on a periodic image</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">xyz</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">d</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">"Atoms </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2"> are bonded across the cell to "</span>
+                                <span class="s2">"another image of their own molecule: the "</span>
+                                <span class="s2">"molecule is infinite (a polymer or crystal), or "</span>
+                                <span class="s2">"the bonds are wrong."</span>
+                            <span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="n">xyz</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span>
+                    <span class="n">seen</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Molecule</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">),</span>
+                    <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+                    <span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xyz</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">]),</span>
+                    <span class="n">designated</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_molecule_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+        <span class="n">local</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)}</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span>
+        <span class="n">bonds</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">local</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">local</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">local</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">local</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">local</span> <span class="ow">and</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">local</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">bonds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_type_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">by_signature</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+            <span class="n">symbols</span><span class="p">,</span> <span class="n">bonds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule_graph</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">bonds</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">wl_labels</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">bonds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catalog</span><span class="p">:</span>
+                <span class="n">mtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">catalog</span><span class="p">[</span><span class="n">sig</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">by_signature</span><span class="p">:</span>
+                <span class="n">mtype</span> <span class="o">=</span> <span class="n">by_signature</span><span class="p">[</span><span class="n">sig</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">hill_formula</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">formula</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
+                    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">mtype</span> <span class="o">=</span> <span class="n">MoleculeType</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+                    <span class="n">signature</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span>
+                    <span class="n">charge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">designated</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_central_atom</span><span class="p">(</span><span class="n">molecule</span><span class="p">)],</span>
+                <span class="p">)</span>
+            <span class="n">by_signature</span><span class="p">[</span><span class="n">sig</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtype</span>
+            <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
+                <span class="c1"># A per-system copy: charges may be set from the structure</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">MoleculeType</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">mtype</span><span class="p">))</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">designated</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">mtype</span><span class="o">.</span><span class="n">designated</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_central_atom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The heavy atom (any atom if there is none) nearest the centre of</span>
+<span class="sd">        mass: the default designated atom of an automatically typed molecule."""</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">coordinates</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span>
+        <span class="n">com</span> <span class="o">=</span> <span class="n">m</span> <span class="o">@</span> <span class="n">xyz</span> <span class="o">/</span> <span class="n">m</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">heavy</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"H"</span><span class="p">]</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">heavy</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">com</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formal_charges</span><span class="p">,</span> <span class="n">charges</span><span class="p">,</span> <span class="n">multiplicities</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Charge or multiplicity given for </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, but there is no "</span>
+                    <span class="sa">f</span><span class="s2">"molecule of that type; the types are </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+        <span class="n">use_formal</span> <span class="o">=</span> <span class="n">formal_charges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">formal_charges</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_formal</span><span class="p">:</span>
+            <span class="n">formal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">formal_charges</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+            <span class="n">mtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">charges</span><span class="p">:</span>
+                <span class="n">charge</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">charges</span><span class="p">[</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">use_formal</span><span class="p">:</span>
+                <span class="n">charge</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">formal</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">charge</span> <span class="o">!=</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Molecule </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, atoms "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_atom_list</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2">) has formal charges summing "</span>
+                        <span class="sa">f</span><span class="s2">"to </span><span class="si">{</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">, but a </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has charge "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">. Fix the structure's formal charges or "</span>
+                        <span class="s2">"give the charge of the type explicitly."</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span>
+            <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">charges</span><span class="p">:</span>
+                <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="n">charge</span>
+            <span class="k">elif</span> <span class="n">charge</span> <span class="o">!=</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Molecule </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) has charge </span><span class="si">{</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">" but another </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">; molecules "</span>
+                    <span class="s2">"of one type must have the same charge."</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">multiplicities</span><span class="p">:</span>
+                <span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">multiplicities</span><span class="p">[</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">molecule</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_parity</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">mtype</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_parity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">mtype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Electron-count parity of a molecule at its type's charge and</span>
+<span class="sd">        multiplicity -- the same check seamm_bsse makes for fragments."""</span>
+        <span class="n">n_electrons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">-</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n_electrons</span> <span class="o">+</span> <span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">need</span> <span class="o">=</span> <span class="s2">"a closed-shell (singlet) molecule needs an even number"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parity</span> <span class="o">=</span> <span class="s2">"even"</span> <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"odd"</span>
+            <span class="n">need</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"multiplicity </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span><span class="si">}</span><span class="s2"> needs an </span><span class="si">{</span><span class="n">parity</span><span class="si">}</span><span class="s2"> number"</span>
+        <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Molecule </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">index</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"atom(s)) has charge </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">, giving it </span><span class="si">{</span><span class="n">n_electrons</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"electrons; </span><span class="si">{</span><span class="n">need</span><span class="si">}</span><span class="s2">. Check that the charges are assigned to the "</span>
+            <span class="s2">"molecules they actually belong to -- the structure's formal charges, "</span>
+            <span class="s2">"or the charges given by type."</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------ helpers</span>
+<div class="viewcode-block" id="System.reference_point">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.reference_point">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reference_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">criterion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The point (Å, home coordinates) that locates a molecule for a</span>
+<span class="sd">        distance criterion: "designated", "com" or "cog". The contact criteria</span>
+<span class="sd">        use the centre of geometry as their reference point."""</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">coordinates</span>
+        <span class="k">if</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">"designated"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">xyz</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">designated</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">"com"</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">m</span> <span class="o">@</span> <span class="n">xyz</span> <span class="o">/</span> <span class="n">m</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">xyz</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="System.formula">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.formula">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The system's Hill formula."""</span>
+        <span class="k">return</span> <span class="n">hill_formula</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="System.type_counts">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.type_counts">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">type_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""{type name: number of molecules}."""</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="System.from_configuration">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.from_configuration">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""A System from a molsystem configuration.</span>
+
+<span class="sd">        The configuration must have its bonds (call its ``perceive_bonds()``</span>
+<span class="sd">        first if it has none): they define the molecules. Per-atom formal</span>
+<span class="sd">        charges, if the configuration carries them, set the molecules'</span>
+<span class="sd">        charges (see :class:`System`). Keyword arguments are passed to</span>
+<span class="sd">        :class:`System`.</span>
+<span class="sd">        """</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">atoms</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">symbols</span>
+        <span class="k">if</span> <span class="n">configuration</span><span class="o">.</span><span class="n">periodicity</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">configuration</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">vectors</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">configuration</span><span class="o">.</span><span class="n">periodicity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Periodicity </span><span class="si">{</span><span class="n">configuration</span><span class="o">.</span><span class="n">periodicity</span><span class="si">}</span><span class="s2"> is not supported: only "</span>
+                <span class="s2">"3-D cells and clusters."</span>
+            <span class="p">)</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">(</span><span class="n">fractionals</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">bonded_neighbors</span><span class="p">(</span><span class="n">as_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">bonds</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">js</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">js</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bonds</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MONATOMIC</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
+                <span class="s2">"The configuration has no bonds, so its molecules are unknown. "</span>
+                <span class="s2">"Perceive the bonds first (configuration.perceive_bonds())."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"formal_charges"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="s2">"formal_charge"</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"formal_charges"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">q</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_column_data</span><span class="p">(</span><span class="s2">"formal_charge"</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">bonds</span><span class="o">=</span><span class="n">bonds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">_NEIGHBORS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_atom_list</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">[:</span><span class="n">limit</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">text</span> <span class="o">+</span> <span class="p">(</span><span class="s2">", ..."</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">limit</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.11.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
