@@ -542,7 +542,7 @@
 
 <div class="viewcode-block" id="mbe_correction">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.algebra.mbe_correction">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">mbe_correction</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">molecular</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mbe_correction</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">molecular</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">corrections</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The MBE correction from the fragment results.</span>
 
 <span class="sd">    Parameters</span>
@@ -557,6 +557,16 @@
 <span class="sd">        :class:`FragmentResult`, an (energy, forces) pair or a dict with</span>
 <span class="sd">        "energy" and "forces": eV and eV/Å in the fragment's atom order (its</span>
 <span class="sd">        molecules in slot order, each molecule's atoms ascending).</span>
+<span class="sd">    corrections : {str: result} or None</span>
+<span class="sd">        Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a</span>
+<span class="sd">        dict with "energy" and "forces", added to selected fragments' increments</span>
+<span class="sd">        in the sum only,</span>
+<span class="sd">        never to the sub-fragment increments that higher fragments subtract</span>
+<span class="sd">        (eV and eV/Å, as the results). This is how a pairwise counterpoise</span>
+<span class="sd">        correction enters: with dE_ij^CP - dE_ij for each pair, the sum is</span>
+<span class="sd">        E(1) + sum dE_ij^CP + sum dE_ijk, the triples still subtracting the</span>
+<span class="sd">        uncorrected pairs, so a pair's BSSE does not move into the 3-body</span>
+<span class="sd">        terms.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -568,6 +578,12 @@
 <span class="sd">        If any needed result is missing: an incomplete configuration never</span>
 <span class="sd">        gives a correction.</span>
 <span class="sd">    """</span>
+    <span class="n">corrections</span> <span class="o">=</span> <span class="n">corrections</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">corrections</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fragments</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">fragments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">in_sum</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"A correction is given for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, which is not a selected fragment."</span>
+            <span class="p">)</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">selected</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">LEVELS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -591,6 +607,15 @@
     <span class="n">result</span> <span class="o">=</span> <span class="n">Correction</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">forces</span><span class="o">=</span><span class="n">total_forces</span><span class="p">,</span> <span class="n">virial</span><span class="o">=</span><span class="n">total_virial</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">selected</span><span class="p">():</span>
         <span class="n">energy</span><span class="p">,</span> <span class="n">forces</span> <span class="o">=</span> <span class="n">ladders</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">corrections</span><span class="p">:</span>
+            <span class="n">d_energy</span><span class="p">,</span> <span class="n">d_forces</span> <span class="o">=</span> <span class="n">_unpack</span><span class="p">(</span><span class="n">corrections</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">d_forces</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">forces</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"The correction of </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has forces of shape "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">d_forces</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">forces</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">d_energy</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="n">forces</span> <span class="o">+</span> <span class="n">d_forces</span>
         <span class="n">net</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">centred</span> <span class="o">=</span> <span class="n">forces</span> <span class="o">-</span> <span class="n">net</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">forces</span><span class="p">)</span>
         <span class="n">virial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ia,ib-&gt;ab"</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">centred</span><span class="p">)</span>

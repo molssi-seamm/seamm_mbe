@@ -555,7 +555,7 @@ atom order).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seamm_mbe.algebra.mbe_correction">
-<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">mbe_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#mbe_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.mbe_correction" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">mbe_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#mbe_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.mbe_correction" title="Link to this definition">#</a></dt>
 <dd><p>The MBE correction from the fragment results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -567,6 +567,15 @@ atom order).</p>
 <a class="reference internal" href="#seamm_mbe.algebra.FragmentResult" title="seamm_mbe.algebra.FragmentResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FragmentResult</span></code></a>, an (energy, forces) pair or a dict with
 “energy” and “forces”: eV and eV/Å in the fragment’s atom order (its
 molecules in slot order, each molecule’s atoms ascending).</p></li>
+<li><p><strong>corrections</strong> (<em>{str: result} or None</em>) – Corrections, each a <a class="reference internal" href="#seamm_mbe.algebra.FragmentResult" title="seamm_mbe.algebra.FragmentResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FragmentResult</span></code></a>, an (energy, forces) pair or a
+dict with “energy” and “forces”, added to selected fragments’ increments
+in the sum only,
+never to the sub-fragment increments that higher fragments subtract
+(eV and eV/Å, as the results). This is how a pairwise counterpoise
+correction enters: with dE_ij^CP - dE_ij for each pair, the sum is
+E(1) + sum dE_ij^CP + sum dE_ijk, the triples still subtracting the
+uncorrected pairs, so a pair’s BSSE does not move into the 3-body
+terms.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>

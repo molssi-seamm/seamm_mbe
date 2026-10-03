@@ -450,6 +450,15 @@ with <code class="docutils literal notranslate"><span class="pre">in_sum</span><
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">SelectionRules.check()</span></code> refuses a cell too small for the cutoffs, since
 the same molecules could otherwise form two different fragments.</p>
 </section>
+<section id="corrections-to-selected-increments">
+<h2>Corrections to selected increments<a class="headerlink" href="#corrections-to-selected-increments" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">mbe_correction(...,</span> <span class="pre">corrections={name:</span> <span class="pre">(dE,</span> <span class="pre">dF)})</span></code> adds a correction to a selected
+fragment’s increment in the sum only, never to the sub-fragment increments that
+higher fragments subtract. Pairwise counterpoise works this way: with
+dE_ij^CP − dE_ij for each pair, the result is E(1) + Σ dE_ij^CP + Σ dE_ijk. The
+triples still subtract the uncorrected pairs, so a pair’s basis-set superposition
+error does not move into the 3-body terms.</p>
+</section>
 </section>
 
 
@@ -504,6 +513,7 @@ the same molecules could otherwise form two different fragments.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#molecules-and-types">Molecules and types</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fragment-names">Fragment names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#corrections-to-selected-increments">Corrections to selected increments</a></li>
 </ul>
   </nav></div>
 
