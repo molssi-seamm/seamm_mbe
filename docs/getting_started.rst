@@ -77,7 +77,8 @@ Molecules and types
 The molecules are the connected parts of the bond graph, made whole across
 the cell boundary. Each is typed by its formula and a Weisfeiler–Lehman hash
 of its bond graph. The built-in catalog has water, EC, FEC, DMC, EMC, Li⁺,
-BF₄⁻ and PF₆⁻, each with its charge and designated atom (water's O, the
+BF₄⁻, PF₆⁻ and the monatomic ions Na⁺, K⁺, F⁻, Cl⁻, Br⁻ and I⁻, each with its
+charge and designated atom (water's O, the
 carbonyl C, the ion's central atom). Other molecules are named by their
 formula.
 

@@ -240,3 +240,40 @@ def test_from_molsystem_charges_and_bonds():
             seamm_mbe.System.from_configuration(configuration)
     finally:
         db.close()
+
+
+def test_heavy_elements_have_masses():
+    system = seamm_mbe.System(["Pt"], [[0, 0, 0]])
+    assert system.masses[0] == pytest.approx(195.08, abs=0.01)
+
+
+def test_singular_cell_is_refused():
+    with pytest.raises(seamm_mbe.StructureError, match="singular"):
+        seamm_mbe.System(["Ar"], [[0, 0, 0]], np.zeros((3, 3)))
+    with pytest.raises(seamm_mbe.StructureError, match="singular"):
+        seamm_mbe.System(["Ar"], [[0, 0, 0]], [[5, 0, 0], [10, 0, 0], [0, 0, 5]])
+
+
+def test_molecule_bonded_to_its_own_image_is_refused():
+    xyz = [[0, 0, 0], [3, 0, 0], [6, 0, 0], [9, 0, 0]]
+    bonds = [(0, 1), (1, 2), (2, 3), (3, 0)]
+    with pytest.raises(seamm_mbe.StructureError, match="infinite"):
+        seamm_mbe.System(["C"] * 4, xyz, np.eye(3) * 12.0, bonds=bonds)
+    # A real ring is fine
+    ring = [[0, 0, 0], [1.5, 0, 0], [1.5, 1.5, 0], [0, 1.5, 0]]
+    seamm_mbe.System(["C"] * 4, ring, np.eye(3) * 12.0, bonds=bonds, charges=None)
+
+
+def test_bondless_salt_from_molsystem():
+    from molsystem import SystemDB
+
+    db = SystemDB(filename="file:seamm_mbe_test3?mode=memory&cache=shared")
+    try:
+        configuration = molsystem_configuration(
+            db, ["Li", "Cl", "Na", "Br"], [[0, 0, 0], [4, 0, 0], [8, 0, 0], [12, 0, 0]]
+        )
+        system = seamm_mbe.System.from_configuration(configuration)
+    finally:
+        db.close()
+    assert [m.type for m in system.molecules] == ["Li+", "Cl-", "Na+", "Br-"]
+    assert [system.types[m.type].charge for m in system.molecules] == [1, -1, 1, -1]

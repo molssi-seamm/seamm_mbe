@@ -191,3 +191,23 @@ def test_wrong_shapes_and_missing_levels(pilot_fragments, pilot):
     with pytest.raises(seamm_mbe.MissingFragmentsError) as error:
         seamm_mbe.mbe_correction(fragments, {})
     assert len(error.value.missing) == 2 * 6  # 3 monomers + 3 pairs, two levels
+
+
+def test_levels_need_real_booleans():
+    """Review item 6: an int 1 is a 1 Å distance, not True."""
+    system = argon_cluster(4)
+    fragments = full_expansion(system, 2)
+    counts = seamm_mbe.assign_levels(fragments, {2: 1})
+    assert counts["periodic"] == {}
+    counts = seamm_mbe.assign_levels(fragments, {2: True})
+    assert counts["periodic"] == {2: 6}
+    with pytest.raises(ValueError, match="True, False or a distance"):
+        seamm_mbe.assign_levels(fragments, {2: "yes"})
+
+
+def test_increments_need_closed_names():
+    system = argon_cluster(3)
+    fragments = full_expansion(system, 2)
+    zero = {f.name: (0.0, np.zeros((f.n_atoms, 3))) for f in fragments}
+    with pytest.raises(ValueError, match="closed under sub-fragments"):
+        seamm_mbe.increments(fragments, ["d00_01"], zero, zero)

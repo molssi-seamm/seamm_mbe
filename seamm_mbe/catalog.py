@@ -11,7 +11,8 @@ carbonyl C, an ion's central atom) is found in every molecule of that type.
 
 The built-in :data:`CATALOG` knows the molecules of the water/electrolyte
 campaign: water, ethylene carbonate (EC), fluoroethylene carbonate (FEC),
-dimethyl carbonate (DMC), ethyl methyl carbonate (EMC), Li⁺, BF₄⁻ and PF₆⁻.
+dimethyl carbonate (DMC), ethyl methyl carbonate (EMC), Li⁺, BF₄⁻ and PF₆⁻,
+plus the common monatomic ions Na⁺, K⁺, F⁻, Cl⁻, Br⁻ and I⁻.
 Anything else is typed automatically, named by its formula.
 """
 
@@ -154,6 +155,12 @@ def _catalog():
         _carbonate("DMC", _DMC),
         _carbonate("EMC", _EMC),
         define_type("Li+", ["Li"], [], charge=1, designated=0),
+        define_type("Na+", ["Na"], [], charge=1, designated=0),
+        define_type("K+", ["K"], [], charge=1, designated=0),
+        define_type("F-", ["F"], [], charge=-1, designated=0),
+        define_type("Cl-", ["Cl"], [], charge=-1, designated=0),
+        define_type("Br-", ["Br"], [], charge=-1, designated=0),
+        define_type("I-", ["I"], [], charge=-1, designated=0),
         define_type("BF4-", ["B"] + ["F"] * 4, [(0, k) for k in range(1, 5)], -1, 1, 0),
         define_type("PF6-", ["P"] + ["F"] * 6, [(0, k) for k in range(1, 7)], -1, 1, 0),
     ]

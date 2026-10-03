@@ -19,7 +19,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .catalog import CATALOG, MoleculeType, signature, wl_labels
-from .elements import IONIC_ELEMENTS, atomic_number, hill_formula, mass
+from .elements import MONATOMIC, atomic_number, hill_formula, mass
 
 
 class StructureError(ValueError):
@@ -101,14 +101,17 @@ class System:
                 f"{len(self.symbols)} symbols but {len(self.coordinates)} coordinates"
             )
         self.cell = None if cell is None else np.array(cell, dtype=float)
-        if self.cell is not None and self.cell.shape != (3, 3):
-            raise StructureError(
-                "The cell must be 3 lattice vectors (3x3, one per row)"
-            )
+        if self.cell is not None:
+            if self.cell.shape != (3, 3):
+                raise StructureError(
+                    "The cell must be 3 lattice vectors (3x3, one per row)"
+                )
+            if not abs(np.linalg.det(self.cell)) > 1e-6:
+                raise StructureError(
+                    "The cell is singular: its lattice vectors span no volume"
+                )
         self.atomic_numbers = np.array([atomic_number(s) for s in self.symbols])
-        self.masses = np.array(
-            [mass(s) for s in self.symbols] if masses is None else masses, dtype=float
-        )
+        self._masses = None if masses is None else np.array(masses, dtype=float)
         self.bonds = [(int(i), int(j)) for i, j in bonds]
         self.catalog = CATALOG if catalog is None else catalog
         self.types = {}
@@ -116,6 +119,13 @@ class System:
         self._find_molecules()
         self._type_molecules()
         self._set_charges(formal_charges, charges or {}, multiplicities or {})
+
+    @property
+    def masses(self):
+        """Atomic masses (g/mol), looked up when first needed."""
+        if self._masses is None:
+            self._masses = np.array([mass(s) for s in self.symbols])
+        return self._masses
 
     # ----------------------------------------------------------------- geometry
     @property
@@ -154,7 +164,11 @@ class System:
     def minimum_image(self, vector):
         """The integer image n making ``vector + n @ cell`` shortest, and that
         shortest vector. Searches the 27 images around the fractional rounding,
-        so it is exact for any cell shape. For a cluster, n = (0, 0, 0)."""
+        which is exact for any vector shorter than half the cell's smallest
+        width (bonds, and everything within a valid cutoff) and for longer
+        vectors in reasonably shaped cells; a strongly skewed (non-reduced)
+        cell can miss the shortest image of a long vector. For a cluster,
+        n = (0, 0, 0)."""
         vector = np.asarray(vector, dtype=float)
         if self.cell is None:
             return (0, 0, 0), vector
@@ -187,9 +201,17 @@ class System:
             while queue:
                 i = queue.popleft()
                 for j in neighbors[i]:
-                    if j in xyz:
-                        continue
                     _, d = self.minimum_image(self.coordinates[j] - self.coordinates[i])
+                    if j in xyz:
+                        # A ring must close on itself, not on a periodic image
+                        if not np.allclose(xyz[j] - xyz[i], d, atol=1e-6):
+                            raise StructureError(
+                                f"Atoms {i} and {j} are bonded across the cell to "
+                                "another image of their own molecule: the "
+                                "molecule is infinite (a polymer or crystal), or "
+                                "the bonds are wrong."
+                            )
+                        continue
                     xyz[j] = xyz[i] + d
                     seen[j] = True
                     queue.append(j)
@@ -364,8 +386,7 @@ class System:
         xyz = np.array(atoms.get_coordinates(fractionals=False))
         neighbors = configuration.bonded_neighbors(as_indices=True)
         bonds = [(i, j) for i, js in enumerate(neighbors) for j in js if i < j]
-        bondable = sum(1 for s in symbols if s not in IONIC_ELEMENTS)
-        if not bonds and bondable > 1:
+        if not bonds and any(s not in MONATOMIC for s in symbols):
             raise StructureError(
                 "The configuration has no bonds, so its molecules are unknown. "
                 "Perceive the bonds first (configuration.perceive_bonds())."

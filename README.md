@@ -14,8 +14,8 @@ isolated fragments: monomers, selected pairs and triples, general in the order.
 The library does the bookkeeping and runs no calculations:
 
 - molecule typing by formula and bond-graph topology, with charges, for water,
-  the carbonates (EC, FEC, DMC, EMC), Li⁺, BF₄⁻ and PF₆⁻, and any other
-  molecule;
+  the carbonates (EC, FEC, DMC, EMC), Li⁺, BF₄⁻, PF₆⁻, common monatomic ions,
+  and any other molecule;
 - fragment enumeration under periodic boundary conditions, with canonical keys
   and per-type-pair cutoffs;
 - the "mixed" assignment of each increment to a periodic or a molecular low

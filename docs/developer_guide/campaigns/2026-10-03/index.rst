@@ -89,8 +89,11 @@ Agreed with "design", 2026-10-03:
    - connected 4-body: 5c.
 
    Contact criteria add 2 r_max per bond. The derivation is in
-   :meth:`SelectionRules.check`. It refuses rather than warns, and the
-   enumerator independently refuses a collision. "design" proposed 3c for
+   :meth:`SelectionRules.check`. It refuses rather than warns. For order ≥ 3
+   the enumerator also refuses two different selected fragments of the same
+   molecules. For pairs it does not need to, since pair names carry
+   non-minimum images. With the pair cutoff beyond L/2 and ``check()``
+   bypassed, both images would be selected. "design" proposed 3c for
    "compact"; the derivation gives 2c, since all members are within c of each
    other.
 #. **Names** are the prototype's. Selected triples and 4-bodies carry no images,
@@ -126,6 +129,57 @@ Bugs found by the unit tests
   regression could not see it.
 - ``mbe_correction`` on fragments without levels reported nothing missing.
   It now asks for ``assign_levels`` first.
+
+Review (2026-10-03)
+===================
+
+"design" and a review subagent read every module and verified each finding
+with throwaway scripts. The verdict was to approve for the PR after these
+fixes, all made, with tests:
+
+#. **Collision guard.** The same-molecules guard ran on every *connected*
+   placement before the rule filter, so "hub" and "compact" were held to the
+   connected bound. Four Ar 2.9 Å apart in a 9.1 Å cell, hub 4-body, passed
+   ``check()`` but the enumerator refused it. The guard now applies to the
+   placements that pass the rule. The test fails on the old code.
+#. **Packaging.** The wheel installed a top-level ``tests``: added
+   ``include = ["seamm_mbe*"]``. The sdist lacked ``tests/data`` and
+   ``docs``: fixed in ``MANIFEST.in``.
+#. **Masses.** The table stops at Ba and was looked up eagerly. Masses are
+   now lazy, falling back to molsystem's table for heavier elements.
+   molsystem's own midpoint values (O 15.9995) would move P_mol, so the
+   conventional table stays first.
+#. **Cells and inputs.**
+
+   - A singular cell is refused.
+   - An empty periodic system passes ``check()``.
+   - ``assign_levels`` needs real booleans: 1 means 1 Å.
+#. **Cutoff tables.** Contradictory entries are refused: the same pair
+   twice in ``__post_init__``, and equally specific matches at lookup.
+#. **Bond-less salts.** A bond-less salt from molsystem is accepted. The
+   halide ions and noble gases count as monatomic, and the catalog gained
+   Na⁺, K⁺, F⁻, Cl⁻, Br⁻ and I⁻.
+#. **Increments.** ``increments()`` on names not closed under sub-fragments
+   gives a clear error.
+#. **Images.** A molecule bonded to its own periodic image is refused. The
+   ``minimum_image`` docstring no longer claims exactness for long vectors in
+   non-reduced cells.
+
+The review also verified, so there is no need to re-audit:
+
+- triclinic cells against brute force;
+- the R + D bound, including compact = 2c;
+- the ions, charges and parity checks;
+- the order-4 rules and the Möbius inversion, against an independent
+  recursive evaluation;
+- the force scatter, the virial and the ladders;
+- the pressures and the units.
+
+**Phase-2 notes:**
+
+- ``to_seamm`` returns a (3, 3) stress, but SEAMM's stress property is
+  Voigt [6], so the step converts it.
+- The design document's targets now carry the exact-constant values.
 
 Next
 ====

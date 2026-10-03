@@ -158,6 +158,12 @@ def increments(fragments, names, high, low):
         forces = f_high - f_low
         for sub_name, slots in fragment.subfragments:
             sub = fragments[sub_name]
+            if sub_name not in result:
+                raise ValueError(
+                    f"The increment of {name} needs that of {sub_name}, which is "
+                    "not earlier in 'names': the names must be closed under "
+                    "sub-fragments and in ascending order."
+                )
             sub_energy, sub_forces = result[sub_name]
             energy -= sub_energy
             for k, slot in enumerate(slots):

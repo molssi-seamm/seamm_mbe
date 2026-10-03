@@ -2,7 +2,8 @@
 
 The weights are the IUPAC abridged standard atomic weights (conventional values
 for elements with an interval), used only for molecular centres of mass. They
-are kept here so the library needs nothing beyond numpy for array input.
+are kept here, for H to Ba, so that common systems need nothing beyond numpy;
+heavier elements fall back to molsystem's table.
 """
 
 SYMBOLS = (
@@ -28,6 +29,10 @@ MASS = {symbol: float(w) for symbol, w in zip(SYMBOLS, _WEIGHTS)}
 #: Elements that are ions in molecular systems: never bonded (as molsystem)
 IONIC_ELEMENTS = frozenset("Li Na K Rb Cs Be Mg Ca Sr Ba".split())
 
+#: Elements that can be a molecule on their own: those ions, the halide ions
+#: and the noble gases
+MONATOMIC = IONIC_ELEMENTS | frozenset("F Cl Br I He Ne Ar Kr Xe Rn".split())
+
 
 def atomic_number(symbol):
     """The atomic number of an element symbol."""
@@ -38,14 +43,19 @@ def atomic_number(symbol):
 
 
 def mass(symbol):
-    """The standard atomic weight (g/mol) of an element symbol."""
-    try:
+    """The standard atomic weight (g/mol) of an element symbol.
+
+    The table here (H--Ba) uses IUPAC's conventional values, as the prototype
+    did (O 15.999); heavier elements come from molsystem's table.
+    """
+    if symbol in MASS:
         return MASS[symbol]
+    from molsystem.elements import symbol_to_mass
+
+    try:
+        return float(symbol_to_mass[symbol])
     except KeyError:
-        raise ValueError(
-            f"No standard atomic weight for {symbol!r} in seamm_mbe; pass the masses "
-            "explicitly."
-        ) from None
+        raise ValueError(f"No atomic weight for {symbol!r}") from None
 
 
 def hill_formula(symbols):

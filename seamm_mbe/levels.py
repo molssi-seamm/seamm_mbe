@@ -15,6 +15,8 @@ sub-fragments, and the molecular level on the molecular fragments and theirs
 (:meth:`FragmentSet.calculations`).
 """
 
+import numpy as np
+
 PERIODIC = "periodic"
 MOLECULAR = "molecular"
 LEVELS = (PERIODIC, MOLECULAR)
@@ -31,7 +33,8 @@ def assign_levels(fragments, periodic=None):
         Per order, whether selected fragments use the periodic low level:
         True for all of that order, a distance r (Å) for those whose members
         are all closer than r (by the selection's criterion), False or absent
-        for none. None (the default) puts everything at the molecular level.
+        for none. Only real booleans mean all or none: 1 is a distance of
+        1 Å. None (the default) puts everything at the molecular level.
         The prototype's mixed scheme is ``{1: True, 2: 3.5}``.
 
     Returns
@@ -46,12 +49,17 @@ def assign_levels(fragments, periodic=None):
             f.level = None
             continue
         rule = periodic.get(f.order, False)
-        if rule is True:
-            use = True
-        elif rule is False or rule is None:
+        if isinstance(rule, (bool, np.bool_)):
+            use = bool(rule)
+        elif rule is None:
             use = False
-        else:
+        elif isinstance(rule, (int, float, np.integer, np.floating)):
             use = f.max_distance < float(rule)
+        else:
+            raise ValueError(
+                f"The periodic rule for order {f.order} is {rule!r}: it must be "
+                "True, False or a distance in Å."
+            )
         f.level = PERIODIC if use else MOLECULAR
         counts[f.level][f.order] = counts[f.level].get(f.order, 0) + 1
     return counts

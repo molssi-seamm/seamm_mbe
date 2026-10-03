@@ -74,6 +74,15 @@ class SelectionRules:
                         f"{RULES}"
                     )
             values = self.cutoffs[n]
+            if isinstance(values, dict):
+                seen = {}
+                for (a, b), value in values.items():
+                    pair = tuple(sorted((a, b)))
+                    if seen.setdefault(pair, float(value)) != float(value):
+                        raise SelectionError(
+                            f"The order-{n} cutoff table gives the pair {pair} "
+                            f"both {seen[pair]} and {float(value)} Å."
+                        )
             values = values.values() if isinstance(values, dict) else [values]
             if any(float(v) <= 0 for v in values):
                 raise SelectionError(f"The cutoffs for order {n} must be positive")
@@ -89,19 +98,25 @@ class SelectionRules:
         table = self.cutoffs[order]
         if not isinstance(table, dict):
             return float(table)
-        best = None
+        matches = {}
         for (a, b), value in table.items():
             for x, y in ((a, b), (b, a)):
                 if x in (type_a, "*") and y in (type_b, "*"):
                     score = (x != "*") + (y != "*")
-                    if best is None or score > best[0]:
-                        best = (score, float(value))
-        if best is None:
+                    matches.setdefault(score, set()).add(float(value))
+        if not matches:
             raise SelectionError(
                 f"The order-{order} cutoff table has no entry for the pair "
                 f"({type_a}, {type_b}); add one, or a '*' default."
             )
-        return best[1]
+        values = matches[max(matches)]
+        if len(values) > 1:
+            raise SelectionError(
+                f"The order-{order} cutoff table is ambiguous for the pair "
+                f"({type_a}, {type_b}): equally specific entries give "
+                f"{sorted(values)} Å."
+            )
+        return values.pop()
 
     def reach(self, order):
         """The bound on the radius R and diameter D of a selected fragment of
@@ -152,6 +167,8 @@ class SelectionRules:
             return
         l_min = float(system.widths.min())
         types = sorted(system.type_counts())
+        if not types:
+            return
         pad = 0.0
         if self.criterion in ("contact", "heavy contact"):
             pad = 2 * max(
