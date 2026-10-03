@@ -243,6 +243,14 @@ def test_corrections_enter_only_the_sum():
     expected = plain.forces.copy()
     np.add.at(expected, pair.atoms, d_forces)
     assert np.allclose(corrected.forces, expected)
+    # the correction is applied before the virial and the breakdown accumulate
+    centred = d_forces - d_forces.mean(axis=0)
+    d_virial = np.einsum("ia,ib->ab", pair.coordinates, centred)
+    assert np.allclose(corrected.virial, plain.virial + d_virial)
+    assert np.allclose(
+        corrected.per_body[2]["virial"], plain.per_body[2]["virial"] + d_virial
+    )
+    assert np.allclose(corrected.per_body[3]["virial"], plain.per_body[3]["virial"])
 
 
 def test_corrections_must_name_selected_fragments():
