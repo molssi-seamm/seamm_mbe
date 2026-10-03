@@ -4,6 +4,12 @@ The weights are the IUPAC abridged standard atomic weights (conventional values
 for elements with an interval), used only for molecular centres of mass. They
 are kept here, for H to Ba, so that common systems need nothing beyond numpy;
 heavier elements fall back to molsystem's table.
+
+Keep the conventional values (O 15.999, C 12.011, Li 6.94): do not replace them
+with molsystem's interval midpoints (O 15.9995, C 12.0105, Li 6.9675). The
+molecular pressure depends on the centres of mass, and the prototype that the
+regression test reproduces (tests/data) used the conventional values; the
+midpoints move P_mol of the pilot frame.
 """
 
 SYMBOLS = (
