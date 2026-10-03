@@ -1,18 +1,40 @@
 name: test
-channels:
 
-  - defaults
+channels:
+  - conda-forge
+
+# The CI environment. The package under test is installed on top of it with
+# `pip install . --no-deps`, so everything the tests need must be listed here.
+#
+# Pure-Python dependencies -- the SEAMM packages above all -- go in the `pip:`
+# section: PyPI has a new release within minutes of the tag, while conda-forge
+# takes hours to build and propagate. Only compiled packages stay in the conda
+# section (they are built against conda's numpy, so numpy stays there too).
 dependencies:
-    # Base depends
+  # Base depends
   - python
   - pip
 
-    # Testing
+  # Compiled packages: from conda-forge so the binaries are consistent
+  - libsqlite!=3.49.1
+  - numpy
+  - openbabel
+  - rdkit
+
+  # Testing
+  - black
+  - codecov
+  - flake8
   - pytest
   - pytest-cov
-  - codecov
 
-    # Pip-only installs
-  #- pip:
-  #  - codecov
+  # Documentation
+  - pydata-sphinx-theme
+  - sphinx-design
 
+  # Pure-Python packages: from PyPI
+  - pip:
+    - molsystem>=2026.9.20
+    - seamm-util
+    # Documentation
+    - sphinx-copybutton
