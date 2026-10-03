@@ -1,6 +1,11 @@
 =======
 History
 =======
+2026.10.3.1 -- Corrections to selected increments, for pairwise counterpoise
+    * ``mbe_correction`` takes ``corrections``, added to selected fragments' increments
+      in the sum only, never to the sub-fragment increments that higher fragments
+      subtract. A pairwise counterpoise correction enters this way, so a pair's
+      basis-set superposition error does not move into the 3-body terms.
 2026.10.3 -- Initial release: many-body expansion (MBE) corrections for periodic cells
     * A library for the bookkeeping of many-body corrections, which estimate high-level
       energies, forces and stress for a periodic cell or a large cluster as a cheap

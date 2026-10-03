@@ -201,7 +201,9 @@ def mbe_correction(fragments, high, periodic=None, molecular=None, corrections=N
         "energy" and "forces": eV and eV/Å in the fragment's atom order (its
         molecules in slot order, each molecule's atoms ascending).
     corrections : {str: result} or None
-        Corrections added to selected fragments' increments in the sum only,
+        Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a
+        dict with "energy" and "forces", added to selected fragments' increments
+        in the sum only,
         never to the sub-fragment increments that higher fragments subtract
         (eV and eV/Å, as the results). This is how a pairwise counterpoise
         correction enters: with dE_ij^CP - dE_ij for each pair, the sum is
