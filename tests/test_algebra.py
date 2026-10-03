@@ -211,3 +211,58 @@ def test_increments_need_closed_names():
     zero = {f.name: (0.0, np.zeros((f.n_atoms, 3))) for f in fragments}
     with pytest.raises(ValueError, match="closed under sub-fragments"):
         seamm_mbe.increments(fragments, ["d00_01"], zero, zero)
+
+
+def test_corrections_enter_only_the_sum():
+    """A correction on a pair shifts the 2-body sum by exactly that amount and
+    leaves every triple increment as it was (triples subtract the raw pair)."""
+    system = argon_cluster(4)
+    fragments = full_expansion(system, 3)
+    rng = np.random.default_rng(21)
+    high = {f.name: (rng.normal(), rng.normal(size=(f.n_atoms, 3))) for f in fragments}
+    low = {f.name: (0.0, np.zeros((f.n_atoms, 3))) for f in fragments}
+    plain = seamm_mbe.mbe_correction(fragments, high, molecular=low)
+    same = seamm_mbe.mbe_correction(fragments, high, molecular=low, corrections={})
+    assert same.energy == plain.energy
+    assert np.array_equal(same.forces, plain.forces)
+
+    pair = fragments.by_order(2)[0]
+    d_forces = rng.normal(size=(pair.n_atoms, 3))
+    corrected = seamm_mbe.mbe_correction(
+        fragments, high, molecular=low, corrections={pair.name: (0.25, d_forces)}
+    )
+    assert corrected.energy == pytest.approx(plain.energy + 0.25)
+    assert corrected.per_body[2]["energy"] == pytest.approx(
+        plain.per_body[2]["energy"] + 0.25
+    )
+    assert corrected.per_body[3]["energy"] == pytest.approx(plain.per_body[3]["energy"])
+    for t in fragments.by_order(3):
+        assert corrected.increments[t.name].energy == pytest.approx(
+            plain.increments[t.name].energy
+        )
+    expected = plain.forces.copy()
+    np.add.at(expected, pair.atoms, d_forces)
+    assert np.allclose(corrected.forces, expected)
+
+
+def test_corrections_must_name_selected_fragments():
+    system = argon_cluster(3)
+    rules = seamm_mbe.SelectionRules(
+        max_order=3, cutoffs={2: 3.0, 3: 100.0}, rules={3: "connected"}
+    )
+    fragments = seamm_mbe.enumerate_fragments(system, rules)
+    seamm_mbe.assign_levels(fragments)
+    zero = {f.name: (0.0, np.zeros((f.n_atoms, 3))) for f in fragments}
+    with pytest.raises(ValueError, match="not a selected fragment"):
+        seamm_mbe.mbe_correction(
+            fragments, zero, molecular=zero, corrections={"d07_09": (1.0, None)}
+        )
+    aux = fragments.by_order(2, in_sum=False)
+    if aux:
+        with pytest.raises(ValueError, match="not a selected fragment"):
+            seamm_mbe.mbe_correction(
+                fragments,
+                zero,
+                molecular=zero,
+                corrections={aux[0].name: (1.0, np.zeros((6, 3)))},
+            )

@@ -103,3 +103,13 @@ themselves (e.g. the "outer pair" of a connected triple) are computed too,
 with ``in_sum`` False. Higher-order ones carry their images in their names.
 :meth:`SelectionRules.check` refuses a cell too small for the cutoffs, since
 the same molecules could otherwise form two different fragments.
+
+Corrections to selected increments
+----------------------------------
+
+``mbe_correction(..., corrections={name: (dE, dF)})`` adds a correction to a selected
+fragment's increment in the sum only, never to the sub-fragment increments that
+higher fragments subtract. Pairwise counterpoise works this way: with
+dE_ij^CP − dE_ij for each pair, the result is E(1) + Σ dE_ij^CP + Σ dE_ijk. The
+triples still subtract the uncorrected pairs, so a pair's basis-set superposition
+error does not move into the 3-body terms.
