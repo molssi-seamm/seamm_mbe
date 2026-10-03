@@ -185,7 +185,7 @@ def missing_results(fragments, high, periodic=None, molecular=None):
     ]
 
 
-def mbe_correction(fragments, high, periodic=None, molecular=None):
+def mbe_correction(fragments, high, periodic=None, molecular=None, corrections=None):
     """The MBE correction from the fragment results.
 
     Parameters
@@ -200,6 +200,16 @@ def mbe_correction(fragments, high, periodic=None, molecular=None):
         :class:`FragmentResult`, an (energy, forces) pair or a dict with
         "energy" and "forces": eV and eV/Å in the fragment's atom order (its
         molecules in slot order, each molecule's atoms ascending).
+    corrections : {str: result} or None
+        Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a
+        dict with "energy" and "forces", added to selected fragments' increments
+        in the sum only,
+        never to the sub-fragment increments that higher fragments subtract
+        (eV and eV/Å, as the results). This is how a pairwise counterpoise
+        correction enters: with dE_ij^CP - dE_ij for each pair, the sum is
+        E(1) + sum dE_ij^CP + sum dE_ijk, the triples still subtracting the
+        uncorrected pairs, so a pair's BSSE does not move into the 3-body
+        terms.
 
     Returns
     -------
@@ -211,6 +221,12 @@ def mbe_correction(fragments, high, periodic=None, molecular=None):
         If any needed result is missing: an incomplete configuration never
         gives a correction.
     """
+    corrections = corrections or {}
+    for name in corrections:
+        if name not in fragments or not fragments[name].in_sum:
+            raise ValueError(
+                f"A correction is given for {name}, which is not a selected fragment."
+            )
     for f in fragments.selected():
         if f.level not in LEVELS:
             raise ValueError(
@@ -234,6 +250,15 @@ def mbe_correction(fragments, high, periodic=None, molecular=None):
     result = Correction(energy=0.0, forces=total_forces, virial=total_virial)
     for f in fragments.selected():
         energy, forces = ladders[f.level][f.name]
+        if f.name in corrections:
+            d_energy, d_forces = _unpack(corrections[f.name])
+            if d_forces.shape != forces.shape:
+                raise ValueError(
+                    f"The correction of {f.name} has forces of shape "
+                    f"{d_forces.shape}, expected {forces.shape}"
+                )
+            energy = energy + d_energy
+            forces = forces + d_forces
         net = forces.sum(axis=0)
         centred = forces - net / len(forces)
         virial = np.einsum("ia,ib->ab", f.coordinates, centred)
