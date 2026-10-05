@@ -108,14 +108,18 @@ form several different fragments through different images: in a 15.2 Å cell of
 triples. :meth:`SelectionRules.check` then warns, and each of these fragments is
 enumerated and computed on its own. The one with every molecule at its minimum
 image keeps the plain name (``t00_01_25``); the others carry their images
-(``t00_01_25_xm00m00``), as do their sub-pairs. Three cases are refused, since
-no fragment list would be right:
+(``t00_01_25_xm00m00``), as do their sub-pairs. A fragment never holds a
+molecule twice: when molecule a is bonded to two images of b, the triple
+(b, a, b') is skipped, while (a, b, k) and (a, b', k) are both enumerated.
+Sub-fragments that equal another fragment up to whole cells share its key and
+are computed once.
+
+Two cases are refused, since no fragment list would be right:
 
 - the cell is narrower than the cutoff plus the molecules' size, so the
   neighbour search could miss partners;
-- a molecule is within a cutoff of its own image;
-- a molecule is within the cutoff of two images of another molecule, which
-  makes a connected triple's hub ambiguous.
+- a molecule is within the pair cutoff of its own image: a real interaction
+  that no fragment can hold, which skipping would silently drop.
 
 Corrections to selected increments
 ----------------------------------

@@ -367,8 +367,13 @@ class _Enumerator:
             lengths = np.linalg.norm(candidates, axis=-1)
             for b in range(n):
                 if b == a:
-                    # A molecule within the cutoff of its own image would need a
-                    # fragment with the molecule twice, which none can be
+                    if order != 2:
+                        continue
+                    # A molecule within the pair cutoff of its own image is a real
+                    # lattice interaction that no fragment can hold (it would have
+                    # the molecule twice). Skipping it would silently drop that
+                    # term, so refuse. At higher orders the growth simply never
+                    # adds a molecule twice.
                     cutoff = self.rules.cutoff(order, self.types[a], self.types[a])
                     for k in np.nonzero(lengths[a] < cutoff + pad)[0]:
                         image = tuple(int(v) for v in images[a, k])
@@ -409,20 +414,6 @@ class _Enumerator:
         for order in range(3, max_order + 1):
             if self.rules.rule(order) == "none":
                 continue
-            if self.rules.rule(order) in ("connected", "hub"):
-                # A hub bonded to two images of one partner would make a
-                # fragment with that partner twice, which none can be
-                for a, neighbors in enumerate(self.neighbors(order)):
-                    seen = {}
-                    for b, image in neighbors:
-                        if b in seen and seen[b] != image:
-                            raise SelectionError(
-                                f"Molecule {a} is within the order-{order} cutoff "
-                                f"of two images of molecule {b}: the fragment "
-                                f"({b}, {a}, {b}') would hold {b} twice. Use a "
-                                "larger cell or smaller cutoffs."
-                            )
-                        seen[b] = image
             for placement in self.connected_sets(order):
                 if not self.passes(order, placement):
                     continue
@@ -449,7 +440,10 @@ class _Enumerator:
                     "(the cell is too small for the cutoffs)."
                 )
             fragments[name] = (key, placement, True)
-        # The sub-fragments the increments need
+        # The sub-fragments the increments need. Keys are translation
+        # invariant (images relative to the first molecule), so a sub-fragment
+        # that equals another fragment up to whole cells has its key and is
+        # computed once; the auxiliary ones are genuinely different geometries.
         keys = {key for key, _, _ in fragments.values()}
         for key, placement in list(selected.items()):
             molecules = key[0]
@@ -486,7 +480,11 @@ class _Enumerator:
 
     def connected_sets(self, order):
         """Every distinct placement of ``order`` distinct molecules connected
-        by bonds within the order's cutoff."""
+        by bonds within the order's cutoff.
+
+        A placement never holds a molecule twice: when a molecule is bonded to
+        two images of a partner b, (b, a, b') is skipped, while (a, b, k) and
+        (a, b', k) are both enumerated."""
         neighbors = self.neighbors(order)
         level = {
             canonical_key({m: (0, 0, 0)}): {m: (0, 0, 0)}

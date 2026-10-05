@@ -142,15 +142,30 @@ def test_a_molecule_near_its_own_image_is_refused():
         _Enumerator(system, rules).run()
 
 
-def test_a_hub_bonded_to_two_images_of_a_partner_is_refused():
-    """Two atoms 3 Å apart in a 6 Å cell: atom 0 is bonded to atom 1 on both
-    sides, so the triple (1, 0, 1') would hold atom 1 twice."""
-    system = argon(6.0, [(0, 0, 0), (3, 0, 0)])
+def test_a_hub_bonded_to_two_images_of_a_partner():
+    """Atom 1 is 3 Å from atom 0 on both sides in a 6 Å cell, and atom 2 is
+    bonded to atom 0 only. (1, 0, 1') would hold atom 1 twice and is skipped;
+    (0, 1, 2) and (0, 1', 2) are different triples and both enumerated."""
+    system = argon(6.0, [(0, 0, 0), (3, 0, 0), (0, 2, 0)])
     rules = seamm_mbe.SelectionRules(
         max_order=3, cutoffs={2: 3.5, 3: 3.5}, rules={3: "connected"}
     )
-    with pytest.raises(seamm_mbe.SelectionError, match="two images"):
-        _Enumerator(system, rules).run()
+    with pytest.warns(UserWarning, match="several different fragments"):
+        fragments = seamm_mbe.enumerate_fragments(system, rules)
+    triples = list(fragments.by_order(3, in_sum=True))
+    assert len(triples) == 2
+    assert all(t.molecules == (0, 1, 2) for t in triples)
+    assert {t.images[1] for t in triples} == {(0, 0, 0), (-1, 0, 0)}
+    assert len({t.name for t in triples}) == 2
+    pairs = {f.key for f in fragments.by_order(2, in_sum=True)}
+    assert ((0, 1), ((0, 0, 0),)) in pairs
+    assert ((0, 1), ((-1, 0, 0),)) in pairs
+    # Every sub-fragment is there, the (1, 2) pairs at two different images
+    for t in triples:
+        for name, slots in t.subfragments:
+            assert name in fragments
+    outer = [f for f in fragments.by_order(2) if f.molecules == (1, 2)]
+    assert len(outer) == 2 and not any(f.in_sum for f in outer)
 
 
 def test_type_pair_tables():

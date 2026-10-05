@@ -139,9 +139,9 @@ class SelectionRules:
         form two different fragments through different images. Those are
         genuinely different fragments of the lattice and the enumeration keeps
         both, naming all but the minimum-image one with its images, so this only
-        warns. The enumeration itself refuses a fragment that would need a
-        molecule twice (a molecule within a cutoff of its own image, or bonded
-        to two images of one partner), which no fragment can represent.
+        warns. No fragment holds a molecule twice: the enumeration skips such
+        placements, and refuses a molecule within the pair cutoff of its own
+        image, a real interaction that no fragment can represent.
 
         The bound. Let a selected fragment of order n have, under its rule,
         radius at most R (some member A is within R of every member) and
