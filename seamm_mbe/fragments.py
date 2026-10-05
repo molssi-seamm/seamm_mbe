@@ -222,26 +222,44 @@ class FragmentSet:
             names.update(name for name, _ in f.subfragments)
         return [f.name for f in self.fragments if f.name in names]
 
-    def calculations(self, molecular_everywhere=False):
+    def calculations(self, molecular_everywhere=False, high_levels=None):
         """What must be computed, by level.
+
+        Parameters
+        ----------
+        molecular_everywhere : bool
+            Put every fragment in "molecular", which costs more but allows a
+            consistency check of the two low levels.
+        high_levels : {int: str} or None
+            A high level other than "high" for some orders, e.g. ``{3: "high:3"}``
+            for triples at their own level (a smaller basis than the pairs'). Each
+            order's increments are built entirely at its own high level, so that
+            level is computed on those fragments and all their sub-fragments: the
+            monomers and sub-pairs of the triples are computed at both levels.
 
         Returns
         -------
         {str: [str]}
-            Fragment names for "high" (every fragment any increment needs),
-            "periodic" and "molecular" (the selected fragments assigned to
-            that low level, with all their sub-fragments: each increment is
-            built from sub-fragments at its own level).
-            ``molecular_everywhere`` puts every fragment in "molecular", which
-            costs more but allows a consistency check of the two low levels.
+            Fragment names for "periodic" and "molecular" (the selected fragments
+            assigned to that low level, with all their sub-fragments: each
+            increment is built from sub-fragments at its own level), for "high"
+            (what the increments of the orders without a level of their own
+            need) and for each level in ``high_levels``.
         """
+        high_levels = high_levels or {}
         out = {}
         for level in ("periodic", "molecular"):
             out[level] = self.closure(f for f in self.selected() if f.level == level)
         if molecular_everywhere:
             out["molecular"] = self.names
         needed = set(out["periodic"]) | set(out["molecular"])
-        out["high"] = [name for name in self.names if name in needed]
+        if not high_levels:
+            out["high"] = [name for name in self.names if name in needed]
+            return out
+        for key in ["high", *dict.fromkeys(high_levels.values())]:
+            out[key] = self.closure(
+                f for f in self.selected() if high_levels.get(f.order, "high") == key
+            )
         return out
 
 
