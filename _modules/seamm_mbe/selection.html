@@ -340,6 +340,7 @@
 <span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -482,11 +483,18 @@
 <div class="viewcode-block" id="SelectionRules.check">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.check">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Raise :class:`SelectionError` unless the selection is well defined.</span>
+<span class="w">        </span><span class="sd">"""Refuse a cell too small for the neighbour search, and warn when the</span>
+<span class="sd">        same molecules may form several different fragments.</span>
 
-<span class="sd">        A fragment is named by its molecules (and, for a pair, the image), so</span>
-<span class="sd">        two different physical fragments made of the same molecules would</span>
-<span class="sd">        collide and one would be silently lost. This never warns: it refuses.</span>
+<span class="sd">        A cell narrower than an order's cutoff (plus, for the contact criteria,</span>
+<span class="sd">        a molecule's diameter) is refused: the 27-cell neighbour search would not</span>
+<span class="sd">        see every partner. Narrower than the bound below, the same molecules can</span>
+<span class="sd">        form two different fragments through different images. Those are</span>
+<span class="sd">        genuinely different fragments of the lattice and the enumeration keeps</span>
+<span class="sd">        both, naming all but the minimum-image one with its images, so this only</span>
+<span class="sd">        warns. No fragment holds a molecule twice: the enumeration skips such</span>
+<span class="sd">        placements, and refuses a molecule within the pair cutoff of its own</span>
+<span class="sd">        image, a real interaction that no fragment can represent.</span>
 
 <span class="sd">        The bound. Let a selected fragment of order n have, under its rule,</span>
 <span class="sd">        radius at most R (some member A is within R of every member) and</span>
@@ -536,16 +544,26 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">c</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">types</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">types</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">l_min</span> <span class="o">&gt;</span> <span class="n">c</span> <span class="o">+</span> <span class="n">pad</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"The order-</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> cutoff (</span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å"</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">" + </span><span class="si">{</span><span class="n">pad</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å for contact distances"</span> <span class="k">if</span> <span class="n">pad</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="sa">f</span><span class="s2">") reaches beyond this cell's smallest width, </span><span class="si">{</span><span class="n">l_min</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> "</span>
+                    <span class="s2">"Å: the neighbour search would miss partners. Use a larger "</span>
+                    <span class="s2">"cell or smaller cutoffs."</span>
+                <span class="p">)</span>
             <span class="n">radius</span><span class="p">,</span> <span class="n">diameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reach</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
             <span class="n">bound</span> <span class="o">=</span> <span class="p">(</span><span class="n">radius</span> <span class="o">+</span> <span class="n">diameter</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">pad</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">l_min</span> <span class="o">&gt;</span> <span class="n">bound</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"The order-</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> selection (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">, cutoff </span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å"</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"The cell's smallest width, </span><span class="si">{</span><span class="n">l_min</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å, is below "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bound</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å for the order-</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> selection (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">, "</span>
+                    <span class="sa">f</span><span class="s2">"cutoff </span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å"</span>
                     <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">" + </span><span class="si">{</span><span class="n">pad</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å for contact distances"</span> <span class="k">if</span> <span class="n">pad</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="sa">f</span><span class="s2">") needs a cell whose smallest width exceeds </span><span class="si">{</span><span class="n">bound</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> "</span>
-                    <span class="sa">f</span><span class="s2">"Å, but this cell's is </span><span class="si">{</span><span class="n">l_min</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å: the same molecules "</span>
-                    <span class="s2">"could form two different fragments. Use a larger cell or "</span>
-                    <span class="s2">"smaller cutoffs."</span>
+                    <span class="o">+</span> <span class="s2">"): the same molecules may form several different "</span>
+                    <span class="s2">"fragments through different images. They are enumerated "</span>
+                    <span class="s2">"separately, named with their images."</span><span class="p">,</span>
+                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                 <span class="p">)</span></div>
 </div>
 

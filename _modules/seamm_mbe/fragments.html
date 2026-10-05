@@ -695,6 +695,15 @@
         <span class="n">xb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contact_atoms</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">+</span> <span class="n">shift</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">xa</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">xb</span><span class="p">[</span><span class="kc">None</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_minimum_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Whether every molecule of a fragment is at its minimum image from</span>
+<span class="sd">        the first one."""</span>
+        <span class="n">molecules</span><span class="p">,</span> <span class="n">images</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum_image</span><span class="p">(</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">molecules</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">images</span><span class="p">)</span>
+        <span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">minimum_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""The image of b nearest to a (by reference points)."""</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_image</span><span class="p">:</span>
@@ -725,6 +734,25 @@
             <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">order</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="c1"># A molecule within the pair cutoff of its own image is a real</span>
+                    <span class="c1"># lattice interaction that no fragment can hold (it would have</span>
+                    <span class="c1"># the molecule twice). Skipping it would silently drop that</span>
+                    <span class="c1"># term, so refuse. At higher orders the growth simply never</span>
+                    <span class="c1"># adds a molecule twice.</span>
+                    <span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">cutoff</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">lengths</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cutoff</span> <span class="o">+</span> <span class="n">pad</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">image</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">images</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">k</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">image</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                            <span class="k">continue</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">cutoff</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">"Molecule </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> is within the order-</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2"> cutoff "</span>
+                                <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">cutoff</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> Å) of its own image </span><span class="si">{</span><span class="n">image</span><span class="si">}</span><span class="s2">: no "</span>
+                                <span class="s2">"fragment can hold a molecule twice. Use a larger "</span>
+                                <span class="s2">"cell or smaller cutoffs."</span>
+                            <span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">cutoff</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">lengths</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cutoff</span> <span class="o">+</span> <span class="n">pad</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
@@ -753,37 +781,36 @@
         <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="c1"># Only fragments passing the rule are named by their molecules, so</span>
-            <span class="c1"># only they can collide: two different ones of the same molecules</span>
-            <span class="c1"># are refused (check() guarantees there are none).</span>
-            <span class="n">chosen</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">placement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_sets</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">passes</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">placement</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hub_frame</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">placement</span><span class="p">)</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="n">canonical_key</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">chosen</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">key</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"Molecules </span><span class="si">{</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> form two different selected "</span>
-                        <span class="sa">f</span><span class="s2">"order-</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2"> fragments (the cell is too small for the "</span>
-                        <span class="s2">"cutoffs)."</span>
-                    <span class="p">)</span>
-                <span class="n">chosen</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">key</span>
-                <span class="n">selected</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span>
-        <span class="c1"># Names of the selected fragments must be unique. For order &gt;= 3 the</span>
-        <span class="c1"># test above refuses a collision; pairs carry their image in the name</span>
-        <span class="c1"># when it is not the minimum image, so they cannot collide, but a pair</span>
-        <span class="c1"># cutoff beyond L/2 (refused by check()) would select two images.</span>
+                <span class="n">selected</span><span class="p">[</span><span class="n">canonical_key</span><span class="p">(</span><span class="n">frame</span><span class="p">)]</span> <span class="o">=</span> <span class="n">frame</span>
+        <span class="c1"># Several selected fragments of order &gt;= 3 may share their molecules</span>
+        <span class="c1"># through different images (a cell narrower than check()'s bound): all</span>
+        <span class="c1"># but the minimum-image one carry their images in the name, as pairs do.</span>
+        <span class="n">by_molecules</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">by_molecules</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">imaged</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">by_molecules</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">plain</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_minimum_image</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+                <span class="n">imaged</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plain</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">fragments</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">placement</span> <span class="ow">in</span> <span class="n">selected</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">placement</span><span class="p">,</span> <span class="n">aux</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">placement</span><span class="p">,</span> <span class="n">aux</span><span class="o">=</span><span class="n">key</span> <span class="ow">in</span> <span class="n">imaged</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Two different fragments of molecules </span><span class="si">{</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> were selected "</span>
                     <span class="s2">"(the cell is too small for the cutoffs)."</span>
                 <span class="p">)</span>
             <span class="n">fragments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">placement</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="c1"># The sub-fragments the increments need</span>
+        <span class="c1"># The sub-fragments the increments need. Keys are translation</span>
+        <span class="c1"># invariant (images relative to the first molecule), so a sub-fragment</span>
+        <span class="c1"># that equals another fragment up to whole cells has its key and is</span>
+        <span class="c1"># computed once; the auxiliary ones are genuinely different geometries.</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">placement</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">selected</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">molecules</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -820,7 +847,11 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">connected_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Every distinct placement of ``order`` distinct molecules connected</span>
-<span class="sd">        by bonds within the order's cutoff."""</span>
+<span class="sd">        by bonds within the order's cutoff.</span>
+
+<span class="sd">        A placement never holds a molecule twice: when a molecule is bonded to</span>
+<span class="sd">        two images of a partner b, (b, a, b') is skipped, while (a, b, k) and</span>
+<span class="sd">        (a, b', k) are both enumerated."""</span>
         <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
         <span class="n">level</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">canonical_key</span><span class="p">({</span><span class="n">m</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}):</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>

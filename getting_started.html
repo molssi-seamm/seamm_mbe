@@ -446,9 +446,25 @@ the image follows, e.g. <code class="docutils literal notranslate"><span class="
 </ul>
 <p>A selected triple’s or 4-body’s sub-fragments that are not selected
 themselves (e.g. the “outer pair” of a connected triple) are computed too,
-with <code class="docutils literal notranslate"><span class="pre">in_sum</span></code> False. Higher-order ones carry their images in their names.
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">SelectionRules.check()</span></code> refuses a cell too small for the cutoffs, since
-the same molecules could otherwise form two different fragments.</p>
+with <code class="docutils literal notranslate"><span class="pre">in_sum</span></code> False. Higher-order ones carry their images in their names.</p>
+<p>In a cell narrower than the cutoffs need for uniqueness, the same molecules can
+form several different fragments through different images: in a 15.2 Å cell of
+32 ethylene carbonates, molecules 0, 1 and 25 form three different connected
+triples. <code class="xref py py-meth docutils literal notranslate"><span class="pre">SelectionRules.check()</span></code> then warns, and each of these fragments is
+enumerated and computed on its own. The one with every molecule at its minimum
+image keeps the plain name (<code class="docutils literal notranslate"><span class="pre">t00_01_25</span></code>); the others carry their images
+(<code class="docutils literal notranslate"><span class="pre">t00_01_25_xm00m00</span></code>), as do their sub-pairs. A fragment never holds a
+molecule twice: when molecule a is bonded to two images of b, the triple
+(b, a, b’) is skipped, while (a, b, k) and (a, b’, k) are both enumerated.
+Sub-fragments that equal another fragment up to whole cells share its key and
+are computed once.</p>
+<p>Two cases are refused, since no fragment list would be right:</p>
+<ul class="simple">
+<li><p>the cell is narrower than the cutoff plus the molecules’ size, so the
+neighbour search could miss partners;</p></li>
+<li><p>a molecule is within the pair cutoff of its own image: a real interaction
+that no fragment can hold, which skipping would silently drop.</p></li>
+</ul>
 </section>
 <section id="corrections-to-selected-increments">
 <h2>Corrections to selected increments<a class="headerlink" href="#corrections-to-selected-increments" title="Link to this heading">#</a></h2>

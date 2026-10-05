@@ -1324,10 +1324,17 @@ other). For n = 3, “connected” and “hub” are the same.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="seamm_mbe.selection.SelectionRules.check">
 <span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/selection.html#SelectionRules.check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.selection.SelectionRules.check" title="Link to this definition">#</a></dt>
-<dd><p>Raise <a class="reference internal" href="#seamm_mbe.selection.SelectionError" title="seamm_mbe.selection.SelectionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectionError</span></code></a> unless the selection is well defined.</p>
-<p>A fragment is named by its molecules (and, for a pair, the image), so
-two different physical fragments made of the same molecules would
-collide and one would be silently lost. This never warns: it refuses.</p>
+<dd><p>Refuse a cell too small for the neighbour search, and warn when the
+same molecules may form several different fragments.</p>
+<p>A cell narrower than an order’s cutoff (plus, for the contact criteria,
+a molecule’s diameter) is refused: the 27-cell neighbour search would not
+see every partner. Narrower than the bound below, the same molecules can
+form two different fragments through different images. Those are
+genuinely different fragments of the lattice and the enumeration keeps
+both, naming all but the minimum-image one with its images, so this only
+warns. No fragment holds a molecule twice: the enumeration skips such
+placements, and refuses a molecule within the pair cutoff of its own
+image, a real interaction that no fragment can represent.</p>
 <p>The bound. Let a selected fragment of order n have, under its rule,
 radius at most R (some member A is within R of every member) and
 diameter at most D (no two members further apart than D), measured
