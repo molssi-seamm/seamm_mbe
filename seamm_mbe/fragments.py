@@ -328,6 +328,15 @@ class _Enumerator:
         xb = self.contact_atoms[b] + shift
         return float(np.sqrt(((xa[:, None] - xb[None]) ** 2).sum(-1).min()))
 
+    def is_minimum_image(self, key):
+        """Whether every molecule of a fragment is at its minimum image from
+        the first one."""
+        molecules, images = key
+        return all(
+            tuple(image) == tuple(self.minimum_image(molecules[0], m))
+            for m, image in zip(molecules[1:], images)
+        )
+
     def minimum_image(self, a, b):
         """The image of b nearest to a (by reference points)."""
         if (a, b) not in self._min_image:
@@ -358,6 +367,25 @@ class _Enumerator:
             lengths = np.linalg.norm(candidates, axis=-1)
             for b in range(n):
                 if b == a:
+                    if order != 2:
+                        continue
+                    # A molecule within the pair cutoff of its own image is a real
+                    # lattice interaction that no fragment can hold (it would have
+                    # the molecule twice). Skipping it would silently drop that
+                    # term, so refuse. At higher orders the growth simply never
+                    # adds a molecule twice.
+                    cutoff = self.rules.cutoff(order, self.types[a], self.types[a])
+                    for k in np.nonzero(lengths[a] < cutoff + pad)[0]:
+                        image = tuple(int(v) for v in images[a, k])
+                        if image == (0, 0, 0):
+                            continue
+                        if self.distance(a, (0, 0, 0), a, image) < cutoff:
+                            raise SelectionError(
+                                f"Molecule {a} is within the order-{order} cutoff "
+                                f"({cutoff:.3f} Å) of its own image {image}: no "
+                                "fragment can hold a molecule twice. Use a larger "
+                                "cell or smaller cutoffs."
+                            )
                     continue
                 cutoff = self.rules.cutoff(order, self.types[a], self.types[b])
                 for k in np.nonzero(lengths[b] < cutoff + pad)[0]:
@@ -386,37 +414,36 @@ class _Enumerator:
         for order in range(3, max_order + 1):
             if self.rules.rule(order) == "none":
                 continue
-            # Only fragments passing the rule are named by their molecules, so
-            # only they can collide: two different ones of the same molecules
-            # are refused (check() guarantees there are none).
-            chosen = {}
             for placement in self.connected_sets(order):
                 if not self.passes(order, placement):
                     continue
                 frame = self.hub_frame(order, placement)
-                key = canonical_key(frame)
-                if chosen.get(key[0], key) != key:
-                    raise SelectionError(
-                        f"Molecules {key[0]} form two different selected "
-                        f"order-{order} fragments (the cell is too small for the "
-                        "cutoffs)."
-                    )
-                chosen[key[0]] = key
-                selected[key] = frame
-        # Names of the selected fragments must be unique. For order >= 3 the
-        # test above refuses a collision; pairs carry their image in the name
-        # when it is not the minimum image, so they cannot collide, but a pair
-        # cutoff beyond L/2 (refused by check()) would select two images.
+                selected[canonical_key(frame)] = frame
+        # Several selected fragments of order >= 3 may share their molecules
+        # through different images (a cell narrower than check()'s bound): all
+        # but the minimum-image one carry their images in the name, as pairs do.
+        by_molecules = {}
+        for key in selected:
+            if len(key[0]) >= 3:
+                by_molecules.setdefault(key[0], []).append(key)
+        imaged = set()
+        for keys in by_molecules.values():
+            if len(keys) > 1:
+                plain = [k for k in keys if self.is_minimum_image(k)]
+                imaged.update(k for k in keys if k not in plain[:1])
         fragments = {}
         for key, placement in selected.items():
-            name = self.name(key, placement, aux=False)
+            name = self.name(key, placement, aux=key in imaged)
             if name in fragments:
                 raise SelectionError(
                     f"Two different fragments of molecules {key[0]} were selected "
                     "(the cell is too small for the cutoffs)."
                 )
             fragments[name] = (key, placement, True)
-        # The sub-fragments the increments need
+        # The sub-fragments the increments need. Keys are translation
+        # invariant (images relative to the first molecule), so a sub-fragment
+        # that equals another fragment up to whole cells has its key and is
+        # computed once; the auxiliary ones are genuinely different geometries.
         keys = {key for key, _, _ in fragments.values()}
         for key, placement in list(selected.items()):
             molecules = key[0]
@@ -453,7 +480,11 @@ class _Enumerator:
 
     def connected_sets(self, order):
         """Every distinct placement of ``order`` distinct molecules connected
-        by bonds within the order's cutoff."""
+        by bonds within the order's cutoff.
+
+        A placement never holds a molecule twice: when a molecule is bonded to
+        two images of a partner b, (b, a, b') is skipped, while (a, b, k) and
+        (a, b', k) are both enumerated."""
         neighbors = self.neighbors(order)
         level = {
             canonical_key({m: (0, 0, 0)}): {m: (0, 0, 0)}
