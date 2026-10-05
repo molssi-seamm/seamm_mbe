@@ -3,6 +3,7 @@ rules for each order.
 """
 
 from dataclasses import dataclass, field
+import warnings
 
 import numpy as np
 
@@ -129,11 +130,18 @@ class SelectionRules:
         return order // 2, order - 1  # connected
 
     def check(self, system):
-        """Raise :class:`SelectionError` unless the selection is well defined.
+        """Refuse a cell too small for the neighbour search, and warn when the
+        same molecules may form several different fragments.
 
-        A fragment is named by its molecules (and, for a pair, the image), so
-        two different physical fragments made of the same molecules would
-        collide and one would be silently lost. This never warns: it refuses.
+        A cell narrower than an order's cutoff (plus, for the contact criteria,
+        a molecule's diameter) is refused: the 27-cell neighbour search would not
+        see every partner. Narrower than the bound below, the same molecules can
+        form two different fragments through different images. Those are
+        genuinely different fragments of the lattice and the enumeration keeps
+        both, naming all but the minimum-image one with its images, so this only
+        warns. The enumeration itself refuses a fragment that would need a
+        molecule twice (a molecule within a cutoff of its own image, or bonded
+        to two images of one partner), which no fragment can represent.
 
         The bound. Let a selected fragment of order n have, under its rule,
         radius at most R (some member A is within R of every member) and
@@ -183,14 +191,24 @@ class SelectionRules:
             if self.rule(n) == "none":
                 continue
             c = max(self.cutoff(n, a, b) for a in types for b in types)
+            if not l_min > c + pad:
+                raise SelectionError(
+                    f"The order-{n} cutoff ({c:.3f} Å"
+                    + (f" + {pad:.3f} Å for contact distances" if pad else "")
+                    + f") reaches beyond this cell's smallest width, {l_min:.3f} "
+                    "Å: the neighbour search would miss partners. Use a larger "
+                    "cell or smaller cutoffs."
+                )
             radius, diameter = self.reach(n)
             bound = (radius + diameter) * (c + pad)
             if not l_min > bound:
-                raise SelectionError(
-                    f"The order-{n} selection ({self.rule(n)}, cutoff {c:.3f} Å"
+                warnings.warn(
+                    f"The cell's smallest width, {l_min:.3f} Å, is below "
+                    f"{bound:.3f} Å for the order-{n} selection ({self.rule(n)}, "
+                    f"cutoff {c:.3f} Å"
                     + (f" + {pad:.3f} Å for contact distances" if pad else "")
-                    + f") needs a cell whose smallest width exceeds {bound:.3f} "
-                    f"Å, but this cell's is {l_min:.3f} Å: the same molecules "
-                    "could form two different fragments. Use a larger cell or "
-                    "smaller cutoffs."
+                    + "): the same molecules may form several different "
+                    "fragments through different images. They are enumerated "
+                    "separately, named with their images.",
+                    stacklevel=2,
                 )

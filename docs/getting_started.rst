@@ -101,8 +101,21 @@ Names are the prototype's (``gen_stage2_frame.py``), so stored results match:
 A selected triple's or 4-body's sub-fragments that are not selected
 themselves (e.g. the "outer pair" of a connected triple) are computed too,
 with ``in_sum`` False. Higher-order ones carry their images in their names.
-:meth:`SelectionRules.check` refuses a cell too small for the cutoffs, since
-the same molecules could otherwise form two different fragments.
+
+In a cell narrower than the cutoffs need for uniqueness, the same molecules can
+form several different fragments through different images: in a 15.2 Å cell of
+32 ethylene carbonates, molecules 0, 1 and 25 form three different connected
+triples. :meth:`SelectionRules.check` then warns, and each of these fragments is
+enumerated and computed on its own. The one with every molecule at its minimum
+image keeps the plain name (``t00_01_25``); the others carry their images
+(``t00_01_25_xm00m00``), as do their sub-pairs. Three cases are refused, since
+no fragment list would be right:
+
+- the cell is narrower than the cutoff plus the molecules' size, so the
+  neighbour search could miss partners;
+- a molecule is within a cutoff of its own image;
+- a molecule is within the cutoff of two images of another molecule, which
+  makes a connected triple's hub ambiguous.
 
 Corrections to selected increments
 ----------------------------------

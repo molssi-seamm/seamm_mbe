@@ -1,6 +1,15 @@
 =======
 History
 =======
+2026.10.5.1 -- Bugfix: fragments through different images in small cells
+    * In a cell narrower than the cutoffs need for uniqueness, the same molecules
+      can form several different triples through different images. These were
+      refused; now each is enumerated and computed, named with its images, and
+      ``SelectionRules.check`` warns instead of refusing.
+    * Cells too small for any correct fragment list are still refused, with the
+      reason: the neighbour search would miss partners, a molecule is within a
+      cutoff of its own image, or a molecule is within the cutoff of two images of
+      another.
 2026.10.5 -- A high level per order
     * ``mbe_correction`` takes ``high_by_order``, e.g. ``{3: results}``, so the triples'
       increments can use their own high level, such as a smaller basis than the pairs'.
