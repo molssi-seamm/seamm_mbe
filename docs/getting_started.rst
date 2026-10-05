@@ -113,3 +113,22 @@ higher fragments subtract. Pairwise counterpoise works this way: with
 dE_ij^CP − dE_ij for each pair, the result is E(1) + Σ dE_ij^CP + Σ dE_ijk. The
 triples still subtract the uncorrected pairs, so a pair's basis-set superposition
 error does not move into the 3-body terms.
+
+A high level per order
+----------------------
+
+The high level can differ by order, e.g. revDSD at def2-QZVPPD for the monomers and
+pairs and at def2-TZVPPD for the triples. Each order's increments are then built
+entirely at that order's level: a triple's increment uses the triple, its pairs and
+its monomers all at the triples' level, so those pairs and monomers are computed at
+both levels::
+
+    todo = fragments.calculations(high_levels={3: "high:3"})
+    # todo["high"]: the monomers and pairs (and their sub-fragments)
+    # todo["high:3"]: the triples with all their sub-pairs and monomers
+    correction = seamm_mbe.mbe_correction(
+        fragments, high, periodic, molecular, high_by_order={3: high_tz}
+    )
+
+Each increment records the high level it used (``Increment.high_level``). With
+the same results for both levels the correction is exactly the single-level one.

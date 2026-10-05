@@ -1,6 +1,14 @@
 =======
 History
 =======
+2026.10.5 -- A high level per order
+    * ``mbe_correction`` takes ``high_by_order``, e.g. ``{3: results}``, so the triples'
+      increments can use their own high level, such as a smaller basis than the pairs'.
+      Each order's increments are built entirely at that level: a triple, its pairs and
+      its monomers.
+    * ``FragmentSet.calculations(high_levels=...)`` lists what each level must
+      compute, and each increment records the high level it used. With the same
+      results for both levels the correction is exactly the single-level one.
 2026.10.3.1 -- Corrections to selected increments, for pairwise counterpoise
     * ``mbe_correction`` takes ``corrections``, added to selected fragments' increments
       in the sum only, never to the sub-fragment increments that higher fragments
