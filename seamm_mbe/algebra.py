@@ -26,6 +26,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from .fragments import low_level_of
 from .levels import LEVELS
 
 
@@ -94,6 +95,7 @@ class Increment:
     net_force: np.ndarray
     virial: np.ndarray
     high_level: str = "high"
+    low_level: str = ""
 
 
 @dataclass
@@ -178,16 +180,31 @@ def _high_levels(high_by_order):
     return {order: f"high:{order}" for order in (high_by_order or {})}
 
 
-def missing_results(fragments, high, periodic=None, molecular=None, high_by_order=None):
+def _low_levels(low_by_order):
+    """{order: level name} for the orders with a molecular low level of their own."""
+    return {order: f"molecular:{order}" for order in (low_by_order or {})}
+
+
+def missing_results(
+    fragments,
+    high,
+    periodic=None,
+    molecular=None,
+    high_by_order=None,
+    low_by_order=None,
+):
     """The (name, level) of every result the correction needs but lacks.
     Results that are None count as missing (a failed calculation).
-    ``high_by_order`` as for :func:`mbe_correction`; its levels are named
-    "high:<order>"."""
+    ``high_by_order`` and ``low_by_order`` as for :func:`mbe_correction`; their
+    levels are named "high:<order>" and "molecular:<order>"."""
     levels = _high_levels(high_by_order)
-    needed = fragments.calculations(high_levels=levels)
+    low_levels = _low_levels(low_by_order)
+    needed = fragments.calculations(high_levels=levels, low_levels=low_levels)
     given = {"high": high, "periodic": periodic or {}, "molecular": molecular or {}}
     for order, key in levels.items():
         given[key] = high_by_order[order]
+    for order, key in low_levels.items():
+        given[key] = low_by_order[order]
     return [
         (name, level)
         for level in given
@@ -203,6 +220,7 @@ def mbe_correction(
     molecular=None,
     corrections=None,
     high_by_order=None,
+    low_by_order=None,
 ):
     """The MBE correction from the fragment results.
 
@@ -226,6 +244,16 @@ def mbe_correction(
         orders listed need their sub-fragments at that level too
         (:meth:`FragmentSet.calculations` with ``high_levels``). With equal
         results this gives exactly what ``high`` alone gives.
+    low_by_order : {int: {str: result}} or None
+        Likewise molecular low-level results for orders with a low level of
+        their own, e.g. ``{3: tz_results}`` with ``molecular`` at a larger basis
+        for the pairs. They apply to that order's fragments assigned the
+        molecular low level, each increment built from the triple, its pairs and
+        its monomers at that level (:meth:`FragmentSet.calculations` with
+        ``low_levels``). An order's increment is a difference within its own
+        ladder, so its levels need only be consistent within it, never across
+        orders. With equal results this gives exactly what ``molecular`` alone
+        gives.
     corrections : {str: result} or None
         Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a
         dict with "energy" and "forces", added to selected fragments' increments
@@ -258,27 +286,33 @@ def mbe_correction(
             raise ValueError(
                 f"Fragment {f.name} has no level; call assign_levels() first."
             )
-    missing = missing_results(fragments, high, periodic, molecular, high_by_order)
+    missing = missing_results(
+        fragments, high, periodic, molecular, high_by_order, low_by_order
+    )
     if missing:
         raise MissingFragmentsError(missing)
     high_levels = _high_levels(high_by_order)
+    low_levels = _low_levels(low_by_order)
     highs = {"high": high}
     for order, key in high_levels.items():
         highs[key] = high_by_order[order]
     lows = {"periodic": periodic or {}, "molecular": molecular or {}}
+    for order, key in low_levels.items():
+        lows[key] = low_by_order[order]
     # One ladder per (low level, high level): each the closure of the selected
     # fragments that use that pair of levels, ascending in order
     ladders = {}
-    for level in LEVELS:
+    for low_key in lows:
         for key in highs:
             names = fragments.closure(
                 f
                 for f in fragments.selected()
-                if f.level == level and high_levels.get(f.order, "high") == key
+                if low_level_of(f, low_levels) == low_key
+                and high_levels.get(f.order, "high") == key
             )
             if names:
-                ladders[(level, key)] = increments(
-                    fragments, names, highs[key], lows[level]
+                ladders[(low_key, key)] = increments(
+                    fragments, names, highs[key], lows[low_key]
                 )
 
     n_atoms = len(fragments.system.symbols)
@@ -288,7 +322,8 @@ def mbe_correction(
     result = Correction(energy=0.0, forces=total_forces, virial=total_virial)
     for f in fragments.selected():
         key = high_levels.get(f.order, "high")
-        energy, forces = ladders[(f.level, key)][f.name]
+        low_key = low_level_of(f, low_levels)
+        energy, forces = ladders[(low_key, key)][f.name]
         if f.name in corrections:
             d_energy, d_forces = _unpack(corrections[f.name])
             if d_forces.shape != forces.shape:
@@ -310,6 +345,7 @@ def mbe_correction(
             net_force=net,
             virial=virial,
             high_level=key,
+            low_level=low_key,
         )
         total_energy += energy
         total_virial += virial

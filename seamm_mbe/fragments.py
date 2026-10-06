@@ -222,7 +222,9 @@ class FragmentSet:
             names.update(name for name, _ in f.subfragments)
         return [f.name for f in self.fragments if f.name in names]
 
-    def calculations(self, molecular_everywhere=False, high_levels=None):
+    def calculations(
+        self, molecular_everywhere=False, high_levels=None, low_levels=None
+    ):
         """What must be computed, by level.
 
         Parameters
@@ -236,6 +238,12 @@ class FragmentSet:
             order's increments are built entirely at its own high level, so that
             level is computed on those fragments and all their sub-fragments: the
             monomers and sub-pairs of the triples are computed at both levels.
+        low_levels : {int: str} or None
+            Likewise a molecular low level other than "molecular" for some orders,
+            e.g. ``{3: "molecular:3"}`` for triples at a smaller basis than the
+            pairs' low level. It applies to the fragments of those orders assigned
+            the molecular low level, and is computed on them and all their
+            sub-fragments.
 
         Returns
         -------
@@ -244,15 +252,18 @@ class FragmentSet:
             assigned to that low level, with all their sub-fragments: each
             increment is built from sub-fragments at its own level), for "high"
             (what the increments of the orders without a level of their own
-            need) and for each level in ``high_levels``.
+            need) and for each level in ``high_levels`` and ``low_levels``.
         """
         high_levels = high_levels or {}
+        low_levels = low_levels or {}
         out = {}
-        for level in ("periodic", "molecular"):
-            out[level] = self.closure(f for f in self.selected() if f.level == level)
+        for level in ("periodic", "molecular", *dict.fromkeys(low_levels.values())):
+            out[level] = self.closure(
+                f for f in self.selected() if low_level_of(f, low_levels) == level
+            )
         if molecular_everywhere:
             out["molecular"] = self.names
-        needed = set(out["periodic"]) | set(out["molecular"])
+        needed = set().union(*(set(names) for names in out.values()))
         if not high_levels:
             out["high"] = [name for name in self.names if name in needed]
             return out
@@ -261,6 +272,15 @@ class FragmentSet:
                 f for f in self.selected() if high_levels.get(f.order, "high") == key
             )
         return out
+
+
+def low_level_of(fragment, low_levels=None):
+    """The low level a selected fragment's increment uses: its assigned level,
+    or for a molecular one the order's own molecular level, if it has one
+    (``low_levels``, e.g. ``{3: "molecular:3"}``)."""
+    if fragment.level == "molecular":
+        return (low_levels or {}).get(fragment.order, "molecular")
+    return fragment.level
 
 
 def enumerate_fragments(system, rules=None):
