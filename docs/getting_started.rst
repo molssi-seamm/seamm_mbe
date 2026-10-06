@@ -149,3 +149,26 @@ both levels::
 
 Each increment records the high level it used (``Increment.high_level``). With
 the same results for both levels the correction is exactly the single-level one.
+
+The molecular low level can differ by order in the same way, e.g. r2SCAN-D4 at
+def2-QZVPPD for the pairs and at def2-TZVPPD for the triples. It applies to the
+fragments of that order assigned the molecular low level::
+
+    todo = fragments.calculations(
+        high_levels={3: "high:3"}, low_levels={3: "molecular:3"}
+    )
+    # todo["molecular"]: the molecular monomers and pairs
+    # todo["molecular:3"]: the molecular triples with all their sub-pairs and monomers
+    correction = seamm_mbe.mbe_correction(
+        fragments, high, periodic, molecular,
+        high_by_order={3: high_tz}, low_by_order={3: low_tz},
+    )
+
+Each increment records its low level too (``Increment.low_level``).
+
+Different levels for different orders are not a shortcut: they follow from the
+decomposition. Each order's increment is a difference within its own ladder (a
+triple minus its pairs plus its monomers, all at the same levels), so an order's
+levels need only be consistent within that ladder, never across orders. A single
+low level at a smaller basis would instead put the basis error of every pair
+into the sum.

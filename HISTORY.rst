@@ -1,6 +1,14 @@
 =======
 History
 =======
+2026.10.6 -- A low level per order
+    * ``mbe_correction`` takes ``low_by_order``, e.g. ``{3: results}``, so the triples'
+      increments can use their own molecular low level, such as a smaller basis than the
+      pairs'. Each order's increments are built entirely at that level: a triple, its
+      pairs and its monomers. ``FragmentSet.calculations(low_levels=...)`` lists what
+      each level must compute, and each increment records the low level it used.
+    * With the same results for both levels the correction is exactly the single-level
+      one.
 2026.10.5.1 -- Bugfix: fragments through different images in small cells
     * In a cell narrower than the cutoffs need for uniqueness, the same molecules
       can form several different triples through different images. These were
