@@ -466,7 +466,7 @@ atom order).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seamm_mbe.algebra.Increment">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">Increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virial</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'high'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#Increment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.Increment" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">Increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virial</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'high'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#Increment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.Increment" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>One fragment’s many-body increment.</p>
 <dl class="field-list simple">
@@ -500,6 +500,11 @@ atom order).</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="seamm_mbe.algebra.Increment.level">
 <span class="sig-name descname"><span class="pre">level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#seamm_mbe.algebra.Increment.level" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="seamm_mbe.algebra.Increment.low_level">
+<span class="sig-name descname"><span class="pre">low_level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#seamm_mbe.algebra.Increment.low_level" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -560,7 +565,7 @@ atom order).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seamm_mbe.algebra.mbe_correction">
-<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">mbe_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#mbe_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.mbe_correction" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">mbe_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#mbe_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.mbe_correction" title="Link to this definition">#</a></dt>
 <dd><p>The MBE correction from the fragment results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -579,6 +584,15 @@ results (the triple, its pairs and its monomers at that level), so the
 orders listed need their sub-fragments at that level too
 (<code class="xref py py-meth docutils literal notranslate"><span class="pre">FragmentSet.calculations()</span></code> with <code class="docutils literal notranslate"><span class="pre">high_levels</span></code>). With equal
 results this gives exactly what <code class="docutils literal notranslate"><span class="pre">high</span></code> alone gives.</p></li>
+<li><p><strong>low_by_order</strong> (<em>{int: {str: result}} or None</em>) – Likewise molecular low-level results for orders with a low level of
+their own, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">tz_results}</span></code> with <code class="docutils literal notranslate"><span class="pre">molecular</span></code> at a larger basis
+for the pairs. They apply to that order’s fragments assigned the
+molecular low level, each increment built from the triple, its pairs and
+its monomers at that level (<code class="xref py py-meth docutils literal notranslate"><span class="pre">FragmentSet.calculations()</span></code> with
+<code class="docutils literal notranslate"><span class="pre">low_levels</span></code>). An order’s increment is a difference within its own
+ladder, so its levels need only be consistent within it, never across
+orders. With equal results this gives exactly what <code class="docutils literal notranslate"><span class="pre">molecular</span></code> alone
+gives.</p></li>
 <li><p><strong>corrections</strong> (<em>{str: result} or None</em>) – Corrections, each a <a class="reference internal" href="#seamm_mbe.algebra.FragmentResult" title="seamm_mbe.algebra.FragmentResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FragmentResult</span></code></a>, an (energy, forces) pair or a
 dict with “energy” and “forces”, added to selected fragments’ increments
 in the sum only,
@@ -602,11 +616,11 @@ terms.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="seamm_mbe.algebra.missing_results">
-<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">missing_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#missing_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.missing_results" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.algebra.</span></span><span class="sig-name descname"><span class="pre">missing_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_by_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/algebra.html#missing_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.algebra.missing_results" title="Link to this definition">#</a></dt>
 <dd><p>The (name, level) of every result the correction needs but lacks.
 Results that are None count as missing (a failed calculation).
-<code class="docutils literal notranslate"><span class="pre">high_by_order</span></code> as for <a class="reference internal" href="#seamm_mbe.algebra.mbe_correction" title="seamm_mbe.algebra.mbe_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">mbe_correction()</span></code></a>; its levels are named
-“high:&lt;order&gt;”.</p>
+<code class="docutils literal notranslate"><span class="pre">high_by_order</span></code> and <code class="docutils literal notranslate"><span class="pre">low_by_order</span></code> as for <a class="reference internal" href="#seamm_mbe.algebra.mbe_correction" title="seamm_mbe.algebra.mbe_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">mbe_correction()</span></code></a>; their
+levels are named “high:&lt;order&gt;” and “molecular:&lt;order&gt;”.</p>
 </dd></dl>
 
 </section>
@@ -1138,7 +1152,7 @@ several are not supported (their coupling is ambiguous).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="seamm_mbe.fragments.FragmentSet.calculations">
-<span class="sig-name descname"><span class="pre">calculations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecular_everywhere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#FragmentSet.calculations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.FragmentSet.calculations" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecular_everywhere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#FragmentSet.calculations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.FragmentSet.calculations" title="Link to this definition">#</a></dt>
 <dd><p>What must be computed, by level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1150,6 +1164,11 @@ for triples at their own level (a smaller basis than the pairs’). Each
 order’s increments are built entirely at its own high level, so that
 level is computed on those fragments and all their sub-fragments: the
 monomers and sub-pairs of the triples are computed at both levels.</p></li>
+<li><p><strong>low_levels</strong> (<em>{int: str} or None</em>) – Likewise a molecular low level other than “molecular” for some orders,
+e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code> for triples at a smaller basis than the
+pairs’ low level. It applies to the fragments of those orders assigned
+the molecular low level, and is computed on them and all their
+sub-fragments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1157,7 +1176,7 @@ monomers and sub-pairs of the triples are computed at both levels.</p></li>
 assigned to that low level, with all their sub-fragments: each
 increment is built from sub-fragments at its own level), for “high”
 (what the increments of the orders without a level of their own
-need) and for each level in <code class="docutils literal notranslate"><span class="pre">high_levels</span></code>.</p>
+need) and for each level in <code class="docutils literal notranslate"><span class="pre">high_levels</span></code> and <code class="docutils literal notranslate"><span class="pre">low_levels</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>[str]}</p>
@@ -1229,6 +1248,14 @@ triples &lt; 3.5 Å, designated-atom distances).</p></li>
     <code class="xref py py-meth docutils literal notranslate"><span class="pre">SelectionRules.check()</span></code>).</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="seamm_mbe.fragments.low_level_of">
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">low_level_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#low_level_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.low_level_of" title="Link to this definition">#</a></dt>
+<dd><p>The low level a selected fragment’s increment uses: its assigned level,
+or for a molecular one the order’s own molecular level, if it has one
+(<code class="docutils literal notranslate"><span class="pre">low_levels</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code>).</p>
 </dd></dl>
 
 </section>
@@ -1834,6 +1861,7 @@ runs the calculations. See <code class="docutils literal notranslate"><span clas
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.forces"><code class="docutils literal notranslate"><span class="pre">Increment.forces</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.high_level"><code class="docutils literal notranslate"><span class="pre">Increment.high_level</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.level"><code class="docutils literal notranslate"><span class="pre">Increment.level</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.low_level"><code class="docutils literal notranslate"><span class="pre">Increment.low_level</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.name"><code class="docutils literal notranslate"><span class="pre">Increment.name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.net_force"><code class="docutils literal notranslate"><span class="pre">Increment.net_force</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.algebra.Increment.order"><code class="docutils literal notranslate"><span class="pre">Increment.order</span></code></a></li>
@@ -1931,6 +1959,7 @@ runs the calculations. See <code class="docutils literal notranslate"><span clas
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.canonical_key"><code class="docutils literal notranslate"><span class="pre">canonical_key()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.enumerate_fragments"><code class="docutils literal notranslate"><span class="pre">enumerate_fragments()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.low_level_of"><code class="docutils literal notranslate"><span class="pre">low_level_of()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-seamm_mbe.levels">seamm_mbe.levels module</a><ul class="nav section-nav flex-column">

@@ -584,7 +584,9 @@
 
 <div class="viewcode-block" id="FragmentSet.calculations">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.FragmentSet.calculations">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calculations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecular_everywhere</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">high_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculations</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">molecular_everywhere</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">high_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""What must be computed, by level.</span>
 
 <span class="sd">        Parameters</span>
@@ -598,6 +600,12 @@
 <span class="sd">            order's increments are built entirely at its own high level, so that</span>
 <span class="sd">            level is computed on those fragments and all their sub-fragments: the</span>
 <span class="sd">            monomers and sub-pairs of the triples are computed at both levels.</span>
+<span class="sd">        low_levels : {int: str} or None</span>
+<span class="sd">            Likewise a molecular low level other than "molecular" for some orders,</span>
+<span class="sd">            e.g. ``{3: "molecular:3"}`` for triples at a smaller basis than the</span>
+<span class="sd">            pairs' low level. It applies to the fragments of those orders assigned</span>
+<span class="sd">            the molecular low level, and is computed on them and all their</span>
+<span class="sd">            sub-fragments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -606,15 +614,18 @@
 <span class="sd">            assigned to that low level, with all their sub-fragments: each</span>
 <span class="sd">            increment is built from sub-fragments at its own level), for "high"</span>
 <span class="sd">            (what the increments of the orders without a level of their own</span>
-<span class="sd">            need) and for each level in ``high_levels``.</span>
+<span class="sd">            need) and for each level in ``high_levels`` and ``low_levels``.</span>
 <span class="sd">        """</span>
         <span class="n">high_levels</span> <span class="o">=</span> <span class="n">high_levels</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">low_levels</span> <span class="o">=</span> <span class="n">low_levels</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"periodic"</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">):</span>
-            <span class="n">out</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">level</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"periodic"</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">low_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
+                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span> <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">)</span> <span class="o">==</span> <span class="n">level</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">molecular_everywhere</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="s2">"molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span>
-        <span class="n">needed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"periodic"</span><span class="p">])</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"molecular"</span><span class="p">])</span>
+        <span class="n">needed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">names</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">high_levels</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="s2">"high"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">needed</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">out</span>
@@ -624,6 +635,18 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="low_level_of">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.low_level_of">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">low_level_of</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The low level a selected fragment's increment uses: its assigned level,</span>
+<span class="sd">    or for a molecular one the order's own molecular level, if it has one</span>
+<span class="sd">    (``low_levels``, e.g. ``{3: "molecular:3"}``)."""</span>
+    <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="s2">"molecular"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">low_levels</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fragment</span><span class="o">.</span><span class="n">level</span></div>
 
 
 

@@ -492,6 +492,27 @@ both levels:</p>
 </div>
 <p>Each increment records the high level it used (<code class="docutils literal notranslate"><span class="pre">Increment.high_level</span></code>). With
 the same results for both levels the correction is exactly the single-level one.</p>
+<p>The molecular low level can differ by order in the same way, e.g. r2SCAN-D4 at
+def2-QZVPPD for the pairs and at def2-TZVPPD for the triples. It applies to the
+fragments of that order assigned the molecular low level:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">todo</span> <span class="o">=</span> <span class="n">fragments</span><span class="o">.</span><span class="n">calculations</span><span class="p">(</span>
+    <span class="n">high_levels</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="s2">"high:3"</span><span class="p">},</span> <span class="n">low_levels</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="s2">"molecular:3"</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="c1"># todo["molecular"]: the molecular monomers and pairs</span>
+<span class="c1"># todo["molecular:3"]: the molecular triples with all their sub-pairs and monomers</span>
+<span class="n">correction</span> <span class="o">=</span> <span class="n">seamm_mbe</span><span class="o">.</span><span class="n">mbe_correction</span><span class="p">(</span>
+    <span class="n">fragments</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">molecular</span><span class="p">,</span>
+    <span class="n">high_by_order</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="n">high_tz</span><span class="p">},</span> <span class="n">low_by_order</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="n">low_tz</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Each increment records its low level too (<code class="docutils literal notranslate"><span class="pre">Increment.low_level</span></code>).</p>
+<p>Different levels for different orders are not a shortcut: they follow from the
+decomposition. Each order’s increment is a difference within its own ladder (a
+triple minus its pairs plus its monomers, all at the same levels), so an order’s
+levels need only be consistent within that ladder, never across orders. A single
+low level at a smaller basis would instead put the basis error of every pair
+into the sum.</p>
 </section>
 </section>
 
