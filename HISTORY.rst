@@ -1,6 +1,12 @@
 =======
 History
 =======
+2026.10.6.1 -- The molecular pressure by body order
+    * ``Labels.per_body`` and ``Labels.breakdown`` give each body order's, each cell
+      term's and the correction's share of the molecular pressure (``"molecular
+      pressure"``) as well as of the atomic one. Each is its virial less its own
+      intramolecular part, so they add up to the totals, and the monomers' share is
+      zero. ``Correction.per_body`` now carries each order's forces.
 2026.10.6 -- A low level per order
     * ``mbe_correction`` takes ``low_by_order``, e.g. ``{3: results}``, so the triples'
       increments can use their own molecular low level, such as a smaller basis than the

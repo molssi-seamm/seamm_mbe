@@ -71,6 +71,14 @@ Basic usage
     )
     labels.reference_energy, labels.forces, labels.stress, labels.molecular_pressure
 
+``labels.per_body`` breaks the correction down by body order, and
+``labels.breakdown`` by cell term and "MBE". Each entry gives the energy, its
+share of the atomic pressure and its share of the molecular pressure. The
+molecular share is the term's virial less its own intramolecular part, so the
+shares add up to ``labels.molecular_pressure``. The monomers' molecular share is
+zero, since a monomer increment has no net force on its molecule. This is the
+number to compare with the virial errors of a cluster validation.
+
 Molecules and types
 -------------------
 
