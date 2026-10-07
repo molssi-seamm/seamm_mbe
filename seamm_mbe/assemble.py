@@ -63,10 +63,14 @@ class Labels:
         Atomic configurational pressure tr(W)/3V, atm.
     molecular_pressure : float or None
         tr(W - W_intra)/3V, atm (W_intra about each molecule's centre of mass).
-    breakdown : {str: {"energy": eV, "pressure": atm}}
+    breakdown : {str: {"energy": eV, "pressure": atm, "molecular pressure": atm}}
         Per cell term, and "MBE" for the correction.
-    per_body : {int: {"energy": eV, "pressure": atm, "count": int}}
-        The correction by order.
+    per_body : {int: {"energy": eV, "pressure": atm, "molecular pressure": atm,
+            "count": int}}
+        The correction by order. Each order's molecular pressure is its virial
+        less its own intramolecular part, so the orders add up to the MBE
+        correction's, and the monomers' is zero (their increments have no net
+        force on any molecule).
     per_level : {str: {int: int}}
         Increments per low level and order.
     max_increment_net_force : float
@@ -92,7 +96,15 @@ class Labels:
 def intramolecular_virial(system, forces):
     """W_intra = sum over molecules, sum over their atoms, (r_a - R_com) (x) f_a,
     with each molecule whole (eV, from forces in eV/Å). The molecular virial
-    is W - W_intra; monomer increments drop out of it exactly."""
+    is W - W_intra; monomer increments drop out of it exactly.
+
+    Applied to a part of the correction (a body order), W_intra uses the raw
+    forces while each increment's virial uses forces centred on its fragment
+    (net force removed). The two differ by sum over molecules of
+    (sum_a (r_a - R_com)) (x) <f>, nonzero only because R_com is mass-weighted;
+    it scales with the increments' net forces (max_increment_net_force), so it
+    is numerical noise. The fragment frame (each molecule at the image it
+    interacts at) is the right one for the increments' virial."""
     forces = np.asarray(forces, dtype=float)
     W = np.zeros((3, 3))
     for molecule in system.molecules:
@@ -155,6 +167,11 @@ def assemble(system, correction, cell_terms, offsets=None):
                 raise ValueError(f"Cell term {term.label} has no virial")
             virial += np.asarray(term.virial, dtype=float)
             entry["pressure"] = _atm(term.virial, volume)
+            entry["molecular pressure"] = _atm(
+                np.asarray(term.virial, dtype=float)
+                - intramolecular_virial(system, term_forces),
+                volume,
+            )
         breakdown[term.label] = entry
     breakdown["MBE"] = {"energy": correction.energy}
     per_body = {}
@@ -162,8 +179,16 @@ def assemble(system, correction, cell_terms, offsets=None):
         per_body[order] = {"energy": body["energy"], "count": body["count"]}
         if periodic:
             per_body[order]["pressure"] = _atm(body["virial"], volume)
+            per_body[order]["molecular pressure"] = _atm(
+                body["virial"] - intramolecular_virial(system, body["forces"]),
+                volume,
+            )
     if periodic:
         breakdown["MBE"]["pressure"] = _atm(correction.virial, volume)
+        breakdown["MBE"]["molecular pressure"] = _atm(
+            correction.virial - intramolecular_virial(system, correction.forces),
+            volume,
+        )
         stress = -virial / volume
         pressure = _atm(virial, volume)
         molecular = _atm(virial - intramolecular_virial(system, forces), volume)

@@ -194,3 +194,20 @@ def test_from_molsystem(pilot):
     ]
     fragments = seamm_mbe.enumerate_fragments(mbe)
     assert fragments.names == [m["name"] for m in pilot.meta]
+
+
+def test_molecular_pressure_by_body(pilot, labels):
+    """Each order's molecular pressure is its virial less its own intramolecular
+    part: the orders add up to the correction's, the cell terms and the
+    correction add up to the total, and the monomers' is (nearly) zero, since a
+    monomer increment has no net force on its molecule."""
+    per = labels.per_body
+    mbe = labels.breakdown["MBE"]
+    assert sum(per[k]["molecular pressure"] for k in per) == pytest.approx(
+        mbe["molecular pressure"], abs=1e-6
+    )
+    total = sum(t["molecular pressure"] for t in labels.breakdown.values())
+    assert total == pytest.approx(labels.molecular_pressure, abs=1e-6)
+    assert abs(per[1]["molecular pressure"]) < 1e-3 * abs(per[1]["pressure"]) + 1.0
+    for k in per:
+        assert per[k]["molecular pressure"] != pytest.approx(per[k]["pressure"])

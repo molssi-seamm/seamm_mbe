@@ -112,7 +112,8 @@ class Correction:
         (3, 3) eV.
     increments : {str: Increment}
         The selected fragments' increments, each at its own level.
-    per_body : {int: {"energy": eV, "virial": (3, 3) eV, "count": int}}
+    per_body : {int: {"energy": eV, "virial": (3, 3) eV, "forces": (n_atoms, 3)
+            eV/Å, "count": int}}
         The sums by order.
     per_level : {str: {int: int}}
         How many increments of each order used each level.
@@ -351,10 +352,17 @@ def mbe_correction(
         total_virial += virial
         np.add.at(total_forces, f.atoms, forces)
         body = result.per_body.setdefault(
-            f.order, {"energy": 0.0, "virial": np.zeros((3, 3)), "count": 0}
+            f.order,
+            {
+                "energy": 0.0,
+                "virial": np.zeros((3, 3)),
+                "forces": np.zeros((n_atoms, 3)),
+                "count": 0,
+            },
         )
         body["energy"] += energy
         body["virial"] = body["virial"] + virial
+        np.add.at(body["forces"], f.atoms, forces)
         body["count"] += 1
         counts = result.per_level.setdefault(f.level, {})
         counts[f.order] = counts.get(f.order, 0) + 1
