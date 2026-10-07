@@ -419,6 +419,13 @@ or <code class="docutils literal notranslate"><span class="pre">&quot;stress&quo
 <span class="n">labels</span><span class="o">.</span><span class="n">reference_energy</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">forces</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">stress</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">molecular_pressure</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">labels.per_body</span></code> breaks the correction down by body order, and
+<code class="docutils literal notranslate"><span class="pre">labels.breakdown</span></code> by cell term and “MBE”. Each entry gives the energy, its
+share of the atomic pressure and its share of the molecular pressure. The
+molecular share is the term’s virial less its own intramolecular part, so the
+shares add up to <code class="docutils literal notranslate"><span class="pre">labels.molecular_pressure</span></code>. The monomers’ molecular share is
+zero, since a monomer increment has no net force on its molecule. This is the
+number to compare with the virial errors of a cluster validation.</p>
 </section>
 <section id="molecules-and-types">
 <h2>Molecules and types<a class="headerlink" href="#molecules-and-types" title="Link to this heading">#</a></h2>

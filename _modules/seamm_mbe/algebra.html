@@ -460,7 +460,8 @@
 <span class="sd">        (3, 3) eV.</span>
 <span class="sd">    increments : {str: Increment}</span>
 <span class="sd">        The selected fragments' increments, each at its own level.</span>
-<span class="sd">    per_body : {int: {"energy": eV, "virial": (3, 3) eV, "count": int}}</span>
+<span class="sd">    per_body : {int: {"energy": eV, "virial": (3, 3) eV, "forces": (n_atoms, 3)</span>
+<span class="sd">            eV/Å, "count": int}}</span>
 <span class="sd">        The sums by order.</span>
 <span class="sd">    per_level : {str: {int: int}}</span>
 <span class="sd">        How many increments of each order used each level.</span>
@@ -708,10 +709,17 @@
         <span class="n">total_virial</span> <span class="o">+=</span> <span class="n">virial</span>
         <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">total_forces</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span> <span class="n">forces</span><span class="p">)</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">per_body</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="p">{</span><span class="s2">"energy"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"virial"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="s2">"count"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">"energy"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">"virial"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="s2">"forces"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_atoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+                <span class="s2">"count"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">)</span>
         <span class="n">body</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">energy</span>
         <span class="n">body</span><span class="p">[</span><span class="s2">"virial"</span><span class="p">]</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span><span class="s2">"virial"</span><span class="p">]</span> <span class="o">+</span> <span class="n">virial</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">],</span> <span class="n">f</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span> <span class="n">forces</span><span class="p">)</span>
         <span class="n">body</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">counts</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">per_level</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">counts</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>

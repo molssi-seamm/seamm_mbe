@@ -405,10 +405,14 @@
 <span class="sd">        Atomic configurational pressure tr(W)/3V, atm.</span>
 <span class="sd">    molecular_pressure : float or None</span>
 <span class="sd">        tr(W - W_intra)/3V, atm (W_intra about each molecule's centre of mass).</span>
-<span class="sd">    breakdown : {str: {"energy": eV, "pressure": atm}}</span>
+<span class="sd">    breakdown : {str: {"energy": eV, "pressure": atm, "molecular pressure": atm}}</span>
 <span class="sd">        Per cell term, and "MBE" for the correction.</span>
-<span class="sd">    per_body : {int: {"energy": eV, "pressure": atm, "count": int}}</span>
-<span class="sd">        The correction by order.</span>
+<span class="sd">    per_body : {int: {"energy": eV, "pressure": atm, "molecular pressure": atm,</span>
+<span class="sd">            "count": int}}</span>
+<span class="sd">        The correction by order. Each order's molecular pressure is its virial</span>
+<span class="sd">        less its own intramolecular part, so the orders add up to the MBE</span>
+<span class="sd">        correction's, and the monomers' is zero (their increments have no net</span>
+<span class="sd">        force on any molecule).</span>
 <span class="sd">    per_level : {str: {int: int}}</span>
 <span class="sd">        Increments per low level and order.</span>
 <span class="sd">    max_increment_net_force : float</span>
@@ -437,7 +441,15 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">intramolecular_virial</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">forces</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""W_intra = sum over molecules, sum over their atoms, (r_a - R_com) (x) f_a,</span>
 <span class="sd">    with each molecule whole (eV, from forces in eV/Å). The molecular virial</span>
-<span class="sd">    is W - W_intra; monomer increments drop out of it exactly."""</span>
+<span class="sd">    is W - W_intra; monomer increments drop out of it exactly.</span>
+
+<span class="sd">    Applied to a part of the correction (a body order), W_intra uses the raw</span>
+<span class="sd">    forces while each increment's virial uses forces centred on its fragment</span>
+<span class="sd">    (net force removed). The two differ by sum over molecules of</span>
+<span class="sd">    (sum_a (r_a - R_com)) (x) &lt;f&gt;, nonzero only because R_com is mass-weighted;</span>
+<span class="sd">    it scales with the increments' net forces (max_increment_net_force), so it</span>
+<span class="sd">    is numerical noise. The fragment frame (each molecule at the image it</span>
+<span class="sd">    interacts at) is the right one for the increments' virial."""</span>
     <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">forces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
@@ -506,6 +518,11 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cell term </span><span class="si">{</span><span class="n">term</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2"> has no virial"</span><span class="p">)</span>
             <span class="n">virial</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">virial</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
             <span class="n">entry</span><span class="p">[</span><span class="s2">"pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s2">"molecular pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">virial</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">intramolecular_virial</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">term_forces</span><span class="p">),</span>
+                <span class="n">volume</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="n">breakdown</span><span class="p">[</span><span class="n">term</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
     <span class="n">breakdown</span><span class="p">[</span><span class="s2">"MBE"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"energy"</span><span class="p">:</span> <span class="n">correction</span><span class="o">.</span><span class="n">energy</span><span class="p">}</span>
     <span class="n">per_body</span> <span class="o">=</span> <span class="p">{}</span>
@@ -513,8 +530,16 @@
         <span class="n">per_body</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"energy"</span><span class="p">:</span> <span class="n">body</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">],</span> <span class="s2">"count"</span><span class="p">:</span> <span class="n">body</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]}</span>
         <span class="k">if</span> <span class="n">periodic</span><span class="p">:</span>
             <span class="n">per_body</span><span class="p">[</span><span class="n">order</span><span class="p">][</span><span class="s2">"pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">"virial"</span><span class="p">],</span> <span class="n">volume</span><span class="p">)</span>
+            <span class="n">per_body</span><span class="p">[</span><span class="n">order</span><span class="p">][</span><span class="s2">"molecular pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span>
+                <span class="n">body</span><span class="p">[</span><span class="s2">"virial"</span><span class="p">]</span> <span class="o">-</span> <span class="n">intramolecular_virial</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">body</span><span class="p">[</span><span class="s2">"forces"</span><span class="p">]),</span>
+                <span class="n">volume</span><span class="p">,</span>
+            <span class="p">)</span>
     <span class="k">if</span> <span class="n">periodic</span><span class="p">:</span>
         <span class="n">breakdown</span><span class="p">[</span><span class="s2">"MBE"</span><span class="p">][</span><span class="s2">"pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span><span class="n">correction</span><span class="o">.</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span>
+        <span class="n">breakdown</span><span class="p">[</span><span class="s2">"MBE"</span><span class="p">][</span><span class="s2">"molecular pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span>
+            <span class="n">correction</span><span class="o">.</span><span class="n">virial</span> <span class="o">-</span> <span class="n">intramolecular_virial</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">correction</span><span class="o">.</span><span class="n">forces</span><span class="p">),</span>
+            <span class="n">volume</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">stress</span> <span class="o">=</span> <span class="o">-</span><span class="n">virial</span> <span class="o">/</span> <span class="n">volume</span>
         <span class="n">pressure</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span><span class="n">virial</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span>
         <span class="n">molecular</span> <span class="o">=</span> <span class="n">_atm</span><span class="p">(</span><span class="n">virial</span> <span class="o">-</span> <span class="n">intramolecular_virial</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">forces</span><span class="p">),</span> <span class="n">volume</span><span class="p">)</span>
