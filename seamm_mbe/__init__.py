@@ -42,5 +42,6 @@ from .selection import (  # noqa: F401
     SelectionRules,
 )
 from .system import Molecule, StructureError, System  # noqa: F401
+from .shells import IonShellRules, ShellError, UnitSystem, ion_shells  # noqa: F401
 from . import units  # noqa: F401
 from ._version import __version__  # noqa: F401

@@ -1,6 +1,30 @@
 =======
 History
 =======
+2026.10.10 -- Ion shells: an ion and its first shell as one unit
+    * ``ion_shells(system, IonShellRules(...))`` returns a ``UnitSystem``: the
+      system seen as units, each Li⁺ with the molecules in its first shell as one
+      unit (whole around the ion) and every other molecule by itself, rebuilt from
+      each geometry. ``enumerate_fragments`` builds the fragments from it unchanged.
+      Around Li⁺ the per-molecule expansion converges slowly; with the shell as one
+      unit a test cluster's error at triples fell from -11 to +2 kJ/mol and its
+      forces from 16 to 3.6 meV/Å RMS.
+    * A molecule joins a shell when one of its atoms of a listed element is within
+      the cutoff of the ion (default Li-O and Li-F 2.6 Å). One within reach of two
+      ions joins the nearer one, and ``max_members`` (default 5) keeps a crowded
+      shell's nearest molecules. A contact anion joins the cation's shell.
+    * ``SelectionRules.shell_max_order`` selects a shell's fragments only up to that
+      order, e.g. 2 for its pairs but not its triples.
+    * Shells need a contact criterion: a shell's reference point is its ion, so
+      ``enumerate_fragments`` refuses the point criteria with shells.
+    * The neighbour search now looks as many layers of periodic images out as the
+      cutoffs need (at most 3), so a cell narrower than the cutoff plus the largest
+      molecule's diameter is no longer refused. Large units such as Li⁺ shells
+      (radius up to 7 Å) made cells of about 17.6-18.1 Å, e.g. 1 m LiPF₆ or LiBF₄ in
+      EC:DMC with 4 salt pairs, fail that bound in 2-10% of frames. A molecule within
+      the pair cutoff of its own image is still refused. Ordinary cells give exactly
+      the same fragments as before.
+
 2026.10.6.1 -- The molecular pressure by body order
     * ``Labels.per_body`` and ``Labels.breakdown`` give each body order's, each cell
       term's and the correction's share of the molecular pressure (``"molecular
