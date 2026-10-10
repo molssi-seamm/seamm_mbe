@@ -89,8 +89,8 @@ def rods(cell):
 
 def test_the_search_reaches_beyond_the_nearest_cells():
     """Long molecules (contact radius 4 Å) with a 3 Å contact cutoff in a cell
-    10 Å wide: the reach, 3 + 2 x 4 = 11 Å, exceeds the cell, which the 27-cell
-    search refused. Every partner within the cutoff is found, as a brute-force
+    10 Å wide: the reach, 3 + 2 x 4 = 11 Å, exceeds the cell, which the old
+    check refused. Every partner within the cutoff is found, as a brute-force
     search over three image layers finds them."""
     from seamm_mbe.fragments import _Enumerator
 

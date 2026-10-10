@@ -388,10 +388,11 @@ class _Enumerator:
         pad = 2 * self.radius
         if system.periodic:
             # Every image within reach: after rounding to the nearest image a
-            # fractional coordinate is within 1/2 of zero, so along axis i the
-            # images up to (reach / width_i + 1/2) away are needed -- one layer
-            # (the 27 nearest cells) unless the reach exceeds the cell, as with
-            # large units such as ion shells.
+            # fractional coordinate f is within 1/2 of zero, and an image n is
+            # within reach only if |n + f| < reach / width_i, so |n| <=
+            # floor(reach / width_i + 1/2) -- one layer (the 27 nearest cells)
+            # unless the reach exceeds 1.5 widths, as large units such as ion
+            # shells can need.
             reach = (
                 max(
                     self.rules.cutoff(order, a, b)
@@ -400,7 +401,7 @@ class _Enumerator:
                 )
                 + pad
             )
-            layers = [max(1, int(np.ceil(reach / w + 0.5))) for w in system.widths]
+            layers = [max(1, int(np.floor(reach / w + 0.5))) for w in system.widths]
             if max(layers) > MAX_IMAGE_LAYERS:
                 raise SelectionError(
                     f"The order-{order} reach ({reach:.3f} Å, the cutoff plus the "
