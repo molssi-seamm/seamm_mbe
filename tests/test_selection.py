@@ -1,5 +1,6 @@
 """The selection rules and the cell-size bound of SelectionRules.check."""
 
+import itertools
 import warnings
 
 import numpy as np
@@ -64,11 +65,53 @@ def test_bound(case):
         rules.check(argon(bound + 0.01))
 
 
-def test_a_cell_narrower_than_the_cutoff_is_refused():
-    """The 27-cell neighbour search needs the cutoff within the cell."""
+def test_a_molecule_within_reach_of_its_own_image_is_refused():
+    """A cell narrower than the pair cutoff puts each molecule within reach of
+    its own image: no fragment can hold that, so the enumeration refuses it."""
     rules = seamm_mbe.SelectionRules(max_order=2, cutoffs={2: 4.5})
-    with pytest.raises(seamm_mbe.SelectionError, match="neighbour search"):
-        rules.check(argon(4.4))
+    with pytest.raises(seamm_mbe.SelectionError, match="its own image"):
+        seamm_mbe.enumerate_fragments(argon(4.4), rules)
+
+
+def rods(cell):
+    """Three 8 Å carbon rods along z in a cell 10 Å wide in x and y, two of
+    them in contact and one in contact through a periodic image."""
+    symbols, xyz, bonds = [], [], []
+    # the second 2.5 Å from the first; the third 2.5 Å from the first through x
+    for x0, y0, z0 in ((1.0, 1.0, 2.0), (3.5, 1.0, 3.0), (9.6, 1.5, 12.0)):
+        start = len(symbols)
+        for k in range(6):
+            symbols.append("C")
+            xyz.append((x0, y0, z0 + 1.6 * k))
+        bonds += [(start + k, start + k + 1) for k in range(5)]
+    return seamm_mbe.System(symbols, xyz, cell, bonds=bonds)
+
+
+def test_the_search_reaches_beyond_the_nearest_cells():
+    """Long molecules (contact radius 4 Å) with a 3 Å contact cutoff in a cell
+    10 Å wide: the reach, 3 + 2 x 4 = 11 Å, exceeds the cell, which the 27-cell
+    search refused. Every partner within the cutoff is found, as a brute-force
+    search over three image layers finds them."""
+    from seamm_mbe.fragments import _Enumerator
+
+    system = rods(np.diag([10.0, 10.0, 30.0]))
+    rules = seamm_mbe.SelectionRules(max_order=2, criterion="contact", cutoffs={2: 3.0})
+    enumerator = _Enumerator(system, rules)
+    assert 3.0 + 2 * enumerator.radius > system.widths.min()
+    found = [sorted(neighbors) for neighbors in enumerator.neighbors(2)]
+    expected = [[] for _ in system.molecules]
+    layers = range(-3, 4)
+    for a in range(len(system.molecules)):
+        for b in range(len(system.molecules)):
+            if a == b:
+                continue
+            for image in itertools.product(layers, layers, layers):
+                if enumerator.distance(a, (0, 0, 0), b, image) < 3.0:
+                    expected[a].append((b, image))
+    assert found == [sorted(e) for e in expected]
+    assert any(found)
+    fragments = seamm_mbe.enumerate_fragments(system, rules)
+    assert len(fragments.by_order(2)) == sum(len(e) for e in expected) // 2
 
 
 def test_bound_uses_smallest_width():
@@ -268,3 +311,12 @@ def test_image_triples_have_no_increment_for_a_pair_potential():
         energy_t, forces_t = ladder[t.name]
         assert abs(energy_t) < 1e-12
         assert np.allclose(forces_t, 0.0, atol=1e-12)
+
+
+def test_too_many_image_layers_are_refused():
+    """The search is capped at three layers of images: (2k + 1)^3 cells."""
+    system = rods(np.diag([10.0, 10.0, 30.0]))
+    rules = seamm_mbe.SelectionRules(max_order=2, criterion="contact", cutoffs={2: 3.0})
+    rules.cutoffs[2] = 30.0  # a reach of 38 Å in a 10 Å cell: 5 layers
+    with pytest.raises(seamm_mbe.SelectionError, match="layers of images"):
+        seamm_mbe.enumerate_fragments(system, rules)

@@ -43,6 +43,10 @@ from .selection import SelectionError, SelectionRules
 
 _PREFIX = {1: "m", 2: "d", 3: "t", 4: "q"}
 
+#: The most layers of periodic images the neighbour search looks through
+#: ((2k + 1)^3 cells); a cell needing more is refused
+MAX_IMAGE_LAYERS = 3
+
 
 def _image_text(image):
     if all(abs(v) <= 1 for v in image):
@@ -305,6 +309,18 @@ def enumerate_fragments(system, rules=None):
         :meth:`SelectionRules.check`).
     """
     rules = SelectionRules() if rules is None else rules
+    if getattr(system, "shells", None) and rules.criterion not in (
+        "contact",
+        "heavy contact",
+    ):
+        # A shell's designated atom is its ion and its centre is the ion's
+        # neighbourhood, so a point criterion would measure from there and miss
+        # partners near the shell's members.
+        raise SelectionError(
+            f"Ion shells need a contact criterion ('contact' or 'heavy contact'), "
+            f"not {rules.criterion!r}: a shell's reference point is its ion, so the "
+            "selection would miss molecules near the shell's members."
+        )
     rules.check(system)
     return _Enumerator(system, rules).run()
 
@@ -371,8 +387,29 @@ class _Enumerator:
         result = [[] for _ in range(n)]
         pad = 2 * self.radius
         if system.periodic:
+            # Every image within reach: after rounding to the nearest image a
+            # fractional coordinate is within 1/2 of zero, so along axis i the
+            # images up to (reach / width_i + 1/2) away are needed -- one layer
+            # (the 27 nearest cells) unless the reach exceeds the cell, as with
+            # large units such as ion shells.
+            reach = (
+                max(
+                    self.rules.cutoff(order, a, b)
+                    for a in set(self.types)
+                    for b in set(self.types)
+                )
+                + pad
+            )
+            layers = [max(1, int(np.ceil(reach / w + 0.5))) for w in system.widths]
+            if max(layers) > MAX_IMAGE_LAYERS:
+                raise SelectionError(
+                    f"The order-{order} reach ({reach:.3f} Å, the cutoff plus the "
+                    f"largest molecule's diameter) needs {max(layers)} layers of "
+                    f"images in this cell (smallest width {system.widths.min():.3f} "
+                    f"Å); at most {MAX_IMAGE_LAYERS} are searched. Use a larger cell."
+                )
             shifts = np.array(
-                [(i, j, k) for i in (-1, 0, 1) for j in (-1, 0, 1) for k in (-1, 0, 1)],
+                list(itertools.product(*(range(-k, k + 1) for k in layers))),
                 dtype=float,
             )
         for a in range(n):
@@ -425,9 +462,15 @@ class _Enumerator:
             placement = {m: (0, 0, 0)}
             selected[canonical_key(placement)] = placement
         max_order = self.rules.max_order
+        # Ion shells (a UnitSystem) may stop at a lower order than the rest
+        shells = getattr(self.system, "shells", frozenset())
+        shell_max = self.rules.shell_max_order
         if max_order >= 2:
             for a, neighbors in enumerate(self.neighbors(2)):
                 for b, image in neighbors:
+                    if shell_max is not None and shell_max < 2:
+                        if a in shells or b in shells:
+                            continue
                     if b > a:
                         placement = {a: (0, 0, 0), b: image}
                         selected[canonical_key(placement)] = placement
@@ -435,6 +478,9 @@ class _Enumerator:
             if self.rules.rule(order) == "none":
                 continue
             for placement in self.connected_sets(order):
+                if shell_max is not None and order > shell_max:
+                    if any(m in shells for m in placement):
+                        continue
                 if not self.passes(order, placement):
                     continue
                 frame = self.hub_frame(order, placement)

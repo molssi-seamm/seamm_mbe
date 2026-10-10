@@ -50,12 +50,17 @@ class SelectionRules:
         (the n molecules form a connected graph), "hub" (one molecule is
         bonded to all the others) or "compact" (all of them bonded to each
         other). For n = 3, "connected" and "hub" are the same.
+    shell_max_order : int or None
+        The highest order of a selected fragment holding an ion shell (see
+        :mod:`seamm_mbe.shells`); None for the same as every fragment. With 2,
+        a shell's pairs are selected but none of its triples.
     """
 
     max_order: int = 3
     criterion: str = "designated"
     cutoffs: dict = field(default_factory=_default_cutoffs)
     rules: dict = field(default_factory=_default_rules)
+    shell_max_order: int | None = None
 
     def __post_init__(self):
         if self.criterion not in CRITERIA:
@@ -64,6 +69,8 @@ class SelectionRules:
             )
         if self.max_order < 1:
             raise SelectionError("The maximum order must be at least 1")
+        if self.shell_max_order is not None and int(self.shell_max_order) < 1:
+            raise SelectionError("The maximum order with a shell must be at least 1")
         for n in range(2, self.max_order + 1):
             if n not in self.cutoffs:
                 raise SelectionError(f"No cutoff given for order {n}")
@@ -130,18 +137,17 @@ class SelectionRules:
         return order // 2, order - 1  # connected
 
     def check(self, system):
-        """Refuse a cell too small for the neighbour search, and warn when the
-        same molecules may form several different fragments.
+        """Warn when the same molecules may form several different fragments.
 
-        A cell narrower than an order's cutoff (plus, for the contact criteria,
-        a molecule's diameter) is refused: the 27-cell neighbour search would not
-        see every partner. Narrower than the bound below, the same molecules can
-        form two different fragments through different images. Those are
+        The neighbour search looks as many image layers out as the cutoffs need,
+        so a cell narrower than a cutoff (plus, for the contact criteria, a
+        molecule's diameter) is handled; only a molecule within the pair cutoff
+        of its own image is refused, by the enumeration, since no fragment can
+        hold that interaction. Narrower than the bound below, the same molecules
+        can form two different fragments through different images. Those are
         genuinely different fragments of the lattice and the enumeration keeps
         both, naming all but the minimum-image one with its images, so this only
-        warns. No fragment holds a molecule twice: the enumeration skips such
-        placements, and refuses a molecule within the pair cutoff of its own
-        image, a real interaction that no fragment can represent.
+        warns.
 
         The bound. Let a selected fragment of order n have, under its rule,
         radius at most R (some member A is within R of every member) and
@@ -165,11 +171,10 @@ class SelectionRules:
           bonds:                           R = floor(n/2) c, D = (n-1) c
           -> 3c for n = 3, 5c for n = 4.
 
-        The same bound for pairs (2c) also means a pair has at most one image
-        within the cutoff. For the contact criteria the bound is on the
-        reference points (centres of geometry), so each bond length becomes
-        c + 2 r_max, r_max being the largest distance of an atom from its
-        molecule's centre of geometry. Clusters (no cell) are always fine.
+        For the contact criteria the bound is on the reference points (centres
+        of geometry), so each bond length becomes c + 2 r_max, r_max being the
+        largest distance of an atom from its molecule's centre of geometry.
+        Clusters (no cell) are always fine.
         """
         if not system.periodic:
             return
@@ -191,14 +196,6 @@ class SelectionRules:
             if self.rule(n) == "none":
                 continue
             c = max(self.cutoff(n, a, b) for a in types for b in types)
-            if not l_min > c + pad:
-                raise SelectionError(
-                    f"The order-{n} cutoff ({c:.3f} Å"
-                    + (f" + {pad:.3f} Å for contact distances" if pad else "")
-                    + f") reaches beyond this cell's smallest width, {l_min:.3f} "
-                    "Å: the neighbour search would miss partners. Use a larger "
-                    "cell or smaller cutoffs."
-                )
             radius, diameter = self.reach(n)
             bound = (radius + diameter) * (c + pad)
             if not l_min > bound:
