@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seamm_mbe.shells &#8212; SEAMM MBE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/seamm_mbe/shells';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM MBE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">seamm_mbe.shells</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for seamm_mbe.shells</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Ion shells: an ion and its first-shell molecules as one unit of the expansion.</span>
+
+<span class="sd">Around a strongly polarizing ion (Li⁺) the per-molecule expansion converges</span>
+<span class="sd">slowly: in the C.3 cluster (Li⁺/BF₄⁻/6 H₂O/4 EC, 2026-10-09) the Li⁺ 3- and</span>
+<span class="sd">4-body [revDSD − r2SCAN] increments summed to +19 to +23 and −5 to −18 kJ/mol.</span>
+<span class="sd">With Li⁺ and its first shell as one unit the error at three units fell to</span>
+<span class="sd">+1–2 kJ/mol and the forces to 3.6 meV/Å RMS (seamm_mbe campaign 2026-10-09).</span>
+
+<span class="sd">:class:`IonShellRules` says which ions get a shell and how far it reaches.</span>
+<span class="sd">:func:`ion_shells` returns a :class:`UnitSystem`, a view of a</span>
+<span class="sd">:class:`~seamm_mbe.System` whose ``molecules`` are the units: each shell (the</span>
+<span class="sd">ion and its members, placed whole around the ion) and every other molecule by</span>
+<span class="sd">itself. :func:`~seamm_mbe.enumerate_fragments` works on it unchanged, so the</span>
+<span class="sd">fragments are built from units. The real molecules stay on</span>
+<span class="sd">:attr:`UnitSystem.parent`, for what is per molecule (energy offsets, the</span>
+<span class="sd">molecular virial).</span>
+
+<span class="sd">**Membership.** A molecule is a candidate for an ion's shell when one of its</span>
+<span class="sd">atoms of a listed element lies within that element's cutoff of the ion (e.g.</span>
+<span class="sd">Li–O 2.6 Å, Li–F 2.6 Å). Ions never join a shell (only molecules with listed</span>
+<span class="sd">atoms can), and anions get none of their own, so a contact ion pair puts the</span>
+<span class="sd">anion in the cation's shell. A molecule near two ions joins the nearer one</span>
+<span class="sd">(``shared = "nearest"``), so units never overlap; with ``max_members`` a crowded</span>
+<span class="sd">shell keeps its nearest members and the rest stay units of their own. The</span>
+<span class="sd">units are rebuilt from each frame's geometry.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">MoleculeType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">hill_formula</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span><span class="p">,</span> <span class="n">StructureError</span><span class="p">,</span> <span class="n">System</span>
+
+
+<div class="viewcode-block" id="ShellError">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.ShellError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShellError</span><span class="p">(</span><span class="n">StructureError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The ion-shell rules cannot be applied to this system."""</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_default_cutoffs</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"Li"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"O"</span><span class="p">:</span> <span class="mf">2.6</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">:</span> <span class="mf">2.6</span><span class="p">}}</span>
+
+
+<div class="viewcode-block" id="IonShellRules">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.IonShellRules">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IonShellRules</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Which ions get a shell, and its reach.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cutoffs : {str: {str: float}}</span>
+<span class="sd">        Per ion element, the shell cutoff (Å) to each partner element: a</span>
+<span class="sd">        molecule joins the shell when one of its atoms of that element is</span>
+<span class="sd">        within the cutoff of the ion. Default Li⁺ with O and F at 2.6 Å, just</span>
+<span class="sd">        inside the first minima of g(r) in carbonate electrolytes.</span>
+<span class="sd">    shared : str</span>
+<span class="sd">        What happens to a molecule within reach of two ions: "nearest" joins</span>
+<span class="sd">        the nearer one.</span>
+<span class="sd">    max_members : int or None</span>
+<span class="sd">        The most molecules in one shell (the nearest are kept); None for no</span>
+<span class="sd">        limit.</span>
+<span class="sd">    """</span>
+
+    <span class="n">cutoffs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">_default_cutoffs</span><span class="p">)</span>
+    <span class="n">shared</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"nearest"</span>
+    <span class="n">max_members</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shared</span> <span class="o">!=</span> <span class="s2">"nearest"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ShellError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Unknown handling of shared shell molecules </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shared</span><span class="si">!r}</span><span class="s2">: only "</span>
+                <span class="s2">"'nearest' (merging two shells makes units too large to compute)."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_members</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_members</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ShellError</span><span class="p">(</span><span class="s2">"A shell must be allowed at least one member"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ion</span><span class="p">,</span> <span class="n">partners</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoffs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">partners</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ShellError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No partner elements for the </span><span class="si">{</span><span class="n">ion</span><span class="si">}</span><span class="s2"> shells"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">partners</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="k">raise</span> <span class="n">ShellError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The </span><span class="si">{</span><span class="n">ion</span><span class="si">}</span><span class="s2"> shell cutoffs must be positive"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="UnitSystem">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.UnitSystem">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnitSystem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A :class:`~seamm_mbe.System` seen as units: shells and other molecules.</span>
+
+<span class="sd">    It has the attributes and methods of a System that fragment enumeration</span>
+<span class="sd">    uses, with ``molecules`` and ``types`` describing the units. A unit's</span>
+<span class="sd">    ``atoms`` are system atom indices, ascending, and its ``coordinates`` are</span>
+<span class="sd">    whole around the ion.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : seamm_mbe.System</span>
+<span class="sd">        The real system.</span>
+<span class="sd">    members : [tuple of int]</span>
+<span class="sd">        Per unit, the parent's molecules it holds (the ion first for a shell).</span>
+<span class="sd">    shells : frozenset of int</span>
+<span class="sd">        The units that are shells.</span>
+<span class="sd">    """</span>
+
+    <span class="n">periodic</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">periodic</span>
+    <span class="n">volume</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">volume</span>
+    <span class="n">widths</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">widths</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">masses</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">shift</span>
+    <span class="n">minimum_image</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">minimum_image</span>
+    <span class="n">reference_point</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">reference_point</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">formula</span>
+    <span class="n">type_counts</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">type_counts</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">placements</span><span class="p">,</span> <span class="n">shell_types</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">symbols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">atomic_numbers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_masses</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">masses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">bonds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catalog</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">catalog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">shells</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">molecules</span><span class="p">,</span> <span class="n">images</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">members</span><span class="p">,</span> <span class="n">placements</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">original</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Molecule</span><span class="p">(</span>
+                        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                        <span class="n">atoms</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                        <span class="n">coordinates</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span>
+                        <span class="n">designated</span><span class="o">=</span><span class="n">original</span><span class="o">.</span><span class="n">designated</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">original</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">original</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="n">shells</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">atoms</span><span class="p">,</span> <span class="n">xyz</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">molecules</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+                <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
+                <span class="n">xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">+</span> <span class="n">parent</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+            <span class="n">atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+            <span class="n">ion_atom</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">mtype</span> <span class="o">=</span> <span class="n">shell_types</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtype</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Molecule</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                    <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">[</span><span class="n">order</span><span class="p">],</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">coordinates</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="n">order</span><span class="p">],</span>
+                    <span class="n">designated</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">order</span><span class="p">]</span> <span class="o">==</span> <span class="n">ion_atom</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shells</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">shells</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UnitSystem.shell_sizes">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.shell_sizes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shell_sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""{unit index: number of molecules besides the ion} for the shells."""</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">u</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">members</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">)}</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ion_shells">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.ion_shells">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ion_shells</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The units of a system under ion-shell rules.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    system : seamm_mbe.System</span>
+<span class="sd">    rules : IonShellRules</span>
+<span class="sd">        Default Li⁺ with O and F at 2.6 Å, nearest ion, at most 5 members.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    UnitSystem</span>
+<span class="sd">        Units numbered by their lowest molecule index, so a system without any</span>
+<span class="sd">        shell keeps its molecule numbering.</span>
+<span class="sd">    """</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">IonShellRules</span><span class="p">()</span> <span class="k">if</span> <span class="n">rules</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rules</span>
+    <span class="n">ions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">system</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="ow">in</span> <span class="n">rules</span><span class="o">.</span><span class="n">cutoffs</span>
+    <span class="p">]</span>
+    <span class="c1"># Each candidate: (distance, ion, image of the molecule placing it at the ion)</span>
+    <span class="n">claims</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">:</span>
+        <span class="n">ion_atom</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ion_xyz</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">partners</span> <span class="o">=</span> <span class="n">rules</span><span class="o">.</span><span class="n">cutoffs</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">ion_atom</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">molecule</span><span class="o">.</span><span class="n">index</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">):</span>
+                <span class="n">cutoff</span> <span class="o">=</span> <span class="n">partners</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># n places the ion nearest the atom, so -n places the</span>
+                <span class="c1"># molecule nearest the ion</span>
+                <span class="n">n</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">minimum_image</span><span class="p">(</span><span class="n">ion_xyz</span> <span class="o">-</span> <span class="n">molecule</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">cutoff</span> <span class="ow">and</span> <span class="p">(</span><span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">best</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="o">-</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">n</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">claims</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">best</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">shells</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">candidates</span> <span class="ow">in</span> <span class="n">claims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">image</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">shells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">:</span>
+        <span class="n">shells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rules</span><span class="o">.</span><span class="n">max_members</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">shells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">shells</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rules</span><span class="o">.</span><span class="n">max_members</span><span class="p">)]</span>
+    <span class="n">in_shell</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ions</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">shells</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span>
+
+    <span class="n">members</span><span class="p">,</span> <span class="n">placements</span><span class="p">,</span> <span class="n">shell_types</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">{}</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">in_shell</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">shells</span> <span class="ow">and</span> <span class="n">shells</span><span class="p">[</span><span class="n">m</span><span class="p">]:</span>
+            <span class="n">ordered</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">shells</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">m</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ordered</span><span class="p">)),</span>
+                    <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ordered</span><span class="p">)),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">units</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,),</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),)))</span>
+    <span class="n">units</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">u</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">molecules</span><span class="p">,</span> <span class="n">images</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">units</span><span class="p">):</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span>
+        <span class="n">placements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">mtype</span> <span class="o">=</span> <span class="n">_shell_type</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">molecules</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
+        <span class="n">shell_types</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtype</span>
+    <span class="k">return</span> <span class="n">UnitSystem</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">placements</span><span class="p">,</span> <span class="n">shell_types</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_shell_type</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">molecules</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The MoleculeType of a shell: named by the ion and its members' types,</span>
+<span class="sd">    e.g. "Li+[DMC3 PF6-]", with the summed charge."""</span>
+    <span class="n">ion</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">t</span><span class="si">}{</span><span class="n">n</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ion</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">inside</span><span class="si">}</span><span class="s2">]"</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">member_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">member_types</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ShellError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"The shell </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> holds an open-shell molecule; shells of open-shell "</span>
+            <span class="s2">"molecules are not supported."</span>
+        <span class="p">)</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">molecules</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">]</span>
+    <span class="n">mtype</span> <span class="o">=</span> <span class="n">MoleculeType</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">formula</span><span class="o">=</span><span class="n">hill_formula</span><span class="p">(</span><span class="n">symbols</span><span class="p">),</span>
+        <span class="n">signature</span><span class="o">=</span><span class="s2">"shell:"</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+        <span class="n">charge</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">charge</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">member_types</span><span class="p">),</span>
+        <span class="n">multiplicity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mtype</span>
+    <span class="k">return</span> <span class="n">mtype</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.11.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

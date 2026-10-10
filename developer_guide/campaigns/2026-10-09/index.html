@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2026-10-09: scoping an ion-shell fragmentation rule &#8212; SEAMM MBE  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/campaigns/2026-10-09/index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="2026-10-03: the MBE step, phase 1 (the seamm_mbe library)" href="../2026-10-03/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SEAMM MBE  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Developer Documentation
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Campaigns</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../2026-10-03/index.html">2026-10-03: the MBE step, phase 1 (the <code class="docutils literal notranslate"><span class="pre">seamm_mbe</span></code> library)</a></li>
+<li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">2026-10-09: scoping an ion-shell fragmentation rule</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Developer Documentation</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Campaigns</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2026-10-09: scoping an ion-shell fragmentation rule</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="scoping-an-ion-shell-fragmentation-rule">
+<h1>2026-10-09: scoping an ion-shell fragmentation rule<a class="headerlink" href="#scoping-an-ion-shell-fragmentation-rule" title="Link to this heading">#</a></h1>
+<p>Scoped 2026-10-09 (Paul, via science). <strong>Implemented 2026-10-10</strong> in seamm_mbe
+(<code class="docutils literal notranslate"><span class="pre">seamm_mbe.shells</span></code>: <code class="docutils literal notranslate"><span class="pre">IonShellRules</span></code>, <code class="docutils literal notranslate"><span class="pre">ion_shells</span></code>, <code class="docutils literal notranslate"><span class="pre">UnitSystem</span></code>;
+<code class="docutils literal notranslate"><span class="pre">SelectionRules.shell_max_order</span></code>) and mbe_step (‘Ion shells’ and its settings),
+as described below. Validation checks 1-3 are still to run.</p>
+<section id="why">
+<h2>Why<a class="headerlink" href="#why" title="Link to this heading">#</a></h2>
+<p>C.3 (a 12-molecule Li⁺/BF₄⁻/6 H₂O/4 EC cluster, both geometries, against a
+canonical revDSD-PBEP86-D4/def2-TZVPPD calculation) failed the Li⁺ gate with the
+per-molecule expansion:</p>
+<ul class="simple">
+<li><p>The Li⁺ 3-body [revDSD − r2SCAN] increments sum to +19 to +23 kJ/mol, and the
+4-body ones to −5 to −18 kJ/mol.</p></li>
+<li><p>Moving D4 outside the expansion does not help, because the error is electronic:
+the polarisation around Li⁺ differs between the two methods.</p></li>
+</ul>
+<p>Treating Li⁺ and its first shell as one fragment fixes it. At three units:</p>
+<ul class="simple">
+<li><p>cip: +1.7 kJ/mol, forces 3.6 meV/Å RMS (13 max);</p></li>
+<li><p>ssip: +1.1 kJ/mol, forces 3.7 meV/Å RMS (20 max);</p></li>
+<li><p>the per-molecule expansion gave −11.4 / −5.4 kJ/mol and 16 meV/Å RMS (84–95
+max);</p></li>
+<li><p>the remaining shell 3-body terms are at most 0.5 kJ/mol, and the 4-body terms
+at most 0.3;</p></li>
+<li><p>at two units: +0.2 / −2.6 kJ/mol, 5.7 / 6.0 meV/Å RMS.</p></li>
+</ul>
+<p>The scripts and outputs are in TinkerCliffs <code class="docutils literal notranslate"><span class="pre">/projects/seamm/psaxe/mbe_c2/c3</span></code>:
+<code class="docutils literal notranslate"><span class="pre">c3_d4_rescore.py</span></code>, <code class="docutils literal notranslate"><span class="pre">c3_shell_driver.py</span></code> and <code class="docutils literal notranslate"><span class="pre">c3_shell_score.py</span></code>.</p>
+</section>
+<section id="the-rule">
+<h2>1. The rule<a class="headerlink" href="#the-rule" title="Link to this heading">#</a></h2>
+<p><strong>Units.</strong> An ion together with every molecule that has an atom within the shell
+cutoff of it forms one <strong>unit</strong>. All other molecules are units by themselves. The
+units are rebuilt for each frame, and the expansion runs over units exactly as it
+now runs over molecules:</p>
+<ul class="simple">
+<li><p>the contact-distance selection;</p></li>
+<li><p>pairs and connected triples;</p></li>
+<li><p>canonical keys and periodic images;</p></li>
+<li><p>the inclusion–exclusion algebra.</p></li>
+</ul>
+<p>The shell members are placed at the image nearest the ion, as atoms are made whole
+within a molecule.</p>
+<p><strong>Cutoffs.</strong></p>
+<ul class="simple">
+<li><p>They are per ion type and per partner element, from the first minimum of g(r).</p></li>
+<li><p>C.3’s shells sit at Li–O 1.83–2.05 Å and Li–F 1.85 Å. The next molecule is at
+3.0 Å or more.</p></li>
+<li><p>Proposed: Li⁺–O 2.6 Å (carbonyl and ether O of EC, FEC and DMC, and water O) and
+Li⁺–F 2.6 Å (BF₄⁻, PF₆⁻). Check these against the g(r) of the target liquids
+when frames exist. Literature Li–O first minima in EC/DMC are 2.6–2.8 Å.</p></li>
+</ul>
+<p><strong>Which ions.</strong></p>
+<ul class="simple">
+<li><p>Li⁺ only.</p></li>
+<li><p>The anions don’t need it. In C.3 the BF₄⁻-only increments were small: 3-body −3
+kJ/mol summed, at most 0.5 per term.</p></li>
+<li><p>Na⁺/Cl⁻ should keep the NaCl scheme, ion tetramers with D4 by the hybrid rule. It
+is validated, all 132 cells are labelled, and training has started. Changing it
+would only make it inconsistent.</p></li>
+</ul>
+<p><strong>Truncation.</strong></p>
+<ul class="simple">
+<li><p>Units up to triples, as now (n = 3 beats n = 4 in C.3).</p></li>
+<li><p>A cheaper option is to truncate fragments that hold a shell at pairs (C.3 at n =
+2: ~6 meV/Å RMS, about the carbonate scheme’s truncation floor). See <a class="reference internal" href="#cost">4. Cost</a>.</p></li>
+</ul>
+</section>
+<section id="shared-molecules">
+<h2>2. Shared molecules<a class="headerlink" href="#shared-molecules" title="Link to this heading">#</a></h2>
+<p>A molecule can lie in two shells, as a solvent molecule bridging two Li⁺, or as an
+anion bridging them in an aggregate.</p>
+<ul class="simple">
+<li><p><strong>Nearest ion (recommended).</strong> Each molecule joins the shell of the nearest ion
+within the cutoff, so units never overlap, and their size stays about one ion
+plus four. A bridging molecule’s interaction with the second ion is then a unit
+pair, which is computed and is the per-molecule treatment of that contact.</p></li>
+<li><p><strong>Merge.</strong> The two shells become one unit of about 90 atoms. Its pairs and
+triples, at about 100–115 atoms, can’t be afforded at QZ or TZ revDSD gradients.
+Reject it.</p></li>
+<li><p><strong>Cap.</strong> At most k members per shell (k = 5), the nearest first, with the rest as
+separate units. This is only a guard against rare crowded shells, combined with
+the nearest-ion rule.</p></li>
+</ul>
+<p>A contact ion pair is already handled: the anion is in the Li⁺ shell, as in C.3’s
+cip, which passed. Anions get no shells, so an anion is never in two units.</p>
+<p><strong>The size distribution on real cells is not measured yet.</strong> No 1 m LiPF₆ in EC:DMC
+frames exist. Science’s plan carves them from classical runs that haven’t been made.
+At 1 mol/kg, about 11 solvent molecules per Li⁺, the literature describes mostly
+separated ion pairs, contact pairs in a minority, coordination numbers 4–5, and Li–Li
+distances mostly over 7 Å. So shared shells should be rare in a cell of about 400
+atoms with three Li⁺. This needs checking on frames: shell sizes, the fraction of
+molecules claimed by two ions, and the effect of the cap.</p>
+</section>
+<section id="interface">
+<h2>3. Interface<a class="headerlink" href="#interface" title="Link to this heading">#</a></h2>
+<p><strong>seamm_mbe.</strong></p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">System</span></code>, after the molecules are found: a grouping step builds the units
+from <code class="docutils literal notranslate"><span class="pre">SelectionRules.ion_shells</span></code>, a table {ion type: {partner element:
+cutoff}}, with <code class="docutils literal notranslate"><span class="pre">shared</span> <span class="pre">=</span> <span class="pre">&quot;nearest&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">max_shell</span> <span class="pre">=</span> <span class="pre">5</span></code>.</p></li>
+<li><p>The rest of seamm_mbe works on units in place of molecules, so <code class="docutils literal notranslate"><span class="pre">fragments.py</span></code>
+and <code class="docutils literal notranslate"><span class="pre">algebra.py</span></code> don’t change.</p></li>
+<li><p>A unit’s type is its composition, e.g. <code class="docutils literal notranslate"><span class="pre">Li+(EC)3(DMC)</span></code>. Its charge, its
+multiplicity and its energy offset (DfE0) are the sums over its members.</p></li>
+<li><p>The cutoff tables need a wildcard or an “ion-shell” class for these types.</p></li>
+<li><p>Names keep the <code class="docutils literal notranslate"><span class="pre">m/d/t</span></code> scheme over unit indices, so units must be numbered
+deterministically, e.g. shells first in ion order.</p></li>
+</ul>
+<p><strong>mbe_step parameters.</strong></p>
+<ul class="simple">
+<li><p>“ion shells”: none (the default) or a table, with Li⁺–O/F 2.6 Å as the preset;</p></li>
+<li><p>“shared shell molecules”: nearest or cap;</p></li>
+<li><p>“shell truncation”: triples or pairs.</p></li>
+</ul>
+<p><strong>Low levels: the open problem.</strong></p>
+<ul class="simple">
+<li><p>In option A the 1-body low level is VASP, a monomer in a cell-sized box. A Li⁺
+shell is a charged unit (+1, or 0 for a contact pair), and its VASP energy in a
+box carries a Madelung term that depends on the box: about 1.4 eV for +1 in a
+15 Å cube.</p></li>
+<li><p>The NaCl pipeline avoids this with a constant infinite-box energy per bare ion.
+That can’t work for a shell, whose geometry changes with every frame.</p></li>
+<li><p>Options:</p>
+<ul>
+<li><p>VASP with a monopole correction (LMONO / Makov–Payne, residual of order L⁻³);</p></li>
+<li><p>ORCA r2SCAN as the low level for every fragment that holds a shell. The shell
+unit’s 1-body term would then also need an ORCA − VASP r2SCAN difference, to tie
+it to the VASP cell.</p></li>
+</ul>
+</li>
+<li><p>This needs a periodic validation, as the NaCl pilot did, before production.</p></li>
+</ul>
+<p><strong>Labels and caching.</strong></p>
+<ul class="simple">
+<li><p>Each frame is its own job with its own task directories, and nothing is shared
+between frames. So units that change between frames don’t interact with
+caching.</p></li>
+<li><p>A frame’s labels, energy, forces and stress, come from one consistent
+decomposition.</p></li>
+<li><p>Across frames, a molecule moving through the cutoff changes the decomposition, so
+the truncation error jumps by up to the difference between the two schemes,
+about 1–2 kJ/mol here. To the fit that is per-frame noise, smaller than the
+scheme’s error. Forces are unaffected within a frame.</p></li>
+</ul>
+</section>
+<section id="cost">
+<h2>4. Cost<a class="headerlink" href="#cost" title="Link to this heading">#</a></h2>
+<p><strong>Per-task cost.</strong> Measured from C.3’s 1,048 bundles on TinkerCliffs (sacct CPU
+time per task, 4–8 ranks):</p>
+<ul class="simple">
+<li><p>revDSD/TZ gradient ≈ 0.4, 1.9, 8.3, 19 and 39 core-h at 20, 30, 45, 57 and 69
+atoms (∝ N^3.6);</p></li>
+<li><p>r2SCAN/TZ ∝ N^2.3, at most a few core-h;</p></li>
+<li><p>QZ costs about 3–5× TZ: the EC pilot’s QZ pairs averaged 2.3 core-h per task,
+and its TZ triples 2.4.</p></li>
+</ul>
+<p><strong>The reference point.</strong> The 32-EC pilot frame measured <strong>5,163 core-h</strong> on TC (the
+~1,700 figure was an early estimate):</p>
+<ul class="simple">
+<li><p>high-level TZ triples, with their pairs and monomers: 3,750;</p></li>
+<li><p>high-level QZ pairs and monomers: 633;</p></li>
+<li><p>low-level triples: 389;</p></li>
+<li><p>cell: 142;</p></li>
+<li><p>periodic monomers: 133;</p></li>
+<li><p>low-level pairs and monomers: 116.</p></li>
+</ul>
+<p><strong>Assumed cell</strong> (until frames exist): 1 m LiPF₆ in EC:DMC with about 400 atoms,
+three Li⁺ and about 34 solvent molecules. Each shell has about 45 atoms (Li⁺ + 4
+carbonates), about 14 neighbouring units within the 4.5 Å contact cutoff and about
+60 connected triples. That gives about 42 shell pairs (~57 atoms) and about 180
+shell triples (~69 atoms) per cell.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>scheme</p></th>
+<th class="head"><p>core-h per cell</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>shell pairs QZ + shell triples TZ (as EC/FEC)</p></td>
+<td><p>~15,000 (≈ 3× EC)</p></td>
+</tr>
+<tr class="row-odd"><td><p>shell pairs TZ + shell triples TZ</p></td>
+<td><p>~12,500</p></td>
+</tr>
+<tr class="row-even"><td><p>shell pairs QZ, no shell triples</p></td>
+<td><p>~7,000</p></td>
+</tr>
+<tr class="row-odd"><td><p>shell pairs TZ, no shell triples</p></td>
+<td><p>~4,500 (≈ EC)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In each scheme, the solvent-only fragments (about 3,600) and the low levels (+5–10%)
+are included. The shell triples dominate: 180 × 39 core-h ≈ 7,000. Truncating the
+shell at pairs is the main saving, and C.3 suggests it costs little accuracy (about
+6 meV/Å RMS). That should be validated on the target composition first.</p>
+</section>
+<section id="validation-beyond-c-3">
+<h2>5. Validation beyond C.3<a class="headerlink" href="#validation-beyond-c-3" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>A target-composition cluster:</strong> Li⁺ with a PF₆⁻ contact pair and EC/DMC
+shells, no water. C.3 used BF₄⁻ and water. Score it at n = 2 and 3 units against
+canonical revDSD, as C.3 was.</p></li>
+<li><p><strong>A two-Li⁺ cluster with a shared (bridging) carbonate,</strong> to test the
+nearest-ion rule against merging, and both against canonical.</p></li>
+<li><p><strong>The charged shell’s 1-body term in a periodic cell:</strong> VASP in a box with a
+monopole correction against ORCA at an infinite box, on a few shells of
+different charge (+1 separated, 0 contact pair).</p></li>
+<li><p><strong>One periodic pilot cell</strong> of the target electrolyte, end to end, with the cost
+per level measured, as for the EC and FEC pilots.</p></li>
+<li><p><strong>The g(r) cutoffs and shell statistics</strong> on the frames once they exist: the
+size distribution, the shared fraction, and the effect of the cap.</p></li>
+</ol>
+<p>Steps 1, 2 and 4 need canonical revDSD references for 50- to 64-atom clusters.
+C.3’s canonical runs used 32 ranks on an Owl Genoa node, about 12 hours each.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../2026-10-03/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2026-10-03: the MBE step, phase 1 (the <code class="docutils literal notranslate"><span class="pre">seamm_mbe</span></code> library)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why">Why</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-rule">1. The rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-molecules">2. Shared molecules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interface">3. Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cost">4. Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-beyond-c-3">5. Validation beyond C.3</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../../_sources/developer_guide/campaigns/2026-10-09/index.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Paul Saxe. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.11.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

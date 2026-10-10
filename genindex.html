@@ -25,18 +25,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
@@ -49,6 +49,7 @@
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   
@@ -329,6 +330,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
@@ -407,7 +409,11 @@
       <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.cutoff">cutoff() (seamm_mbe.selection.SelectionRules method)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.cutoffs">cutoffs (seamm_mbe.selection.SelectionRules attribute)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.shells.IonShellRules.cutoffs">(seamm_mbe.shells.IonShellRules attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -480,12 +486,16 @@
       </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.units.forces_to_gradients">forces_to_gradients() (in module seamm_mbe.units)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.catalog.MoleculeType.formula">formula (seamm_mbe.catalog.MoleculeType attribute)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.formula">formula() (seamm_mbe.system.System method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.formula">formula() (seamm_mbe.shells.UnitSystem method)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.formula">(seamm_mbe.system.System method)</a>
 </li>
+      </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.fragments.Fragment">Fragment (class in seamm_mbe.fragments)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.FragmentResult">FragmentResult (class in seamm_mbe.algebra)</a>
@@ -530,15 +540,19 @@
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.Correction.increments">increments (seamm_mbe.algebra.Correction attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.increments">increments() (in module seamm_mbe.algebra)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.system.Molecule.index">index (seamm_mbe.system.Molecule attribute)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.assemble.intramolecular_virial">intramolecular_virial() (in module seamm_mbe.assemble)</a>
 </li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.ion_shells">ion_shells() (in module seamm_mbe.shells)</a>
+</li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.elements.IONIC_ELEMENTS">IONIC_ELEMENTS (in module seamm_mbe.elements)</a>
+</li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.IonShellRules">IonShellRules (class in seamm_mbe.shells)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -584,9 +598,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.elements.mass">mass() (in module seamm_mbe.elements)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.masses">masses (seamm_mbe.system.System property)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.masses">masses (seamm_mbe.shells.UnitSystem property)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.masses">(seamm_mbe.system.System property)</a>
 </li>
+      </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.fragments.Fragment.max_distance">max_distance (seamm_mbe.fragments.Fragment property)</a>
+</li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.fragments.MAX_IMAGE_LAYERS">MAX_IMAGE_LAYERS (in module seamm_mbe.fragments)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.Correction.max_increment_net_force">max_increment_net_force (seamm_mbe.algebra.Correction attribute)</a>
 
@@ -594,12 +614,18 @@
         <li><a href="api/seamm_mbe.html#seamm_mbe.assemble.Labels.max_increment_net_force">(seamm_mbe.assemble.Labels attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.IonShellRules.max_members">max_members (seamm_mbe.shells.IonShellRules attribute)</a>
+</li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.max_order">max_order (seamm_mbe.selection.SelectionRules attribute)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.mbe_correction">mbe_correction() (in module seamm_mbe.algebra)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.minimum_image">minimum_image() (seamm_mbe.system.System method)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.minimum_image">minimum_image() (seamm_mbe.shells.UnitSystem method)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.minimum_image">(seamm_mbe.system.System method)</a>
 </li>
+      </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.missing_results">missing_results() (in module seamm_mbe.algebra)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.algebra.MissingFragmentsError">MissingFragmentsError</a>
@@ -623,6 +649,8 @@
         <li><a href="api/seamm_mbe.html#module-seamm_mbe.levels">seamm_mbe.levels</a>
 </li>
         <li><a href="api/seamm_mbe.html#module-seamm_mbe.selection">seamm_mbe.selection</a>
+</li>
+        <li><a href="api/seamm_mbe.html#module-seamm_mbe.shells">seamm_mbe.shells</a>
 </li>
         <li><a href="api/seamm_mbe.html#module-seamm_mbe.system">seamm_mbe.system</a>
 </li>
@@ -707,8 +735,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.periodic">periodic (seamm_mbe.system.System property)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.periodic">periodic (seamm_mbe.shells.UnitSystem property)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.periodic">(seamm_mbe.system.System property)</a>
 </li>
+      </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.assemble.Labels.pressure">pressure (seamm_mbe.assemble.Labels attribute)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.units.pressure">pressure() (in module seamm_mbe.units)</a>
@@ -723,8 +755,12 @@
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.assemble.Labels.reference_energy">reference_energy (seamm_mbe.assemble.Labels attribute)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.reference_point">reference_point() (seamm_mbe.system.System method)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.reference_point">reference_point() (seamm_mbe.shells.UnitSystem method)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.reference_point">(seamm_mbe.system.System method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.rule">rule() (seamm_mbe.selection.SelectionRules method)</a>
@@ -795,8 +831,13 @@
         <li><a href="api/seamm_mbe.html#module-seamm_mbe.selection">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    seamm_mbe.shells
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#module-seamm_mbe.shells">module</a>
+</li>
+      </ul></li>
       <li>
     seamm_mbe.system
 
@@ -804,6 +845,8 @@
         <li><a href="api/seamm_mbe.html#module-seamm_mbe.system">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     seamm_mbe.units
 
@@ -817,8 +860,20 @@
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules">SelectionRules (class in seamm_mbe.selection)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.shift">shift() (seamm_mbe.system.System method)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.IonShellRules.shared">shared (seamm_mbe.shells.IonShellRules attribute)</a>
 </li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.selection.SelectionRules.shell_max_order">shell_max_order (seamm_mbe.selection.SelectionRules attribute)</a>
+</li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.shell_sizes">shell_sizes() (seamm_mbe.shells.UnitSystem method)</a>
+</li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.ShellError">ShellError</a>
+</li>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.shift">shift() (seamm_mbe.shells.UnitSystem method)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.shift">(seamm_mbe.system.System method)</a>
+</li>
+      </ul></li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.catalog.MoleculeType.signature">signature (seamm_mbe.catalog.MoleculeType attribute)</a>
 </li>
       <li><a href="api/seamm_mbe.html#seamm_mbe.catalog.signature">signature() (in module seamm_mbe.catalog)</a>
@@ -849,7 +904,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.system.Molecule.type">type (seamm_mbe.system.Molecule attribute)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.type_counts">type_counts() (seamm_mbe.system.System method)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.type_counts">type_counts() (seamm_mbe.shells.UnitSystem method)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.type_counts">(seamm_mbe.system.System method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem">UnitSystem (class in seamm_mbe.shells)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -873,16 +940,24 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.units.virial_from_tensor">virial_from_tensor() (in module seamm_mbe.units)</a>
 </li>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.volume">volume (seamm_mbe.system.System property)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.volume">volume (seamm_mbe.shells.UnitSystem property)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.volume">(seamm_mbe.system.System property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.widths">widths (seamm_mbe.system.System property)</a>
+      <li><a href="api/seamm_mbe.html#seamm_mbe.shells.UnitSystem.widths">widths (seamm_mbe.shells.UnitSystem property)</a>
+
+      <ul>
+        <li><a href="api/seamm_mbe.html#seamm_mbe.system.System.widths">(seamm_mbe.system.System property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/seamm_mbe.html#seamm_mbe.catalog.wl_labels">wl_labels() (in module seamm_mbe.catalog)</a>
@@ -919,8 +994,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -953,7 +1028,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

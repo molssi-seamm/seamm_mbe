@@ -25,18 +25,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -49,6 +49,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   
@@ -360,14 +361,14 @@
 
 
 <div class="viewcode-block" id="StructureError">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.StructureError">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.StructureError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StructureError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The structure cannot be used as given (bad charges, missing bonds, ...)."""</span></div>
 
 
 
 <div class="viewcode-block" id="Molecule">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.Molecule">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.Molecule">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Molecule</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""One whole molecule.</span>
@@ -395,7 +396,7 @@
 
 
 <div class="viewcode-block" id="System">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">System</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Atoms, an optional cell, and the molecules.</span>
 
@@ -501,7 +502,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="System.shift">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.shift">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.shift">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""The Cartesian translation (Å) of an integer image (n_a, n_b, n_c)."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -510,7 +511,7 @@
 
 
 <div class="viewcode-block" id="System.minimum_image">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.minimum_image">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.minimum_image">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimum_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""The integer image n making ``vector + n @ cell`` shortest, and that</span>
 <span class="sd">        shortest vector. Searches the 27 images around the fractional rounding,</span>
@@ -691,7 +692,7 @@
 
     <span class="c1"># ------------------------------------------------------------------ helpers</span>
 <div class="viewcode-block" id="System.reference_point">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.reference_point">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.reference_point">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reference_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">criterion</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""The point (Å, home coordinates) that locates a molecule for a</span>
 <span class="sd">        distance criterion: "designated", "com" or "cog". The contact criteria</span>
@@ -706,14 +707,14 @@
 
 
 <div class="viewcode-block" id="System.formula">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.formula">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.formula">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""The system's Hill formula."""</span>
         <span class="k">return</span> <span class="n">hill_formula</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="System.type_counts">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.type_counts">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.type_counts">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">type_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""{type name: number of molecules}."""</span>
         <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -723,7 +724,7 @@
 
 
 <div class="viewcode-block" id="System.from_configuration">
-<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.system.System.from_configuration">[docs]</a>
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.System.from_configuration">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""A System from a molsystem configuration.</span>
@@ -799,8 +800,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -833,7 +834,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

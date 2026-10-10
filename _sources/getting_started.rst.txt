@@ -122,12 +122,11 @@ molecule twice: when molecule a is bonded to two images of b, the triple
 Sub-fragments that equal another fragment up to whole cells share its key and
 are computed once.
 
-Two cases are refused, since no fragment list would be right:
-
-- the cell is narrower than the cutoff plus the molecules' size, so the
-  neighbour search could miss partners;
-- a molecule is within the pair cutoff of its own image: a real interaction
-  that no fragment can hold, which skipping would silently drop.
+The neighbour search looks as many image layers out as the cutoffs need, so a
+cell narrower than the cutoff plus the molecules' size (as with large units such
+as ion shells) is handled. One case is refused, since no fragment list would be
+right: a molecule within the pair cutoff of its own image, a real interaction
+that no fragment can hold, which skipping would silently drop.
 
 Corrections to selected increments
 ----------------------------------
@@ -180,3 +179,33 @@ triple minus its pairs plus its monomers, all at the same levels), so an order's
 levels need only be consistent within that ladder, never across orders. A single
 low level at a smaller basis would instead put the basis error of every pair
 into the sum.
+
+Ion shells
+----------
+
+Around Li⁺, the expansion over single molecules converges slowly. Treating the
+ion and its first shell as one unit fixes it (campaign 2026-10-09).
+:func:`seamm_mbe.ion_shells` returns a :class:`seamm_mbe.UnitSystem`: a view of a
+:class:`seamm_mbe.System` whose ``molecules`` are the units, each shell (whole
+around its ion) and every other molecule. Fragments are then enumerated from it
+as usual::
+
+    system = seamm_mbe.System.from_configuration(configuration)
+    units = seamm_mbe.ion_shells(system)  # Li-O and Li-F 2.6 Å, nearest ion, <= 5
+    fragments = seamm_mbe.enumerate_fragments(units, rules)
+
+How the units are built:
+
+- **Membership:** :class:`seamm_mbe.IonShellRules` sets the cutoffs per ion element
+  and partner element. A molecule within reach of two ions joins the nearer one.
+  ``max_members`` keeps a crowded shell's nearest molecules.
+- **Types:** a shell's type is named by its contents, e.g. ``Li+[DMC3 PF6-]``, and
+  its charge is the sum of its members'.
+- **What stays per molecule:** the real molecules are on ``units.parent``, for what
+  is per molecule (energy offsets and the molecular virial).
+- **Truncation:** ``SelectionRules.shell_max_order = 2`` selects a shell's pairs
+  but none of its triples.
+- **Criterion:** shells need a contact criterion (``contact`` or ``heavy
+  contact``). A shell's reference point is its ion, so a point criterion would
+  miss partners near its members, and ``enumerate_fragments`` refuses it.
+

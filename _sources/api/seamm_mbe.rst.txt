@@ -60,6 +60,14 @@ seamm\_mbe.selection module
    :show-inheritance:
    :undoc-members:
 
+seamm\_mbe.shells module
+------------------------
+
+.. automodule:: seamm_mbe.shells
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 seamm\_mbe.system module
 ------------------------
 
