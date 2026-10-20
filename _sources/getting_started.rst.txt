@@ -208,4 +208,26 @@ How the units are built:
 - **Criterion:** shells need a contact criterion (``contact`` or ``heavy
   contact``). A shell's reference point is its ion, so a point criterion would
   miss partners near its members, and ``enumerate_fragments`` refuses it.
+- **Levels of their own:** the fragments holding a shell can have their own high
+  and molecular low levels, with the key ``"shell"`` (``seamm_mbe.SHELL``) in the
+  same maps as the per-order levels above. For example, the shell fragments can use
+  revDSD and r2SCAN-D4 at def2-TZVPPD while the solvent pairs stay at def2-QZVPPD::
+
+      todo = fragments.calculations(
+          high_levels={3: "high:3", "shell": "high:shell"},
+          low_levels={3: "molecular:3", "shell": "molecular:shell"},
+      )
+      # todo["high:shell"]: every selected fragment holding a shell, with its
+      # sub-fragments (the shell, and the partner monomers, at this level too)
+      correction = seamm_mbe.mbe_correction(
+          fragments, high, periodic, molecular,
+          high_by_order={3: high_tz, "shell": high_shell},
+          low_by_order={3: low_tz, "shell": low_shell},
+      )
+
+  The shell key takes precedence over the order, so a shell triple (without
+  truncation) uses the shell level. As for the orders, each such increment is a
+  difference within its own ladder, and with the same results for every level the
+  correction is exactly the single-level one. :func:`seamm_mbe.level_key` gives the
+  entry of a level map a fragment uses.
 

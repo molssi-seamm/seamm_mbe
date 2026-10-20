@@ -595,6 +595,12 @@ its monomers at that level (<code class="xref py py-meth docutils literal notran
 ladder, so its levels need only be consistent within it, never across
 orders. With equal results this gives exactly what <code class="docutils literal notranslate"><span class="pre">molecular</span></code> alone
 gives.</p></li>
+<li><p><strong>high_by_order, low_by_order</strong> (<em>keyed “shell”</em>) – Either map may also have the key <code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code> (<code class="xref py py-data docutils literal notranslate"><span class="pre">seamm_mbe.SHELL</span></code>):
+the results for every selected fragment holding an ion shell, whatever
+its order, which then takes that level instead of its order’s (e.g. the
+shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each
+such increment is built entirely from that level’s results, so its
+sub-fragments are needed at that level too.</p></li>
 <li><p><strong>corrections</strong> (<em>{str: result} or None</em>) – Corrections, each a <a class="reference internal" href="#seamm_mbe.algebra.FragmentResult" title="seamm_mbe.algebra.FragmentResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FragmentResult</span></code></a>, an (energy, forces) pair or a
 dict with “energy” and “forces”, added to selected fragments’ increments
 in the sum only,
@@ -622,7 +628,8 @@ terms.</p></li>
 <dd><p>The (name, level) of every result the correction needs but lacks.
 Results that are None count as missing (a failed calculation).
 <code class="docutils literal notranslate"><span class="pre">high_by_order</span></code> and <code class="docutils literal notranslate"><span class="pre">low_by_order</span></code> as for <a class="reference internal" href="#seamm_mbe.algebra.mbe_correction" title="seamm_mbe.algebra.mbe_correction"><code class="xref py py-func docutils literal notranslate"><span class="pre">mbe_correction()</span></code></a>; their
-levels are named “high:&lt;order&gt;” and “molecular:&lt;order&gt;”.</p>
+levels are named “high:&lt;order&gt;” and “molecular:&lt;order&gt;” (“high:shell” and
+“molecular:shell” for the key “shell”).</p>
 </dd></dl>
 
 </section>
@@ -1172,16 +1179,20 @@ several are not supported (their coupling is ambiguous).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>molecular_everywhere</strong> (<em>bool</em>) – Put every fragment in “molecular”, which costs more but allows a
 consistency check of the two low levels.</p></li>
-<li><p><strong>high_levels</strong> (<em>{int: str} or None</em>) – A high level other than “high” for some orders, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;high:3&quot;}</span></code>
+<li><p><strong>high_levels</strong> (<em>{int or str: str} or None</em>) – A high level other than “high” for some orders, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;high:3&quot;}</span></code>
 for triples at their own level (a smaller basis than the pairs’). Each
 order’s increments are built entirely at its own high level, so that
 level is computed on those fragments and all their sub-fragments: the
-monomers and sub-pairs of the triples are computed at both levels.</p></li>
-<li><p><strong>low_levels</strong> (<em>{int: str} or None</em>) – Likewise a molecular low level other than “molecular” for some orders,
-e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code> for triples at a smaller basis than the
-pairs’ low level. It applies to the fragments of those orders assigned
-the molecular low level, and is computed on them and all their
-sub-fragments.</p></li>
+monomers and sub-pairs of the triples are computed at both levels. The
+key <code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code> (<a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a>) gives the level of every selected
+fragment holding an ion shell, whatever its order, e.g.
+<code class="docutils literal notranslate"><span class="pre">{&quot;shell&quot;:</span> <span class="pre">&quot;high:shell&quot;}</span></code> for shell fragments at a smaller basis
+(see <a class="reference internal" href="#seamm_mbe.fragments.level_key" title="seamm_mbe.fragments.level_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">level_key()</span></code></a>).</p></li>
+<li><p><strong>low_levels</strong> (<em>{int or str: str} or None</em>) – Likewise a molecular low level other than “molecular” for some orders,
+or for the fragments holding an ion shell (<code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code>), e.g.
+<code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code> for triples at a smaller basis than the pairs’
+low level. It applies to those fragments assigned the molecular low
+level, and is computed on them and all their sub-fragments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1221,6 +1232,12 @@ set order.</p>
 <dd><p>The fragments whose increments enter the sum.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="seamm_mbe.fragments.FragmentSet.shells">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">shells</span></span><a class="headerlink" href="#seamm_mbe.fragments.FragmentSet.shells" title="Link to this definition">#</a></dt>
+<dd><p>The units that are ion shells (empty without ion shells).</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py data">
@@ -1228,6 +1245,13 @@ set order.</p>
 <span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">MAX_IMAGE_LAYERS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#seamm_mbe.fragments.MAX_IMAGE_LAYERS" title="Link to this definition">#</a></dt>
 <dd><p>The most layers of periodic images the neighbour search looks through
 ((2k + 1)^3 cells); a cell needing more is refused</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="seamm_mbe.fragments.SHELL">
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">SHELL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'shell'</span></span><a class="headerlink" href="#seamm_mbe.fragments.SHELL" title="Link to this definition">#</a></dt>
+<dd><p>The key of a level map (<code class="docutils literal notranslate"><span class="pre">high_levels</span></code>, <code class="docutils literal notranslate"><span class="pre">low_levels</span></code>, <code class="docutils literal notranslate"><span class="pre">high_by_order</span></code>,
+<code class="docutils literal notranslate"><span class="pre">low_by_order</span></code>) for the fragments holding an ion shell.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1271,11 +1295,32 @@ triples &lt; 3.5 Å, designated-atom distances).</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="seamm_mbe.fragments.level_key">
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">level_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">frozenset({})</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#level_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.level_key" title="Link to this definition">#</a></dt>
+<dd><p>Which entry of a level map a selected fragment’s increment uses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fragment</strong> (<em>Fragment</em>)</p></li>
+<li><p><strong>levels</strong> (<em>{int or str: object} or None</em>) – By order, and for the fragments holding an ion shell by <a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a>,
+which takes precedence over the order.</p></li>
+<li><p><strong>default</strong> (<em>object</em>) – For a fragment the map does not cover.</p></li>
+<li><p><strong>shells</strong> (<em>frozenset of int</em>) – The units that are ion shells (<a class="reference internal" href="#seamm_mbe.fragments.FragmentSet.shells" title="seamm_mbe.fragments.FragmentSet.shells"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FragmentSet.shells</span></code></a>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="seamm_mbe.fragments.low_level_of">
-<span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">low_level_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#low_level_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.low_level_of" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">seamm_mbe.fragments.</span></span><span class="sig-name descname"><span class="pre">low_level_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">frozenset({})</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/seamm_mbe/fragments.html#low_level_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seamm_mbe.fragments.low_level_of" title="Link to this definition">#</a></dt>
 <dd><p>The low level a selected fragment’s increment uses: its assigned level,
-or for a molecular one the order’s own molecular level, if it has one
-(<code class="docutils literal notranslate"><span class="pre">low_levels</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code>).</p>
+or for a molecular one its own molecular level, if it has one
+(<code class="docutils literal notranslate"><span class="pre">low_levels</span></code>, by order, e.g. <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code>, or by
+<a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a> for the fragments holding one of <code class="docutils literal notranslate"><span class="pre">shells</span></code>).</p>
 </dd></dl>
 
 </section>
@@ -2165,11 +2210,14 @@ runs the calculations. See <code class="docutils literal notranslate"><span clas
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.FragmentSet.counts"><code class="docutils literal notranslate"><span class="pre">FragmentSet.counts()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.FragmentSet.names"><code class="docutils literal notranslate"><span class="pre">FragmentSet.names</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.FragmentSet.selected"><code class="docutils literal notranslate"><span class="pre">FragmentSet.selected()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.FragmentSet.shells"><code class="docutils literal notranslate"><span class="pre">FragmentSet.shells</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.MAX_IMAGE_LAYERS"><code class="docutils literal notranslate"><span class="pre">MAX_IMAGE_LAYERS</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.SHELL"><code class="docutils literal notranslate"><span class="pre">SHELL</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.canonical_key"><code class="docutils literal notranslate"><span class="pre">canonical_key()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.enumerate_fragments"><code class="docutils literal notranslate"><span class="pre">enumerate_fragments()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.level_key"><code class="docutils literal notranslate"><span class="pre">level_key()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seamm_mbe.fragments.low_level_of"><code class="docutils literal notranslate"><span class="pre">low_level_of()</span></code></a></li>
 </ul>
 </li>
@@ -2310,7 +2358,7 @@ runs the calculations. See <code class="docutils literal notranslate"><span clas
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

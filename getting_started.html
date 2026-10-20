@@ -534,7 +534,7 @@ as usual:</p>
 </pre></div>
 </div>
 <p>How the units are built:</p>
-<ul class="simple">
+<ul>
 <li><p><strong>Membership:</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">seamm_mbe.IonShellRules</span></code> sets the cutoffs per ion element
 and partner element. A molecule within reach of two ions joins the nearer one.
 <code class="docutils literal notranslate"><span class="pre">max_members</span></code> keeps a crowded shell’s nearest molecules.</p></li>
@@ -547,6 +547,29 @@ but none of its triples.</p></li>
 <li><p><strong>Criterion:</strong> shells need a contact criterion (<code class="docutils literal notranslate"><span class="pre">contact</span></code> or <code class="docutils literal notranslate"><span class="pre">heavy</span>
 <span class="pre">contact</span></code>). A shell’s reference point is its ion, so a point criterion would
 miss partners near its members, and <code class="docutils literal notranslate"><span class="pre">enumerate_fragments</span></code> refuses it.</p></li>
+<li><p><strong>Levels of their own:</strong> the fragments holding a shell can have their own high
+and molecular low levels, with the key <code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">seamm_mbe.SHELL</span></code>) in the
+same maps as the per-order levels above. For example, the shell fragments can use
+revDSD and r2SCAN-D4 at def2-TZVPPD while the solvent pairs stay at def2-QZVPPD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">todo</span> <span class="o">=</span> <span class="n">fragments</span><span class="o">.</span><span class="n">calculations</span><span class="p">(</span>
+    <span class="n">high_levels</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="s2">"high:3"</span><span class="p">,</span> <span class="s2">"shell"</span><span class="p">:</span> <span class="s2">"high:shell"</span><span class="p">},</span>
+    <span class="n">low_levels</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="s2">"molecular:3"</span><span class="p">,</span> <span class="s2">"shell"</span><span class="p">:</span> <span class="s2">"molecular:shell"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="c1"># todo["high:shell"]: every selected fragment holding a shell, with its</span>
+<span class="c1"># sub-fragments (the shell, and the partner monomers, at this level too)</span>
+<span class="n">correction</span> <span class="o">=</span> <span class="n">seamm_mbe</span><span class="o">.</span><span class="n">mbe_correction</span><span class="p">(</span>
+    <span class="n">fragments</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">molecular</span><span class="p">,</span>
+    <span class="n">high_by_order</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="n">high_tz</span><span class="p">,</span> <span class="s2">"shell"</span><span class="p">:</span> <span class="n">high_shell</span><span class="p">},</span>
+    <span class="n">low_by_order</span><span class="o">=</span><span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="n">low_tz</span><span class="p">,</span> <span class="s2">"shell"</span><span class="p">:</span> <span class="n">low_shell</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The shell key takes precedence over the order, so a shell triple (without
+truncation) uses the shell level. As for the orders, each such increment is a
+difference within its own ladder, and with the same results for every level the
+correction is exactly the single-level one. <code class="xref py py-func docutils literal notranslate"><span class="pre">seamm_mbe.level_key()</span></code> gives the
+entry of a level map a fragment uses.</p>
+</li>
 </ul>
 </section>
 </section>
@@ -652,7 +675,7 @@ miss partners near its members, and <code class="docutils literal notranslate"><
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

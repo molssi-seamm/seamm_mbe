@@ -364,7 +364,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.fragments</span><span class="w"> </span><span class="kn">import</span> <span class="n">low_level_of</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fragments</span><span class="w"> </span><span class="kn">import</span> <span class="n">level_key</span><span class="p">,</span> <span class="n">low_level_of</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.levels</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEVELS</span>
 
 
@@ -530,12 +530,14 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_high_levels</span><span class="p">(</span><span class="n">high_by_order</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""{order: level name} for the orders with a high level of their own."""</span>
+<span class="w">    </span><span class="sd">"""{order or "shell": level name} for the orders (and the shell fragments)</span>
+<span class="sd">    with a high level of their own: "high:&lt;order&gt;" or "high:shell"."""</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">order</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"high:</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="p">(</span><span class="n">high_by_order</span> <span class="ow">or</span> <span class="p">{})}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_low_levels</span><span class="p">(</span><span class="n">low_by_order</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""{order: level name} for the orders with a molecular low level of their own."""</span>
+<span class="w">    </span><span class="sd">"""{order or "shell": level name} for the orders (and the shell fragments)</span>
+<span class="sd">    with a molecular low level of their own."""</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">order</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"molecular:</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="p">(</span><span class="n">low_by_order</span> <span class="ow">or</span> <span class="p">{})}</span>
 
 
@@ -552,7 +554,8 @@
 <span class="w">    </span><span class="sd">"""The (name, level) of every result the correction needs but lacks.</span>
 <span class="sd">    Results that are None count as missing (a failed calculation).</span>
 <span class="sd">    ``high_by_order`` and ``low_by_order`` as for :func:`mbe_correction`; their</span>
-<span class="sd">    levels are named "high:&lt;order&gt;" and "molecular:&lt;order&gt;"."""</span>
+<span class="sd">    levels are named "high:&lt;order&gt;" and "molecular:&lt;order&gt;" ("high:shell" and</span>
+<span class="sd">    "molecular:shell" for the key "shell")."""</span>
     <span class="n">levels</span> <span class="o">=</span> <span class="n">_high_levels</span><span class="p">(</span><span class="n">high_by_order</span><span class="p">)</span>
     <span class="n">low_levels</span> <span class="o">=</span> <span class="n">_low_levels</span><span class="p">(</span><span class="n">low_by_order</span><span class="p">)</span>
     <span class="n">needed</span> <span class="o">=</span> <span class="n">fragments</span><span class="o">.</span><span class="n">calculations</span><span class="p">(</span><span class="n">high_levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="n">low_levels</span><span class="p">)</span>
@@ -613,6 +616,13 @@
 <span class="sd">        ladder, so its levels need only be consistent within it, never across</span>
 <span class="sd">        orders. With equal results this gives exactly what ``molecular`` alone</span>
 <span class="sd">        gives.</span>
+<span class="sd">    high_by_order, low_by_order : keyed "shell"</span>
+<span class="sd">        Either map may also have the key ``"shell"`` (:data:`seamm_mbe.SHELL`):</span>
+<span class="sd">        the results for every selected fragment holding an ion shell, whatever</span>
+<span class="sd">        its order, which then takes that level instead of its order's (e.g. the</span>
+<span class="sd">        shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each</span>
+<span class="sd">        such increment is built entirely from that level's results, so its</span>
+<span class="sd">        sub-fragments are needed at that level too.</span>
 <span class="sd">    corrections : {str: result} or None</span>
 <span class="sd">        Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a</span>
 <span class="sd">        dict with "energy" and "forces", added to selected fragments' increments</span>
@@ -666,8 +676,8 @@
             <span class="n">names</span> <span class="o">=</span> <span class="n">fragments</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
                 <span class="n">f</span>
                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">)</span> <span class="o">==</span> <span class="n">low_key</span>
-                <span class="ow">and</span> <span class="n">high_levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">)</span> <span class="o">==</span> <span class="n">key</span>
+                <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">low_key</span>
+                <span class="ow">and</span> <span class="n">level_key</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">high_levels</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">key</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
                 <span class="n">ladders</span><span class="p">[(</span><span class="n">low_key</span><span class="p">,</span> <span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">increments</span><span class="p">(</span>
@@ -680,8 +690,8 @@
     <span class="n">total_energy</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">Correction</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">forces</span><span class="o">=</span><span class="n">total_forces</span><span class="p">,</span> <span class="n">virial</span><span class="o">=</span><span class="n">total_virial</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">selected</span><span class="p">():</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">high_levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">)</span>
-        <span class="n">low_key</span> <span class="o">=</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">level_key</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">high_levels</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span>
+        <span class="n">low_key</span> <span class="o">=</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span>
         <span class="n">energy</span><span class="p">,</span> <span class="n">forces</span> <span class="o">=</span> <span class="n">ladders</span><span class="p">[(</span><span class="n">low_key</span><span class="p">,</span> <span class="n">key</span><span class="p">)][</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">corrections</span><span class="p">:</span>
             <span class="n">d_energy</span><span class="p">,</span> <span class="n">d_forces</span> <span class="o">=</span> <span class="n">_unpack</span><span class="p">(</span><span class="n">corrections</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
@@ -780,7 +790,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       

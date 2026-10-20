@@ -545,6 +545,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">]</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The units that are ion shells (empty without ion shells)."""</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="s2">"shells"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">())</span>
+
 <div class="viewcode-block" id="FragmentSet.by_order">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.FragmentSet.by_order">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">by_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">in_sum</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -599,18 +604,22 @@
 <span class="sd">        molecular_everywhere : bool</span>
 <span class="sd">            Put every fragment in "molecular", which costs more but allows a</span>
 <span class="sd">            consistency check of the two low levels.</span>
-<span class="sd">        high_levels : {int: str} or None</span>
+<span class="sd">        high_levels : {int or str: str} or None</span>
 <span class="sd">            A high level other than "high" for some orders, e.g. ``{3: "high:3"}``</span>
 <span class="sd">            for triples at their own level (a smaller basis than the pairs'). Each</span>
 <span class="sd">            order's increments are built entirely at its own high level, so that</span>
 <span class="sd">            level is computed on those fragments and all their sub-fragments: the</span>
-<span class="sd">            monomers and sub-pairs of the triples are computed at both levels.</span>
-<span class="sd">        low_levels : {int: str} or None</span>
+<span class="sd">            monomers and sub-pairs of the triples are computed at both levels. The</span>
+<span class="sd">            key ``"shell"`` (:data:`SHELL`) gives the level of every selected</span>
+<span class="sd">            fragment holding an ion shell, whatever its order, e.g.</span>
+<span class="sd">            ``{"shell": "high:shell"}`` for shell fragments at a smaller basis</span>
+<span class="sd">            (see :func:`level_key`).</span>
+<span class="sd">        low_levels : {int or str: str} or None</span>
 <span class="sd">            Likewise a molecular low level other than "molecular" for some orders,</span>
-<span class="sd">            e.g. ``{3: "molecular:3"}`` for triples at a smaller basis than the</span>
-<span class="sd">            pairs' low level. It applies to the fragments of those orders assigned</span>
-<span class="sd">            the molecular low level, and is computed on them and all their</span>
-<span class="sd">            sub-fragments.</span>
+<span class="sd">            or for the fragments holding an ion shell (``"shell"``), e.g.</span>
+<span class="sd">            ``{3: "molecular:3"}`` for triples at a smaller basis than the pairs'</span>
+<span class="sd">            low level. It applies to those fragments assigned the molecular low</span>
+<span class="sd">            level, and is computed on them and all their sub-fragments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -626,7 +635,9 @@
         <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"periodic"</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">low_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
             <span class="n">out</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
-                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span> <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">)</span> <span class="o">==</span> <span class="n">level</span>
+                <span class="n">f</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">level</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">molecular_everywhere</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="s2">"molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span>
@@ -636,21 +647,57 @@
             <span class="k">return</span> <span class="n">out</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"high"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">high_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())]:</span>
             <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
-                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span> <span class="k">if</span> <span class="n">high_levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">)</span> <span class="o">==</span> <span class="n">key</span>
+                <span class="n">f</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">level_key</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">high_levels</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">key</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
 
 
+<span class="c1">#: The key of a level map (``high_levels``, ``low_levels``, ``high_by_order``,</span>
+<span class="c1">#: ``low_by_order``) for the fragments holding an ion shell.</span>
+<span class="n">SHELL</span> <span class="o">=</span> <span class="s2">"shell"</span>
+
+
+<div class="viewcode-block" id="level_key">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.level_key">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">level_key</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">shells</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">"""Which entry of a level map a selected fragment's increment uses.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fragment : Fragment</span>
+<span class="sd">    levels : {int or str: object} or None</span>
+<span class="sd">        By order, and for the fragments holding an ion shell by :data:`SHELL`,</span>
+<span class="sd">        which takes precedence over the order.</span>
+<span class="sd">    default : object</span>
+<span class="sd">        For a fragment the map does not cover.</span>
+<span class="sd">    shells : frozenset of int</span>
+<span class="sd">        The units that are ion shells (:attr:`FragmentSet.shells`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    object</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">levels</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="k">if</span> <span class="n">SHELL</span> <span class="ow">in</span> <span class="n">levels</span> <span class="ow">and</span> <span class="n">shells</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="ow">in</span> <span class="n">shells</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">molecules</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">levels</span><span class="p">[</span><span class="n">SHELL</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="low_level_of">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.low_level_of">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">low_level_of</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">low_level_of</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shells</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">()):</span>
 <span class="w">    </span><span class="sd">"""The low level a selected fragment's increment uses: its assigned level,</span>
-<span class="sd">    or for a molecular one the order's own molecular level, if it has one</span>
-<span class="sd">    (``low_levels``, e.g. ``{3: "molecular:3"}``)."""</span>
+<span class="sd">    or for a molecular one its own molecular level, if it has one</span>
+<span class="sd">    (``low_levels``, by order, e.g. ``{3: "molecular:3"}``, or by</span>
+<span class="sd">    :data:`SHELL` for the fragments holding one of ``shells``)."""</span>
     <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="s2">"molecular"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">low_levels</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">level_key</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">,</span> <span class="n">shells</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fragment</span><span class="o">.</span><span class="n">level</span></div>
 
 
@@ -1072,7 +1119,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.1.
   </p>
 </div>
       
