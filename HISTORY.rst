@@ -1,6 +1,20 @@
 =======
 History
 =======
+2026.10.20 -- Levels of their own for the fragments holding an ion shell
+    * The level maps of ``FragmentSet.calculations`` (``high_levels``,
+      ``low_levels``) and of ``mbe_correction`` and ``missing_results``
+      (``high_by_order``, ``low_by_order``) take the key ``"shell"`` beside the
+      orders: every selected fragment holding an ion shell then uses that level,
+      e.g. the Li+ shell pairs at def2-TZVPPD with the solvent pairs at
+      def2-QZVPPD. The shell key takes precedence over the order. Each such
+      increment is built entirely from its own level's results, so its
+      sub-fragments are computed at that level too, and with the same results for
+      every level the correction is unchanged.
+    * ``seamm_mbe.level_key`` gives the entry of a level map a fragment uses,
+      ``seamm_mbe.SHELL`` is the key, and ``FragmentSet.shells`` the units that are
+      ion shells.
+
 2026.10.10 -- Ion shells: an ion and its first shell as one unit
     * ``ion_shells(system, IonShellRules(...))`` returns a ``UnitSystem``: the
       system seen as units, each Li⁺ with the molecules in its first shell as one
