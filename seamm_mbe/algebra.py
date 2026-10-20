@@ -260,11 +260,13 @@ def mbe_correction(
         gives.
     high_by_order, low_by_order : keyed "shell"
         Either map may also have the key ``"shell"`` (:data:`seamm_mbe.SHELL`):
-        the results for every selected fragment holding an ion shell, whatever
-        its order, which then takes that level instead of its order's (e.g. the
+        the results for every selected fragment of two or more units holding an
+        ion shell, which then takes that level instead of its order's (e.g. the
         shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each
         such increment is built entirely from that level's results, so its
-        sub-fragments are needed at that level too.
+        sub-fragments, the shell's monomer among them, are needed at that level
+        too. The shell's own 1-body increment stays at the order-1 level, which
+        sets the absolute energy scale for every unit alike.
     corrections : {str: result} or None
         Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a
         dict with "energy" and "forces", added to selected fragments' increments

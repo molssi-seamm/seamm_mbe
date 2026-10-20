@@ -43,15 +43,27 @@ def holds_shell(fragments, f):
     return bool(set(f.molecules) & fragments.shells)
 
 
+def at_shell_level(fragments, f):
+    """Whether a selected fragment takes the shell level: two or more units, one
+    of them a shell (a shell's own monomer keeps the 1-body level)."""
+    return f.order >= 2 and holds_shell(fragments, f)
+
+
 def test_level_key_prefers_the_shell():
     fragments, _, _ = fragments_with_shells(shell_max_order=None)
     levels = {3: "high:3", seamm_mbe.SHELL: "high:shell"}
     for f in fragments:
         key = seamm_mbe.level_key(f, levels, "high", fragments.shells)
-        if holds_shell(fragments, f):
+        if at_shell_level(fragments, f):
             assert key == "high:shell"
         else:
             assert key == ("high:3" if f.order == 3 else "high")
+    shell_monomers = [
+        f for f in fragments if f.order == 1 and holds_shell(fragments, f)
+    ]
+    assert shell_monomers
+    for f in shell_monomers:
+        assert seamm_mbe.level_key(f, levels, "high", fragments.shells) == "high"
     assert seamm_mbe.level_key(fragments.fragments[0], None, "high") == "high"
 
 
@@ -70,15 +82,16 @@ def test_equal_levels_reproduce_a_single_level():
     assert np.allclose(two.virial, one.virial, atol=1e-12)
     for name, inc in two.increments.items():
         f = fragments[name]
-        if holds_shell(fragments, f):
+        if at_shell_level(fragments, f):
             assert (inc.high_level, inc.low_level) == ("high:shell", "molecular:shell")
         else:
             assert (inc.high_level, inc.low_level) == ("high", "molecular")
 
 
 def test_a_shift_moves_only_the_shell_increments():
-    """Shifting every shell-level high energy by c moves each shell monomer's
-    increment by +c and each shell pair's by c - 2c = -c; the others stay."""
+    """Shifting every shell-level high energy by c moves each shell pair's
+    increment by c - 2c = -c; the others stay, the shell's own monomer among them
+    (its 1-body term is at the order-1 level)."""
     fragments, high, low = fragments_with_shells()
     c = 0.01
     shifted = {name: (e + c, f) for name, (e, f) in high.items()}
@@ -86,21 +99,16 @@ def test_a_shift_moves_only_the_shell_increments():
     test = seamm_mbe.mbe_correction(
         fragments, high, molecular=low, high_by_order={"shell": shifted}
     )
-    n1 = sum(
-        1 for f in fragments.selected() if f.order == 1 and holds_shell(fragments, f)
-    )
-    n2 = sum(
-        1 for f in fragments.selected() if f.order == 2 and holds_shell(fragments, f)
-    )
-    assert n1 > 0 and n2 > 0
-    assert test.energy - base.energy == pytest.approx(c * (n1 - n2), abs=1e-9)
+    n2 = sum(1 for f in fragments.selected() if at_shell_level(fragments, f))
+    assert n2 > 0
+    assert test.energy - base.energy == pytest.approx(-c * n2, abs=1e-9)
     for name, inc in test.increments.items():
         f = fragments[name]
         delta = inc.energy - base.increments[name].energy
-        if not holds_shell(fragments, f):
-            assert delta == pytest.approx(0.0, abs=1e-12)
+        if at_shell_level(fragments, f):
+            assert delta == pytest.approx(-c, abs=1e-9)
         else:
-            assert delta == pytest.approx(c if f.order == 1 else -c, abs=1e-9)
+            assert delta == pytest.approx(0.0, abs=1e-12)
     assert np.allclose(test.forces, base.forces, atol=1e-12)
 
 
@@ -110,13 +118,13 @@ def test_calculations_list_the_shell_ladder():
     split = fragments.calculations(
         high_levels={"shell": "high:shell"}, low_levels={"shell": "molecular:shell"}
     )
-    shell_sel = [f for f in fragments.selected() if holds_shell(fragments, f)]
-    other_sel = [f for f in fragments.selected() if not holds_shell(fragments, f)]
+    shell_sel = [f for f in fragments.selected() if at_shell_level(fragments, f)]
+    other_sel = [f for f in fragments.selected() if not at_shell_level(fragments, f)]
     assert split["high:shell"] == fragments.closure(shell_sel)
     assert split["high"] == fragments.closure(other_sel)
     assert split["molecular:shell"] == fragments.closure(shell_sel)
     assert split["molecular"] == fragments.closure(other_sel)
-    # the solvent monomers of the shell pairs are needed at both levels
+    # the monomers of the shell pairs (the shell's too) are needed at both levels
     both = set(split["high"]) & set(split["high:shell"])
     assert both and all(fragments[n].order == 1 for n in both)
     assert set(split["high"]) | set(split["high:shell"]) == set(plain["high"])
@@ -156,6 +164,7 @@ def test_shell_and_order_levels_together():
         for f in fragments.selected()
     }
     assert levels[(3, True)] == "high:shell"
+    assert levels[(1, True)] == "high"
     assert levels[(3, False)] == "high:3"
     assert levels[(2, False)] == "high"
 
