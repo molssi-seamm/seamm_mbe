@@ -618,11 +618,13 @@
 <span class="sd">        gives.</span>
 <span class="sd">    high_by_order, low_by_order : keyed "shell"</span>
 <span class="sd">        Either map may also have the key ``"shell"`` (:data:`seamm_mbe.SHELL`):</span>
-<span class="sd">        the results for every selected fragment holding an ion shell, whatever</span>
-<span class="sd">        its order, which then takes that level instead of its order's (e.g. the</span>
+<span class="sd">        the results for every selected fragment of two or more units holding an</span>
+<span class="sd">        ion shell, which then takes that level instead of its order's (e.g. the</span>
 <span class="sd">        shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each</span>
 <span class="sd">        such increment is built entirely from that level's results, so its</span>
-<span class="sd">        sub-fragments are needed at that level too.</span>
+<span class="sd">        sub-fragments, the shell's monomer among them, are needed at that level</span>
+<span class="sd">        too. The shell's own 1-body increment stays at the order-1 level, which</span>
+<span class="sd">        sets the absolute energy scale for every unit alike.</span>
 <span class="sd">    corrections : {str: result} or None</span>
 <span class="sd">        Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a</span>
 <span class="sd">        dict with "energy" and "forces", added to selected fragments' increments</span>

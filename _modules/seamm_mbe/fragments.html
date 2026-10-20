@@ -611,9 +611,9 @@
 <span class="sd">            level is computed on those fragments and all their sub-fragments: the</span>
 <span class="sd">            monomers and sub-pairs of the triples are computed at both levels. The</span>
 <span class="sd">            key ``"shell"`` (:data:`SHELL`) gives the level of every selected</span>
-<span class="sd">            fragment holding an ion shell, whatever its order, e.g.</span>
-<span class="sd">            ``{"shell": "high:shell"}`` for shell fragments at a smaller basis</span>
-<span class="sd">            (see :func:`level_key`).</span>
+<span class="sd">            fragment of two or more units holding an ion shell, e.g.</span>
+<span class="sd">            ``{"shell": "high:shell"}`` for the shell pairs at a smaller basis; the</span>
+<span class="sd">            shell's own monomer keeps the 1-body level (see :func:`level_key`).</span>
 <span class="sd">        low_levels : {int or str: str} or None</span>
 <span class="sd">            Likewise a molecular low level other than "molecular" for some orders,</span>
 <span class="sd">            or for the fragments holding an ion shell (``"shell"``), e.g.</span>
@@ -670,8 +670,11 @@
 <span class="sd">    ----------</span>
 <span class="sd">    fragment : Fragment</span>
 <span class="sd">    levels : {int or str: object} or None</span>
-<span class="sd">        By order, and for the fragments holding an ion shell by :data:`SHELL`,</span>
-<span class="sd">        which takes precedence over the order.</span>
+<span class="sd">        By order, and for the fragments of two or more units holding an ion</span>
+<span class="sd">        shell by :data:`SHELL`, which takes precedence over the order. A shell's</span>
+<span class="sd">        own monomer keeps its order's level: the 1-body terms set the labels'</span>
+<span class="sd">        absolute energy scale (and its energy offsets), so they stay at one level</span>
+<span class="sd">        for every unit.</span>
 <span class="sd">    default : object</span>
 <span class="sd">        For a fragment the map does not cover.</span>
 <span class="sd">    shells : frozenset of int</span>
@@ -683,7 +686,12 @@
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">levels</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">default</span>
-    <span class="k">if</span> <span class="n">SHELL</span> <span class="ow">in</span> <span class="n">levels</span> <span class="ow">and</span> <span class="n">shells</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="ow">in</span> <span class="n">shells</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">molecules</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">SHELL</span> <span class="ow">in</span> <span class="n">levels</span>
+        <span class="ow">and</span> <span class="n">fragment</span><span class="o">.</span><span class="n">order</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+        <span class="ow">and</span> <span class="n">shells</span>
+        <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="ow">in</span> <span class="n">shells</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">molecules</span><span class="p">)</span>
+    <span class="p">):</span>
         <span class="k">return</span> <span class="n">levels</span><span class="p">[</span><span class="n">SHELL</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
 

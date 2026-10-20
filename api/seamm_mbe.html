@@ -596,11 +596,13 @@ ladder, so its levels need only be consistent within it, never across
 orders. With equal results this gives exactly what <code class="docutils literal notranslate"><span class="pre">molecular</span></code> alone
 gives.</p></li>
 <li><p><strong>high_by_order, low_by_order</strong> (<em>keyed “shell”</em>) – Either map may also have the key <code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code> (<code class="xref py py-data docutils literal notranslate"><span class="pre">seamm_mbe.SHELL</span></code>):
-the results for every selected fragment holding an ion shell, whatever
-its order, which then takes that level instead of its order’s (e.g. the
+the results for every selected fragment of two or more units holding an
+ion shell, which then takes that level instead of its order’s (e.g. the
 shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each
 such increment is built entirely from that level’s results, so its
-sub-fragments are needed at that level too.</p></li>
+sub-fragments, the shell’s monomer among them, are needed at that level
+too. The shell’s own 1-body increment stays at the order-1 level, which
+sets the absolute energy scale for every unit alike.</p></li>
 <li><p><strong>corrections</strong> (<em>{str: result} or None</em>) – Corrections, each a <a class="reference internal" href="#seamm_mbe.algebra.FragmentResult" title="seamm_mbe.algebra.FragmentResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">FragmentResult</span></code></a>, an (energy, forces) pair or a
 dict with “energy” and “forces”, added to selected fragments’ increments
 in the sum only,
@@ -1185,9 +1187,9 @@ order’s increments are built entirely at its own high level, so that
 level is computed on those fragments and all their sub-fragments: the
 monomers and sub-pairs of the triples are computed at both levels. The
 key <code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code> (<a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a>) gives the level of every selected
-fragment holding an ion shell, whatever its order, e.g.
-<code class="docutils literal notranslate"><span class="pre">{&quot;shell&quot;:</span> <span class="pre">&quot;high:shell&quot;}</span></code> for shell fragments at a smaller basis
-(see <a class="reference internal" href="#seamm_mbe.fragments.level_key" title="seamm_mbe.fragments.level_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">level_key()</span></code></a>).</p></li>
+fragment of two or more units holding an ion shell, e.g.
+<code class="docutils literal notranslate"><span class="pre">{&quot;shell&quot;:</span> <span class="pre">&quot;high:shell&quot;}</span></code> for the shell pairs at a smaller basis; the
+shell’s own monomer keeps the 1-body level (see <a class="reference internal" href="#seamm_mbe.fragments.level_key" title="seamm_mbe.fragments.level_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">level_key()</span></code></a>).</p></li>
 <li><p><strong>low_levels</strong> (<em>{int or str: str} or None</em>) – Likewise a molecular low level other than “molecular” for some orders,
 or for the fragments holding an ion shell (<code class="docutils literal notranslate"><span class="pre">&quot;shell&quot;</span></code>), e.g.
 <code class="docutils literal notranslate"><span class="pre">{3:</span> <span class="pre">&quot;molecular:3&quot;}</span></code> for triples at a smaller basis than the pairs’
@@ -1302,8 +1304,11 @@ triples &lt; 3.5 Å, designated-atom distances).</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fragment</strong> (<em>Fragment</em>)</p></li>
-<li><p><strong>levels</strong> (<em>{int or str: object} or None</em>) – By order, and for the fragments holding an ion shell by <a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a>,
-which takes precedence over the order.</p></li>
+<li><p><strong>levels</strong> (<em>{int or str: object} or None</em>) – By order, and for the fragments of two or more units holding an ion
+shell by <a class="reference internal" href="#seamm_mbe.fragments.SHELL" title="seamm_mbe.fragments.SHELL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SHELL</span></code></a>, which takes precedence over the order. A shell’s
+own monomer keeps its order’s level: the 1-body terms set the labels’
+absolute energy scale (and its energy offsets), so they stay at one level
+for every unit.</p></li>
 <li><p><strong>default</strong> (<em>object</em>) – For a fragment the map does not cover.</p></li>
 <li><p><strong>shells</strong> (<em>frozenset of int</em>) – The units that are ion shells (<a class="reference internal" href="#seamm_mbe.fragments.FragmentSet.shells" title="seamm_mbe.fragments.FragmentSet.shells"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FragmentSet.shells</span></code></a>).</p></li>
 </ul>

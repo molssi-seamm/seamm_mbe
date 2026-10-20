@@ -225,8 +225,12 @@ How the units are built:
           low_by_order={3: low_tz, "shell": low_shell},
       )
 
-  The shell key takes precedence over the order, so a shell triple (without
-  truncation) uses the shell level. As for the orders, each such increment is a
+  The shell key applies to the fragments of two or more units and takes
+  precedence over the order, so a shell triple (without truncation) uses the shell
+  level. A shell's own monomer keeps the 1-body level: the 1-body terms set the
+  labels' absolute energy scale, and its energy offsets, so they must be at one
+  level for every unit. (Its monomer is also computed at the shell level, inside
+  the shell pairs' increments.) As for the orders, each such increment is a
   difference within its own ladder, and with the same results for every level the
   correction is exactly the single-level one. :func:`seamm_mbe.level_key` gives the
   entry of a level map a fragment uses.
