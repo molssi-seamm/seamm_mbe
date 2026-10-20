@@ -196,6 +196,11 @@ class FragmentSet:
     def names(self):
         return [f.name for f in self.fragments]
 
+    @property
+    def shells(self):
+        """The units that are ion shells (empty without ion shells)."""
+        return frozenset(getattr(self.system, "shells", None) or ())
+
     def by_order(self, order, in_sum=None):
         """The fragments of an order; only selected (True) or only auxiliary
         (False) ones if ``in_sum`` is given."""
@@ -236,18 +241,22 @@ class FragmentSet:
         molecular_everywhere : bool
             Put every fragment in "molecular", which costs more but allows a
             consistency check of the two low levels.
-        high_levels : {int: str} or None
+        high_levels : {int or str: str} or None
             A high level other than "high" for some orders, e.g. ``{3: "high:3"}``
             for triples at their own level (a smaller basis than the pairs'). Each
             order's increments are built entirely at its own high level, so that
             level is computed on those fragments and all their sub-fragments: the
-            monomers and sub-pairs of the triples are computed at both levels.
-        low_levels : {int: str} or None
+            monomers and sub-pairs of the triples are computed at both levels. The
+            key ``"shell"`` (:data:`SHELL`) gives the level of every selected
+            fragment holding an ion shell, whatever its order, e.g.
+            ``{"shell": "high:shell"}`` for shell fragments at a smaller basis
+            (see :func:`level_key`).
+        low_levels : {int or str: str} or None
             Likewise a molecular low level other than "molecular" for some orders,
-            e.g. ``{3: "molecular:3"}`` for triples at a smaller basis than the
-            pairs' low level. It applies to the fragments of those orders assigned
-            the molecular low level, and is computed on them and all their
-            sub-fragments.
+            or for the fragments holding an ion shell (``"shell"``), e.g.
+            ``{3: "molecular:3"}`` for triples at a smaller basis than the pairs'
+            low level. It applies to those fragments assigned the molecular low
+            level, and is computed on them and all their sub-fragments.
 
         Returns
         -------
@@ -263,7 +272,9 @@ class FragmentSet:
         out = {}
         for level in ("periodic", "molecular", *dict.fromkeys(low_levels.values())):
             out[level] = self.closure(
-                f for f in self.selected() if low_level_of(f, low_levels) == level
+                f
+                for f in self.selected()
+                if low_level_of(f, low_levels, self.shells) == level
             )
         if molecular_everywhere:
             out["molecular"] = self.names
@@ -273,17 +284,50 @@ class FragmentSet:
             return out
         for key in ["high", *dict.fromkeys(high_levels.values())]:
             out[key] = self.closure(
-                f for f in self.selected() if high_levels.get(f.order, "high") == key
+                f
+                for f in self.selected()
+                if level_key(f, high_levels, "high", self.shells) == key
             )
         return out
 
 
-def low_level_of(fragment, low_levels=None):
+#: The key of a level map (``high_levels``, ``low_levels``, ``high_by_order``,
+#: ``low_by_order``) for the fragments holding an ion shell.
+SHELL = "shell"
+
+
+def level_key(fragment, levels, default, shells=frozenset()):
+    """Which entry of a level map a selected fragment's increment uses.
+
+    Parameters
+    ----------
+    fragment : Fragment
+    levels : {int or str: object} or None
+        By order, and for the fragments holding an ion shell by :data:`SHELL`,
+        which takes precedence over the order.
+    default : object
+        For a fragment the map does not cover.
+    shells : frozenset of int
+        The units that are ion shells (:attr:`FragmentSet.shells`).
+
+    Returns
+    -------
+    object
+    """
+    if not levels:
+        return default
+    if SHELL in levels and shells and any(m in shells for m in fragment.molecules):
+        return levels[SHELL]
+    return levels.get(fragment.order, default)
+
+
+def low_level_of(fragment, low_levels=None, shells=frozenset()):
     """The low level a selected fragment's increment uses: its assigned level,
-    or for a molecular one the order's own molecular level, if it has one
-    (``low_levels``, e.g. ``{3: "molecular:3"}``)."""
+    or for a molecular one its own molecular level, if it has one
+    (``low_levels``, by order, e.g. ``{3: "molecular:3"}``, or by
+    :data:`SHELL` for the fragments holding one of ``shells``)."""
     if fragment.level == "molecular":
-        return (low_levels or {}).get(fragment.order, "molecular")
+        return level_key(fragment, low_levels, "molecular", shells)
     return fragment.level
 
 

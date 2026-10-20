@@ -26,7 +26,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from .fragments import low_level_of
+from .fragments import level_key, low_level_of
 from .levels import LEVELS
 
 
@@ -177,12 +177,14 @@ def increments(fragments, names, high, low):
 
 
 def _high_levels(high_by_order):
-    """{order: level name} for the orders with a high level of their own."""
+    """{order or "shell": level name} for the orders (and the shell fragments)
+    with a high level of their own: "high:<order>" or "high:shell"."""
     return {order: f"high:{order}" for order in (high_by_order or {})}
 
 
 def _low_levels(low_by_order):
-    """{order: level name} for the orders with a molecular low level of their own."""
+    """{order or "shell": level name} for the orders (and the shell fragments)
+    with a molecular low level of their own."""
     return {order: f"molecular:{order}" for order in (low_by_order or {})}
 
 
@@ -197,7 +199,8 @@ def missing_results(
     """The (name, level) of every result the correction needs but lacks.
     Results that are None count as missing (a failed calculation).
     ``high_by_order`` and ``low_by_order`` as for :func:`mbe_correction`; their
-    levels are named "high:<order>" and "molecular:<order>"."""
+    levels are named "high:<order>" and "molecular:<order>" ("high:shell" and
+    "molecular:shell" for the key "shell")."""
     levels = _high_levels(high_by_order)
     low_levels = _low_levels(low_by_order)
     needed = fragments.calculations(high_levels=levels, low_levels=low_levels)
@@ -255,6 +258,13 @@ def mbe_correction(
         ladder, so its levels need only be consistent within it, never across
         orders. With equal results this gives exactly what ``molecular`` alone
         gives.
+    high_by_order, low_by_order : keyed "shell"
+        Either map may also have the key ``"shell"`` (:data:`seamm_mbe.SHELL`):
+        the results for every selected fragment holding an ion shell, whatever
+        its order, which then takes that level instead of its order's (e.g. the
+        shell pairs at def2-TZVPPD with the solvent pairs at def2-QZVPPD). Each
+        such increment is built entirely from that level's results, so its
+        sub-fragments are needed at that level too.
     corrections : {str: result} or None
         Corrections, each a :class:`FragmentResult`, an (energy, forces) pair or a
         dict with "energy" and "forces", added to selected fragments' increments
@@ -308,8 +318,8 @@ def mbe_correction(
             names = fragments.closure(
                 f
                 for f in fragments.selected()
-                if low_level_of(f, low_levels) == low_key
-                and high_levels.get(f.order, "high") == key
+                if low_level_of(f, low_levels, fragments.shells) == low_key
+                and level_key(f, high_levels, "high", fragments.shells) == key
             )
             if names:
                 ladders[(low_key, key)] = increments(
@@ -322,8 +332,8 @@ def mbe_correction(
     total_energy = 0.0
     result = Correction(energy=0.0, forces=total_forces, virial=total_virial)
     for f in fragments.selected():
-        key = high_levels.get(f.order, "high")
-        low_key = low_level_of(f, low_levels)
+        key = level_key(f, high_levels, "high", fragments.shells)
+        low_key = low_level_of(f, low_levels, fragments.shells)
         energy, forces = ladders[(low_key, key)][f.name]
         if f.name in corrections:
             d_energy, d_forces = _unpack(corrections[f.name])

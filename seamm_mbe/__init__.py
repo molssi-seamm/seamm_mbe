@@ -32,6 +32,8 @@ from .fragments import (  # noqa: F401
     FragmentSet,
     canonical_key,
     enumerate_fragments,
+    SHELL,
+    level_key,
     low_level_of,
 )
 from .levels import LEVELS, MOLECULAR, PERIODIC, assign_levels  # noqa: F401
