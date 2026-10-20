@@ -1,6 +1,16 @@
 =======
 History
 =======
+2026.10.20.1 -- Bugfix: a shell's own monomer keeps the 1-body level
+    * The ``"shell"`` level of 2026.10.20 also took a shell's own monomer, so its
+      1-body term was computed at the shell level (e.g. def2-TZVPPD) while every
+      other unit's was at the order-1 level (def2-QZVPPD). The 1-body terms set the
+      labels' absolute energy scale, and its energy offsets, so the molecules in a
+      shell would have been on a different scale from the rest, by about 1 eV per
+      molecule between these basis sets. The shell level now applies to the
+      fragments of two or more units holding a shell; the shell's monomer is still
+      computed at the shell level too, inside the shell pairs' increments.
+
 2026.10.20 -- Levels of their own for the fragments holding an ion shell
     * The level maps of ``FragmentSet.calculations`` (``high_levels``,
       ``low_levels``) and of ``mbe_correction`` and ``missing_results``

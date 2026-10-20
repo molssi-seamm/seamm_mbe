@@ -248,9 +248,9 @@ class FragmentSet:
             level is computed on those fragments and all their sub-fragments: the
             monomers and sub-pairs of the triples are computed at both levels. The
             key ``"shell"`` (:data:`SHELL`) gives the level of every selected
-            fragment holding an ion shell, whatever its order, e.g.
-            ``{"shell": "high:shell"}`` for shell fragments at a smaller basis
-            (see :func:`level_key`).
+            fragment of two or more units holding an ion shell, e.g.
+            ``{"shell": "high:shell"}`` for the shell pairs at a smaller basis; the
+            shell's own monomer keeps the 1-body level (see :func:`level_key`).
         low_levels : {int or str: str} or None
             Likewise a molecular low level other than "molecular" for some orders,
             or for the fragments holding an ion shell (``"shell"``), e.g.
@@ -303,8 +303,11 @@ def level_key(fragment, levels, default, shells=frozenset()):
     ----------
     fragment : Fragment
     levels : {int or str: object} or None
-        By order, and for the fragments holding an ion shell by :data:`SHELL`,
-        which takes precedence over the order.
+        By order, and for the fragments of two or more units holding an ion
+        shell by :data:`SHELL`, which takes precedence over the order. A shell's
+        own monomer keeps its order's level: the 1-body terms set the labels'
+        absolute energy scale (and its energy offsets), so they stay at one level
+        for every unit.
     default : object
         For a fragment the map does not cover.
     shells : frozenset of int
@@ -316,7 +319,12 @@ def level_key(fragment, levels, default, shells=frozenset()):
     """
     if not levels:
         return default
-    if SHELL in levels and shells and any(m in shells for m in fragment.molecules):
+    if (
+        SHELL in levels
+        and fragment.order >= 2
+        and shells
+        and any(m in shells for m in fragment.molecules)
+    ):
         return levels[SHELL]
     return levels.get(fragment.order, default)
 
