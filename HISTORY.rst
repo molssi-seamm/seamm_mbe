@@ -1,6 +1,16 @@
 =======
 History
 =======
+2026.10.23 -- Variants of a level for single fragments
+    * A selected fragment's increment can be built at a variant of its level, e.g.
+      the same method with explicit auxiliary basis sets where AutoAux fails: the
+      ``variants`` argument of ``FragmentSet.calculations``, ``missing_results`` and
+      ``mbe_correction`` maps a level to the variant and the fragments that use it,
+      and ``variant_results`` gives the variant's results. Each such increment is
+      built entirely from the variant's results; the other increments, the
+      sub-fragments' own among them, are unchanged, and the base level no longer
+      needs the fragment itself.
+
 2026.10.20.1 -- Bugfix: a shell's own monomer keeps the 1-body level
     * The ``"shell"`` level of 2026.10.20 also took a shell's own monomer, so its
       1-body term was computed at the shell level (e.g. def2-TZVPPD) while every

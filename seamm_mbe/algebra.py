@@ -26,7 +26,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from .fragments import level_key, low_level_of
+from .fragments import check_variants, level_key, low_level_of, variant_of
 from .levels import LEVELS
 
 
@@ -195,20 +195,27 @@ def missing_results(
     molecular=None,
     high_by_order=None,
     low_by_order=None,
+    variants=None,
+    variant_results=None,
 ):
     """The (name, level) of every result the correction needs but lacks.
     Results that are None count as missing (a failed calculation).
-    ``high_by_order`` and ``low_by_order`` as for :func:`mbe_correction`; their
-    levels are named "high:<order>" and "molecular:<order>" ("high:shell" and
-    "molecular:shell" for the key "shell")."""
+    ``high_by_order``, ``low_by_order``, ``variants`` and ``variant_results`` as
+    for :func:`mbe_correction`; their levels are named "high:<order>" and
+    "molecular:<order>" ("high:shell" and "molecular:shell" for the key "shell"),
+    and the variants by their own names."""
     levels = _high_levels(high_by_order)
     low_levels = _low_levels(low_by_order)
-    needed = fragments.calculations(high_levels=levels, low_levels=low_levels)
+    needed = fragments.calculations(
+        high_levels=levels, low_levels=low_levels, variants=variants
+    )
     given = {"high": high, "periodic": periodic or {}, "molecular": molecular or {}}
     for order, key in levels.items():
         given[key] = high_by_order[order]
     for order, key in low_levels.items():
         given[key] = low_by_order[order]
+    for variant, _ in (variants or {}).values():
+        given[variant] = (variant_results or {}).get(variant, {})
     return [
         (name, level)
         for level in given
@@ -225,6 +232,8 @@ def mbe_correction(
     corrections=None,
     high_by_order=None,
     low_by_order=None,
+    variants=None,
+    variant_results=None,
 ):
     """The MBE correction from the fragment results.
 
@@ -277,6 +286,14 @@ def mbe_correction(
         E(1) + sum dE_ij^CP + sum dE_ijk, the triples still subtracting the
         uncorrected pairs, so a pair's BSSE does not move into the 3-body
         terms.
+    variants : {str: (str, set of str)} or None
+        Variants of levels for some selected fragments, by the level's name, as
+        for :meth:`FragmentSet.calculations`: each listed fragment's increment is
+        built entirely from the variant's results (the fragment and its
+        sub-fragments at that level), as for a level of its own. The other
+        fragments, the sub-fragments' own increments among them, are unchanged.
+    variant_results : {str: {str: result}} or None
+        The results of each variant level, by its name.
 
     Returns
     -------
@@ -299,8 +316,16 @@ def mbe_correction(
             raise ValueError(
                 f"Fragment {f.name} has no level; call assign_levels() first."
             )
+    variants = check_variants(fragments, variants)
     missing = missing_results(
-        fragments, high, periodic, molecular, high_by_order, low_by_order
+        fragments,
+        high,
+        periodic,
+        molecular,
+        high_by_order,
+        low_by_order,
+        variants,
+        variant_results,
     )
     if missing:
         raise MissingFragmentsError(missing)
@@ -312,16 +337,28 @@ def mbe_correction(
     lows = {"periodic": periodic or {}, "molecular": molecular or {}}
     for order, key in low_levels.items():
         lows[key] = low_by_order[order]
+    for base, (variant, _) in variants.items():
+        results = (variant_results or {}).get(variant, {})
+        if base in highs:
+            highs[variant] = results
+        elif base in lows:
+            lows[variant] = results
+        else:
+            raise ValueError(f"A variant is given for {base}, which is not a level.")
+
+    def keys(f):
+        """The (low, high) levels of a selected fragment's increment."""
+        low_key = low_level_of(f, low_levels, fragments.shells)
+        key = level_key(f, high_levels, "high", fragments.shells)
+        return variant_of(f, low_key, variants), variant_of(f, key, variants)
+
     # One ladder per (low level, high level): each the closure of the selected
     # fragments that use that pair of levels, ascending in order
     ladders = {}
     for low_key in lows:
         for key in highs:
             names = fragments.closure(
-                f
-                for f in fragments.selected()
-                if low_level_of(f, low_levels, fragments.shells) == low_key
-                and level_key(f, high_levels, "high", fragments.shells) == key
+                f for f in fragments.selected() if keys(f) == (low_key, key)
             )
             if names:
                 ladders[(low_key, key)] = increments(
@@ -334,8 +371,7 @@ def mbe_correction(
     total_energy = 0.0
     result = Correction(energy=0.0, forces=total_forces, virial=total_virial)
     for f in fragments.selected():
-        key = level_key(f, high_levels, "high", fragments.shells)
-        low_key = low_level_of(f, low_levels, fragments.shells)
+        low_key, key = keys(f)
         energy, forces = ladders[(low_key, key)][f.name]
         if f.name in corrections:
             d_energy, d_forces = _unpack(corrections[f.name])

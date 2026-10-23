@@ -235,3 +235,28 @@ How the units are built:
   correction is exactly the single-level one. :func:`seamm_mbe.level_key` gives the
   entry of a level map a fragment uses.
 
+Variants of a level for single fragments
+----------------------------------------
+
+A fragment whose calculation cannot be done at its level as the others are -- e.g.
+a 104-atom Li⁺ shell pair for which ORCA's AutoAux auxiliary basis is linearly
+dependent -- can have its increment built at a variant of that level instead, such
+as the same method with explicit auxiliary basis sets. ``variants`` maps a level's
+name to the variant's name and the fragments that use it::
+
+    variants = {"high:shell": ("high:shell@aux", {"d01_09"})}
+    todo = fragments.calculations(high_levels=..., variants=variants)
+    # todo["high:shell@aux"]: d01_09 and its sub-fragments; todo["high:shell"]
+    # no longer has d01_09 itself, only what the other increments need
+    correction = seamm_mbe.mbe_correction(
+        fragments, high, periodic, molecular,
+        high_by_order={"shell": high_shell},
+        variants=variants,
+        variant_results={"high:shell@aux": high_shell_aux},
+    )
+
+The increment of each listed fragment is built entirely from the variant's results
+(the fragment and its sub-fragments), as for a level of its own, so one auxiliary
+basis is used throughout it. Every other increment, the sub-fragments' own among
+them, is unchanged. Low levels take variants the same way.
+
