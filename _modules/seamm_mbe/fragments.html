@@ -595,7 +595,11 @@
 <div class="viewcode-block" id="FragmentSet.calculations">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.FragmentSet.calculations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculations</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">molecular_everywhere</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">high_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">molecular_everywhere</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">high_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">low_levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">variants</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""What must be computed, by level.</span>
 
@@ -620,6 +624,14 @@
 <span class="sd">            ``{3: "molecular:3"}`` for triples at a smaller basis than the pairs'</span>
 <span class="sd">            low level. It applies to those fragments assigned the molecular low</span>
 <span class="sd">            level, and is computed on them and all their sub-fragments.</span>
+<span class="sd">        variants : {str: (str, set of str)} or None</span>
+<span class="sd">            For some selected fragments, a variant of one of their levels, by the</span>
+<span class="sd">            level's name: ``{"high:shell": ("high:shell@aux", {"d01_09"})}`` builds</span>
+<span class="sd">            the increment of d01_09 at the variant "high:shell@aux" instead of</span>
+<span class="sd">            "high:shell" (e.g. the same method with explicit auxiliary basis sets</span>
+<span class="sd">            where AutoAux failed). The variant level is computed on those</span>
+<span class="sd">            fragments and all their sub-fragments; the base level no longer needs</span>
+<span class="sd">            the fragments themselves, only what its other increments need.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -632,24 +644,33 @@
 <span class="sd">        """</span>
         <span class="n">high_levels</span> <span class="o">=</span> <span class="n">high_levels</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">low_levels</span> <span class="o">=</span> <span class="n">low_levels</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">variants</span> <span class="o">=</span> <span class="n">check_variants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variants</span><span class="p">)</span>
+        <span class="n">lows</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"periodic"</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">low_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+        <span class="n">lows</span> <span class="o">+=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">base</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">variants</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">lows</span><span class="p">]</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"periodic"</span><span class="p">,</span> <span class="s2">"molecular"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">low_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">lows</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
                 <span class="n">f</span>
                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">level</span>
+                <span class="k">if</span> <span class="n">variant_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_level_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">low_levels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">),</span> <span class="n">variants</span><span class="p">)</span>
+                <span class="o">==</span> <span class="n">level</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">molecular_everywhere</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="s2">"molecular"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span>
         <span class="n">needed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">names</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">high_levels</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">high_levels</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">variants</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="s2">"high"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">needed</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">out</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"high"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">high_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())]:</span>
+        <span class="n">highs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"high"</span><span class="p">,</span> <span class="o">*</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">high_levels</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+        <span class="n">highs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">base</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">variants</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">highs</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">highs</span><span class="p">:</span>
             <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closure</span><span class="p">(</span>
                 <span class="n">f</span>
                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">level_key</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">high_levels</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">)</span> <span class="o">==</span> <span class="n">key</span>
+                <span class="k">if</span> <span class="n">variant_of</span><span class="p">(</span>
+                    <span class="n">f</span><span class="p">,</span> <span class="n">level_key</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">high_levels</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shells</span><span class="p">),</span> <span class="n">variants</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="n">key</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
@@ -694,6 +715,38 @@
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">levels</span><span class="p">[</span><span class="n">SHELL</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">levels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check_variants">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.check_variants">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_variants</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">variants</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The level variants (see :meth:`FragmentSet.calculations`), checked: each</span>
+<span class="sd">    names selected fragments and a variant level of a different name."""</span>
+    <span class="n">variants</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">variants</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="k">for</span> <span class="n">base</span><span class="p">,</span> <span class="p">(</span><span class="n">variant</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="ow">in</span> <span class="n">variants</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">variant</span> <span class="o">==</span> <span class="n">base</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The variant of the level </span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2"> must have another name."</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fragments</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">fragments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">in_sum</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"The variant </span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2"> is given for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, which is not a "</span>
+                    <span class="s2">"selected fragment."</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">variants</span></div>
+
+
+
+<div class="viewcode-block" id="variant_of">
+<a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.fragments.variant_of">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">variant_of</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">variants</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The level a selected fragment uses: ``level``, or its variant if</span>
+<span class="sd">    ``variants`` (see :meth:`FragmentSet.calculations`) lists the fragment for</span>
+<span class="sd">    that level."""</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="p">(</span><span class="n">variants</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fragment</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">level</span></div>
 
 
 

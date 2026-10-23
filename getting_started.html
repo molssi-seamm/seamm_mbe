@@ -576,6 +576,30 @@ entry of a level map a fragment uses.</p>
 </li>
 </ul>
 </section>
+<section id="variants-of-a-level-for-single-fragments">
+<h2>Variants of a level for single fragments<a class="headerlink" href="#variants-of-a-level-for-single-fragments" title="Link to this heading">#</a></h2>
+<p>A fragment whose calculation cannot be done at its level as the others are – e.g.
+a 104-atom Li⁺ shell pair for which ORCA’s AutoAux auxiliary basis is linearly
+dependent – can have its increment built at a variant of that level instead, such
+as the same method with explicit auxiliary basis sets. <code class="docutils literal notranslate"><span class="pre">variants</span></code> maps a level’s
+name to the variant’s name and the fragments that use it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">variants</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"high:shell"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"high:shell@aux"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"d01_09"</span><span class="p">})}</span>
+<span class="n">todo</span> <span class="o">=</span> <span class="n">fragments</span><span class="o">.</span><span class="n">calculations</span><span class="p">(</span><span class="n">high_levels</span><span class="o">=...</span><span class="p">,</span> <span class="n">variants</span><span class="o">=</span><span class="n">variants</span><span class="p">)</span>
+<span class="c1"># todo["high:shell@aux"]: d01_09 and its sub-fragments; todo["high:shell"]</span>
+<span class="c1"># no longer has d01_09 itself, only what the other increments need</span>
+<span class="n">correction</span> <span class="o">=</span> <span class="n">seamm_mbe</span><span class="o">.</span><span class="n">mbe_correction</span><span class="p">(</span>
+    <span class="n">fragments</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">periodic</span><span class="p">,</span> <span class="n">molecular</span><span class="p">,</span>
+    <span class="n">high_by_order</span><span class="o">=</span><span class="p">{</span><span class="s2">"shell"</span><span class="p">:</span> <span class="n">high_shell</span><span class="p">},</span>
+    <span class="n">variants</span><span class="o">=</span><span class="n">variants</span><span class="p">,</span>
+    <span class="n">variant_results</span><span class="o">=</span><span class="p">{</span><span class="s2">"high:shell@aux"</span><span class="p">:</span> <span class="n">high_shell_aux</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The increment of each listed fragment is built entirely from the variant’s results
+(the fragment and its sub-fragments), as for a level of its own, so one auxiliary
+basis is used throughout it. Every other increment, the sub-fragments’ own among
+them, is unchanged. Low levels take variants the same way.</p>
+</section>
 </section>
 
 
@@ -633,6 +657,7 @@ entry of a level map a fragment uses.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#corrections-to-selected-increments">Corrections to selected increments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-level-per-order">A high level per order</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ion-shells">Ion shells</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variants-of-a-level-for-single-fragments">Variants of a level for single fragments</a></li>
 </ul>
   </nav></div>
 
