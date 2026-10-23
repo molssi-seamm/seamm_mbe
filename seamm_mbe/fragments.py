@@ -232,7 +232,11 @@ class FragmentSet:
         return [f.name for f in self.fragments if f.name in names]
 
     def calculations(
-        self, molecular_everywhere=False, high_levels=None, low_levels=None
+        self,
+        molecular_everywhere=False,
+        high_levels=None,
+        low_levels=None,
+        variants=None,
     ):
         """What must be computed, by level.
 
@@ -257,6 +261,14 @@ class FragmentSet:
             ``{3: "molecular:3"}`` for triples at a smaller basis than the pairs'
             low level. It applies to those fragments assigned the molecular low
             level, and is computed on them and all their sub-fragments.
+        variants : {str: (str, set of str)} or None
+            For some selected fragments, a variant of one of their levels, by the
+            level's name: ``{"high:shell": ("high:shell@aux", {"d01_09"})}`` builds
+            the increment of d01_09 at the variant "high:shell@aux" instead of
+            "high:shell" (e.g. the same method with explicit auxiliary basis sets
+            where AutoAux failed). The variant level is computed on those
+            fragments and all their sub-fragments; the base level no longer needs
+            the fragments themselves, only what its other increments need.
 
         Returns
         -------
@@ -269,24 +281,33 @@ class FragmentSet:
         """
         high_levels = high_levels or {}
         low_levels = low_levels or {}
+        variants = check_variants(self, variants)
+        lows = ["periodic", "molecular", *dict.fromkeys(low_levels.values())]
+        lows += [v for base, (v, _) in variants.items() if base in lows]
         out = {}
-        for level in ("periodic", "molecular", *dict.fromkeys(low_levels.values())):
+        for level in lows:
             out[level] = self.closure(
                 f
                 for f in self.selected()
-                if low_level_of(f, low_levels, self.shells) == level
+                if variant_of(f, low_level_of(f, low_levels, self.shells), variants)
+                == level
             )
         if molecular_everywhere:
             out["molecular"] = self.names
         needed = set().union(*(set(names) for names in out.values()))
-        if not high_levels:
+        if not high_levels and not variants:
             out["high"] = [name for name in self.names if name in needed]
             return out
-        for key in ["high", *dict.fromkeys(high_levels.values())]:
+        highs = ["high", *dict.fromkeys(high_levels.values())]
+        highs += [v for base, (v, _) in variants.items() if base in highs]
+        for key in highs:
             out[key] = self.closure(
                 f
                 for f in self.selected()
-                if level_key(f, high_levels, "high", self.shells) == key
+                if variant_of(
+                    f, level_key(f, high_levels, "high", self.shells), variants
+                )
+                == key
             )
         return out
 
@@ -327,6 +348,32 @@ def level_key(fragment, levels, default, shells=frozenset()):
     ):
         return levels[SHELL]
     return levels.get(fragment.order, default)
+
+
+def check_variants(fragments, variants):
+    """The level variants (see :meth:`FragmentSet.calculations`), checked: each
+    names selected fragments and a variant level of a different name."""
+    variants = dict(variants or {})
+    for base, (variant, names) in variants.items():
+        if variant == base:
+            raise ValueError(f"The variant of the level {base} must have another name.")
+        for name in names:
+            if name not in fragments or not fragments[name].in_sum:
+                raise ValueError(
+                    f"The variant {variant} is given for {name}, which is not a "
+                    "selected fragment."
+                )
+    return variants
+
+
+def variant_of(fragment, level, variants=None):
+    """The level a selected fragment uses: ``level``, or its variant if
+    ``variants`` (see :meth:`FragmentSet.calculations`) lists the fragment for
+    that level."""
+    entry = (variants or {}).get(level)
+    if entry is not None and fragment.name in entry[1]:
+        return entry[0]
+    return level
 
 
 def low_level_of(fragment, low_levels=None, shells=frozenset()):
