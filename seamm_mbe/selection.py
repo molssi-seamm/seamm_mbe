@@ -54,6 +54,11 @@ class SelectionRules:
         The highest order of a selected fragment holding an ion shell (see
         :mod:`seamm_mbe.shells`); None for the same as every fragment. With 2,
         a shell's pairs are selected but none of its triples.
+    shell_pair_cap : float or None
+        With ion shells, the distance (Å, by the criterion) at and beyond which
+        a pair of two shells is not computed: it is left out of the sum (and
+        so is any larger fragment holding it) and listed in
+        :attr:`FragmentSet.capped` instead. None (the default) for no cap.
     """
 
     max_order: int = 3
@@ -61,6 +66,7 @@ class SelectionRules:
     cutoffs: dict = field(default_factory=_default_cutoffs)
     rules: dict = field(default_factory=_default_rules)
     shell_max_order: int | None = None
+    shell_pair_cap: float | None = None
 
     def __post_init__(self):
         if self.criterion not in CRITERIA:
@@ -71,6 +77,8 @@ class SelectionRules:
             raise SelectionError("The maximum order must be at least 1")
         if self.shell_max_order is not None and int(self.shell_max_order) < 1:
             raise SelectionError("The maximum order with a shell must be at least 1")
+        if self.shell_pair_cap is not None and float(self.shell_pair_cap) <= 0:
+            raise SelectionError("The shell pair cap must be a positive distance")
         for n in range(2, self.max_order + 1):
             if n not in self.cutoffs:
                 raise SelectionError(f"No cutoff given for order {n}")
