@@ -205,6 +205,10 @@ How the units are built:
   is per molecule (energy offsets and the molecular virial).
 - **Truncation:** ``SelectionRules.shell_max_order = 2`` selects a shell's pairs
   but none of its triples.
+- **Capped two-shell pairs:** ``SelectionRules.shell_pair_cap = r`` leaves out
+  every pair of two shells at least r Å apart (by the criterion), and any larger
+  fragment holding one. They are not computed and not in the sum, and are listed in
+  ``fragments.capped``, each with its name, molecules, images and distance.
 - **Criterion:** shells need a contact criterion (``contact`` or ``heavy
   contact``). A shell's reference point is its ion, so a point criterion would
   miss partners near its members, and ``enumerate_fragments`` refuses it.

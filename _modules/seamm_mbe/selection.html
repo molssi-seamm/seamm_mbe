@@ -397,6 +397,11 @@
 <span class="sd">        The highest order of a selected fragment holding an ion shell (see</span>
 <span class="sd">        :mod:`seamm_mbe.shells`); None for the same as every fragment. With 2,</span>
 <span class="sd">        a shell's pairs are selected but none of its triples.</span>
+<span class="sd">    shell_pair_cap : float or None</span>
+<span class="sd">        With ion shells, the distance (Å, by the criterion) at and beyond which</span>
+<span class="sd">        a pair of two shells is not computed: it is left out of the sum (and</span>
+<span class="sd">        so is any larger fragment holding it) and listed in</span>
+<span class="sd">        :attr:`FragmentSet.capped` instead. None (the default) for no cap.</span>
 <span class="sd">    """</span>
 
     <span class="n">max_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
@@ -404,6 +409,7 @@
     <span class="n">cutoffs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">_default_cutoffs</span><span class="p">)</span>
     <span class="n">rules</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">_default_rules</span><span class="p">)</span>
     <span class="n">shell_max_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">shell_pair_cap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CRITERIA</span><span class="p">:</span>
@@ -414,6 +420,8 @@
             <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span><span class="s2">"The maximum order must be at least 1"</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell_max_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_max_order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span><span class="s2">"The maximum order with a shell must be at least 1"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell_pair_cap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_pair_cap</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span><span class="s2">"The shell pair cap must be a positive distance"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoffs</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">SelectionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No cutoff given for order </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>

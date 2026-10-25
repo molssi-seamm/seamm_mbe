@@ -544,6 +544,10 @@ its charge is the sum of its members’.</p></li>
 is per molecule (energy offsets and the molecular virial).</p></li>
 <li><p><strong>Truncation:</strong> <code class="docutils literal notranslate"><span class="pre">SelectionRules.shell_max_order</span> <span class="pre">=</span> <span class="pre">2</span></code> selects a shell’s pairs
 but none of its triples.</p></li>
+<li><p><strong>Capped two-shell pairs:</strong> <code class="docutils literal notranslate"><span class="pre">SelectionRules.shell_pair_cap</span> <span class="pre">=</span> <span class="pre">r</span></code> leaves out
+every pair of two shells at least r Å apart (by the criterion), and any larger
+fragment holding one. They are not computed and not in the sum, and are listed in
+<code class="docutils literal notranslate"><span class="pre">fragments.capped</span></code>, each with its name, molecules, images and distance.</p></li>
 <li><p><strong>Criterion:</strong> shells need a contact criterion (<code class="docutils literal notranslate"><span class="pre">contact</span></code> or <code class="docutils literal notranslate"><span class="pre">heavy</span>
 <span class="pre">contact</span></code>). A shell’s reference point is its ion, so a point criterion would
 miss partners near its members, and <code class="docutils literal notranslate"><span class="pre">enumerate_fragments</span></code> refuses it.</p></li>
