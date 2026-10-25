@@ -215,3 +215,79 @@ def test_shells_need_a_contact_criterion():
             seamm_mbe.enumerate_fragments(units, rules)
     rules = seamm_mbe.SelectionRules(criterion="heavy contact")
     seamm_mbe.enumerate_fragments(units, rules)
+
+
+def three_shells():
+    """Three Li⁺ with four waters each, at different separations, and a free water."""
+    waters = []
+    for k, center in enumerate([(0.0, 0.0, 0.0), (9.0, 0.0, 0.0), (0.0, 11.0, 0.0)]):
+        waters += around(center, [1.9, 1.95, 2.0, 2.05], start=0.3 * k)
+    waters.append(((-7.0, 0.0, 0.0), (-8.0, 0.0, 0.0)))
+    return build([(0.0, 0.0, 0.0), (9.0, 0.0, 0.0), (0.0, 11.0, 0.0)], waters)
+
+
+def test_the_shell_pair_cap_drops_distant_shell_pairs():
+    """Pairs of two shells at or beyond the cap are not computed (Li-salt
+    production, 2026-10-25): left out of the fragments, and so of the sum,
+    and listed as capped; the other pairs are untouched."""
+    units = seamm_mbe.ion_shells(three_shells())
+    shells = sorted(units.shells)
+    assert len(shells) == 3
+    rules = seamm_mbe.SelectionRules(
+        max_order=2, criterion="contact", cutoffs={2: 100.0}
+    )
+    full = seamm_mbe.enumerate_fragments(units, rules)
+    shell_pairs = {
+        f.name: f.max_distance
+        for f in full.by_order(2)
+        if all(m in shells for m in f.molecules)
+    }
+    assert len(shell_pairs) == 3
+    near, middle, far = sorted(shell_pairs.values())
+    rules.shell_pair_cap = (near + middle) / 2
+    capped = seamm_mbe.enumerate_fragments(units, rules)
+    assert full.capped == []
+    assert sorted(c["name"] for c in capped.capped) == sorted(
+        n for n, d in shell_pairs.items() if d >= rules.shell_pair_cap
+    )
+    for c in capped.capped:
+        assert c["name"] not in capped
+        assert c["distance"] == pytest.approx(shell_pairs[c["name"]])
+        assert full[c["name"]].molecules == tuple(c["molecules"])
+        assert [tuple(i) for i in full[c["name"]].images] == [
+            tuple(i) for i in c["images"]
+        ]
+    assert len(capped.by_order(2)) == len(full.by_order(2)) - 2
+    assert set(full.names) - set(capped.names) == {c["name"] for c in capped.capped}
+    # A cap at the nearest pair caps all three
+    rules.shell_pair_cap = near
+    assert len(seamm_mbe.enumerate_fragments(units, rules).capped) == 3
+
+
+def test_no_fragment_holds_a_capped_pair():
+    units = seamm_mbe.ion_shells(three_shells())
+    shells = units.shells
+    rules = seamm_mbe.SelectionRules(
+        max_order=3, criterion="contact", cutoffs={2: 100.0, 3: 100.0}
+    )
+    full = seamm_mbe.enumerate_fragments(units, rules)
+    distances = sorted(
+        f.max_distance
+        for f in full.by_order(2)
+        if all(m in shells for m in f.molecules)
+    )
+    rules.shell_pair_cap = (distances[0] + distances[1]) / 2
+    fragments = seamm_mbe.enumerate_fragments(units, rules)
+    capped = {tuple(c["molecules"]) for c in fragments.capped}
+    assert len(capped) == 2
+    for f in fragments:
+        for pair in itertools.combinations(f.molecules, 2):
+            assert pair not in capped, f"{f.name} holds capped pair {pair}"
+    # Triples without a capped pair are kept
+    assert len(fragments.by_order(3, in_sum=True)) > 0
+
+
+def test_a_bad_shell_pair_cap_is_refused():
+    for cap in (0.0, -1.0):
+        with pytest.raises(seamm_mbe.SelectionError, match="shell pair cap"):
+            seamm_mbe.SelectionRules(shell_pair_cap=cap)

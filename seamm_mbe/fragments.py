@@ -172,10 +172,14 @@ class FragmentSet:
     Use :func:`enumerate_fragments` to make one.
     """
 
-    def __init__(self, system, rules, fragments):
+    def __init__(self, system, rules, fragments, capped=None):
         self.system = system
         self.rules = rules
         self.fragments = fragments
+        # Pairs of two ion shells at or beyond rules.shell_pair_cap: not
+        # computed and not in the sum. Each a dict of name, molecules, images
+        # and distance (Å).
+        self.capped = list(capped or [])
         self._by_name = {f.name: f for f in fragments}
         if len(self._by_name) != len(fragments):
             raise SelectionError("Two fragments have the same name")
@@ -565,6 +569,9 @@ class _Enumerator:
         # Ion shells (a UnitSystem) may stop at a lower order than the rest
         shells = getattr(self.system, "shells", frozenset())
         shell_max = self.rules.shell_max_order
+        # Pairs of two shells at or beyond the cap are not computed
+        cap = self.rules.shell_pair_cap
+        capped = {}  # key -> placement and distance
         if max_order >= 2:
             for a, neighbors in enumerate(self.neighbors(2)):
                 for b, image in neighbors:
@@ -573,6 +580,12 @@ class _Enumerator:
                             continue
                     if b > a:
                         placement = {a: (0, 0, 0), b: image}
+                        if cap is not None and a in shells and b in shells:
+                            distance = self.distance(a, (0, 0, 0), b, image)
+                            if distance >= float(cap):
+                                key = canonical_key(placement)
+                                capped[key] = (placement, distance)
+                                continue
                         selected[canonical_key(placement)] = placement
         for order in range(3, max_order + 1):
             if self.rules.rule(order) == "none":
@@ -581,6 +594,8 @@ class _Enumerator:
                 if shell_max is not None and order > shell_max:
                     if any(m in shells for m in placement):
                         continue
+                if capped and self.holds_capped(placement, shells, capped):
+                    continue
                 if not self.passes(order, placement):
                     continue
                 frame = self.hub_frame(order, placement)
@@ -642,7 +657,25 @@ class _Enumerator:
             self.make(name, key, placement, in_sum, by_key)
             for name, (key, placement, in_sum) in ordered
         ]
-        return FragmentSet(self.system, self.rules, result)
+        capped_pairs = [
+            {
+                "name": self.name(key, placement, aux=False),
+                "molecules": key[0],
+                "images": ((0, 0, 0), *key[1]),
+                "distance": distance,
+            }
+            for key, (placement, distance) in sorted(capped.items())
+        ]
+        return FragmentSet(self.system, self.rules, result, capped=capped_pairs)
+
+    @staticmethod
+    def holds_capped(placement, shells, capped):
+        """Whether a placement holds a capped pair of shells."""
+        inside = sorted(m for m in placement if m in shells)
+        for a, b in itertools.combinations(inside, 2):
+            if canonical_key({a: placement[a], b: placement[b]}) in capped:
+                return True
+        return False
 
     def connected_sets(self, order):
         """Every distinct placement of ``order`` distinct molecules connected

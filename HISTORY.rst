@@ -1,6 +1,14 @@
 =======
 History
 =======
+2026.10.25 -- A cap on the pairs of two ion shells
+    * ``SelectionRules.shell_pair_cap`` (Å) leaves out every pair of two ion shells
+      at least that far apart (by the distance criterion), and any larger fragment
+      holding one: they are not computed and not in the sum. Pairs of two shells
+      hold 85-110 atoms and dominate the cost of Li-salt cells.
+    * ``FragmentSet.capped`` lists the capped pairs, each with its name (as it
+      would have had as a fragment), molecules, images and distance.
+
 2026.10.23 -- Variants of a level for single fragments
     * A selected fragment's increment can be built at a variant of its level, e.g.
       the same method with explicit auxiliary basis sets where AutoAux fails: the
