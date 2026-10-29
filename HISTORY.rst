@@ -1,6 +1,12 @@
 =======
 History
 =======
+2026.10.29 -- The parity error explains an ion bonded by distance
+    * When a molecule fails the electron-count parity check because it holds an alkali
+      or alkaline-earth atom bonded to other atoms -- usually bonds perceived from the
+      distances, such as Li+ next to a carbonyl O -- the error says so and how to fix
+      it: read the structure with its own bonds and charges, e.g. an SDF file.
+
 2026.10.25 -- A cap on the pairs of two ion shells
     * ``SelectionRules.shell_pair_cap`` (Å) leaves out every pair of two ion shells
       at least that far apart (by the distance criterion), and any larger fragment

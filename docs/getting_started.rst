@@ -93,8 +93,10 @@ formula.
 Charges come from the structure's per-atom formal charges when it has any
 (e.g. SDF ``M  CHG``). They are checked against the catalog, and a mismatch
 names the molecule. Otherwise the catalog's charges apply. An electron-count
-parity check catches a charge put on the wrong molecule. Explicit charges by
-type override both.
+parity check catches a charge put on the wrong molecule. When the molecule holds
+an alkali or alkaline-earth atom bonded to other atoms -- usually bonds perceived
+from the distances, such as Li⁺ next to a carbonyl O -- the error says so and how
+to fix it. Explicit charges by type override both.
 
 Fragment names
 --------------
