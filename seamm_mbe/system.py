@@ -21,6 +21,11 @@ import numpy as np
 from .catalog import CATALOG, MoleculeType, signature, wl_labels
 from .elements import MONATOMIC, atomic_number, hill_formula, mass
 
+# Alkali and alkaline-earth metals: ions in molecular systems (as molsystem treats them)
+_IONS = frozenset(
+    ("Li", "Na", "K", "Rb", "Cs", "Fr", "Be", "Mg", "Ca", "Sr", "Ba", "Ra")
+)
+
 
 class StructureError(ValueError):
     """The structure cannot be used as given (bad charges, missing bonds, ...)."""
@@ -330,12 +335,28 @@ class System:
         else:
             parity = "even" if mtype.multiplicity % 2 == 1 else "odd"
             need = f"multiplicity {mtype.multiplicity} needs an {parity} number"
+        hint = ""
+        ions = sorted(
+            {self.symbols[i] for i in molecule.atoms if self.symbols[i] in _IONS}
+        )
+        if ions and len(molecule.atoms) > 1:
+            hint = (
+                f" It holds {', '.join(ions)} bonded to other atoms, which is "
+                "usually an ion: the bonds were probably perceived from the "
+                "distances. Read the structure with its own bonds (e.g. an SDF "
+                "with the ion unbonded and its charge, M  CHG)."
+            )
+        elif ions and mtype.charge == 0:
+            hint = (
+                f" A lone {ions[0]} is usually an ion: give it its formal charge "
+                "(e.g. M  CHG in an SDF) or a charge by type."
+            )
         raise StructureError(
             f"Molecule {molecule.index!r} ({mtype.name}, {len(molecule.atoms)} "
             f"atom(s)) has charge {mtype.charge:+d}, giving it {n_electrons} "
             f"electrons; {need}. Check that the charges are assigned to the "
             "molecules they actually belong to -- the structure's formal charges, "
-            "or the charges given by type."
+            "or the charges given by type." + hint
         )
 
     # ------------------------------------------------------------------ helpers

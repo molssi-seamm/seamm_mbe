@@ -277,3 +277,11 @@ def test_bondless_salt_from_molsystem():
         db.close()
     assert [m.type for m in system.molecules] == ["Li+", "Cl-", "Na+", "Br-"]
     assert [system.types[m.type].charge for m in system.molecules] == [1, -1, 1, -1]
+
+
+def test_parity_error_explains_a_bonded_ion():
+    """Li+ bonded by distance to a carbonyl O makes an odd-electron molecule; the
+    error says why and how to fix it (mbe, 2026-10-29)."""
+    li_formaldehyde = (["Li", "O", "C", "H", "H"], [(0, 1), (1, 2), (2, 3), (2, 4)], 0)
+    with pytest.raises(seamm_mbe.StructureError, match="Li bonded to other atoms"):
+        build([li_formaldehyde])
