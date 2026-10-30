@@ -359,6 +359,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">CATALOG</span><span class="p">,</span> <span class="n">MoleculeType</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">wl_labels</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.elements</span><span class="w"> </span><span class="kn">import</span> <span class="n">MONATOMIC</span><span class="p">,</span> <span class="n">atomic_number</span><span class="p">,</span> <span class="n">hill_formula</span><span class="p">,</span> <span class="n">mass</span>
 
+<span class="c1"># Alkali and alkaline-earth metals: ions in molecular systems (as molsystem treats them)</span>
+<span class="n">_IONS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">"Li"</span><span class="p">,</span> <span class="s2">"Na"</span><span class="p">,</span> <span class="s2">"K"</span><span class="p">,</span> <span class="s2">"Rb"</span><span class="p">,</span> <span class="s2">"Cs"</span><span class="p">,</span> <span class="s2">"Fr"</span><span class="p">,</span> <span class="s2">"Be"</span><span class="p">,</span> <span class="s2">"Mg"</span><span class="p">,</span> <span class="s2">"Ca"</span><span class="p">,</span> <span class="s2">"Sr"</span><span class="p">,</span> <span class="s2">"Ba"</span><span class="p">,</span> <span class="s2">"Ra"</span><span class="p">)</span>
+<span class="p">)</span>
+
 
 <div class="viewcode-block" id="StructureError">
 <a class="viewcode-back" href="../../api/seamm_mbe.html#seamm_mbe.shells.StructureError">[docs]</a>
@@ -682,12 +687,28 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">parity</span> <span class="o">=</span> <span class="s2">"even"</span> <span class="k">if</span> <span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"odd"</span>
             <span class="n">need</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"multiplicity </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">multiplicity</span><span class="si">}</span><span class="s2"> needs an </span><span class="si">{</span><span class="n">parity</span><span class="si">}</span><span class="s2"> number"</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="n">ions</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_IONS</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">ions</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">hint</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">" It holds </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ions</span><span class="p">)</span><span class="si">}</span><span class="s2"> bonded to other atoms, which is "</span>
+                <span class="s2">"usually an ion: the bonds were probably perceived from the "</span>
+                <span class="s2">"distances. Read the structure with its own bonds (e.g. an SDF "</span>
+                <span class="s2">"with the ion unbonded and its charge, M  CHG)."</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ions</span> <span class="ow">and</span> <span class="n">mtype</span><span class="o">.</span><span class="n">charge</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">hint</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">" A lone </span><span class="si">{</span><span class="n">ions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> is usually an ion: give it its formal charge "</span>
+                <span class="s2">"(e.g. M  CHG in an SDF) or a charge by type."</span>
+            <span class="p">)</span>
         <span class="k">raise</span> <span class="n">StructureError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">"Molecule </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">index</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
             <span class="sa">f</span><span class="s2">"atom(s)) has charge </span><span class="si">{</span><span class="n">mtype</span><span class="o">.</span><span class="n">charge</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">, giving it </span><span class="si">{</span><span class="n">n_electrons</span><span class="si">}</span><span class="s2"> "</span>
             <span class="sa">f</span><span class="s2">"electrons; </span><span class="si">{</span><span class="n">need</span><span class="si">}</span><span class="s2">. Check that the charges are assigned to the "</span>
             <span class="s2">"molecules they actually belong to -- the structure's formal charges, "</span>
-            <span class="s2">"or the charges given by type."</span>
+            <span class="s2">"or the charges given by type."</span> <span class="o">+</span> <span class="n">hint</span>
         <span class="p">)</span>
 
     <span class="c1"># ------------------------------------------------------------------ helpers</span>
